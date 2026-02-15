@@ -14,7 +14,6 @@
   --bg1:#070A12;
   --bg2:#0B1430;
   --stroke:rgba(255,255,255,.08);
-  --stroke2:rgba(255,255,255,.10);
   --text:#EAF0FF;
   --muted:rgba(234,240,255,.70);
   --shadow:0 16px 44px rgba(0,0,0,.55);
@@ -37,12 +36,16 @@ body{
     radial-gradient(900px 700px at 100% 0%, rgba(54,210,123,.22), transparent 55%),
     radial-gradient(900px 700px at 30% 110%, rgba(255,77,94,.20), transparent 55%),
     linear-gradient(160deg,var(--bg1),var(--bg2));
-  padding:0 14px 18px 14px;
+  padding:0 14px env(safe-area-inset-bottom) 14px;
 }
 
-.safeTop{
-  height: env(safe-area-inset-top);
+/* Entfernt die “bläuliche Kante” unten:
+   Kein Sticky-Footer, kein Verlauf am Seitenende, und genug Abstand zum Safe-Area */
+.page{
+  padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
 }
+
+.safeTop{height: env(safe-area-inset-top);}
 
 .header{
   position:sticky;
@@ -50,13 +53,13 @@ body{
   z-index:10;
   padding:12px 0 10px 0;
   background:
-    linear-gradient(180deg, rgba(7,10,18,.92), rgba(7,10,18,.65) 55%, rgba(7,10,18,0));
+    linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
   backdrop-filter: blur(14px);
 }
 
 .headerInner{
   border:1px solid rgba(255,255,255,.08);
-  background:rgba(12,18,40,.55);
+  background:rgba(12,18,40,.60);
   border-radius:20px;
   padding:12px 12px;
   box-shadow:0 14px 34px rgba(0,0,0,.40);
@@ -155,10 +158,6 @@ h1{
   text-align:right;
 }
 
-.page{
-  padding:10px 0 0 0;
-}
-
 .card{
   background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
   border:1px solid var(--stroke);
@@ -214,6 +213,22 @@ h1{
   gap:10px;
 }
 
+.section{
+  margin-top:2px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  color:rgba(234,240,255,.86);
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.2px;
+}
+
 .row{
   display:flex;
   align-items:center;
@@ -230,7 +245,7 @@ h1{
   flex-direction:column;
   align-items:flex-start;
   gap:4px;
-  min-width: 165px;
+  min-width: 190px;
 }
 
 .rTitle{
@@ -290,9 +305,6 @@ h1{
 
 .actions{
   margin-top:12px;
-  display:flex;
-  gap:10px;
-  align-items:center;
 }
 
 .resetBtn{
@@ -314,7 +326,7 @@ h1{
 .resetBtn:active{transform: translateY(1px)}
 
 .tip{
-  margin:10px 2px 18px 2px;
+  margin:10px 2px 0 2px;
   font-size:11px;
   color:var(--muted);
   line-height:1.35;
@@ -388,16 +400,42 @@ h1{
 </div>
 
 <script>
-const rarities = [
-  { id:"foil_common",  name:"Foil Common",     mult:1,  group:"Foil" },
-  { id:"normal_common",name:"Normal Common",   mult:2,  group:"Normal" },
-  { id:"foil_rare",    name:"Foil Rare",       mult:3,  group:"Foil" },
-  { id:"normal_rare",  name:"Normal Rare",     mult:4,  group:"Normal" },
-  { id:"legendary",    name:"Legendary",       mult:5,  group:"Hit" },
-  { id:"foil_super",   name:"Foil Super Rare", mult:8,  group:"Foil" },
-  { id:"enchanted",    name:"Enchanted",       mult:12, group:"Hit" },
-  { id:"chase",        name:"Chase Swirl",     mult:25, group:"Hit" }
+/*
+Punktesystem (dein neues):
+Common & Uncommon: 0
+Rare Normal: 0
+Rare Foil: 1
+Super Rare Normal: 2
+Super Rare Foil: 3
+Legendary Normal: 4
+Legendary Foil: 8
+Epic: 5
+Enchanted: 12
+Iconic: 25
+*/
+
+const sections = [
+  { title: "0 Punkte", ids: ["common_uncommon", "rare_normal"] },
+  { title: "Rares", ids: ["rare_foil", "super_rare_normal", "super_rare_foil"] },
+  { title: "High Tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
 ];
+
+const rarities = [
+  { id:"common_uncommon", name:"Common & Uncommon", points:0, group:"0 Pkt" },
+  { id:"rare_normal",     name:"Rare (Normal)",     points:0, group:"0 Pkt" },
+
+  { id:"rare_foil",        name:"Rare (Foil)",        points:1, group:"Rare" },
+  { id:"super_rare_normal",name:"Super Rare (Normal)",points:2, group:"Rare" },
+  { id:"super_rare_foil",  name:"Super Rare (Foil)",  points:3, group:"Rare" },
+
+  { id:"legendary_normal", name:"Legendary (Normal)", points:4, group:"High" },
+  { id:"epic",             name:"Epic",               points:5, group:"High" },
+  { id:"legendary_foil",   name:"Legendary (Foil)",   points:8, group:"High" },
+  { id:"enchanted",        name:"Enchanted",          points:12,group:"High" },
+  { id:"iconic",           name:"Iconic",             points:25,group:"High" }
+];
+
+const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
 
 const state = {
   1: Object.fromEntries(rarities.map(r => [r.id, 0])),
@@ -413,47 +451,58 @@ function buildRows(player){
   const wrap = document.getElementById("rows"+player);
   wrap.innerHTML = "";
 
-  rarities.forEach(r => {
-    const row = document.createElement("div");
-    row.className = "row";
-    row.setAttribute("data-id", r.id);
-    row.innerHTML = `
-      <div class="left">
-        <div class="rTitle">${r.name}</div>
-        <div class="meta">
-          <span class="tag">x${r.mult}</span>
-          <span>${r.group}</span>
+  sections.forEach(sec => {
+    const s = document.createElement("div");
+    s.className = "section";
+    s.textContent = sec.title;
+    wrap.appendChild(s);
+
+    sec.ids.forEach(id => {
+      const r = byId[id];
+      const row = document.createElement("div");
+      row.className = "row";
+      row.setAttribute("data-id", r.id);
+
+      const tagText = r.points === 1 ? "1 Punkt" : (r.points + " Punkte");
+
+      row.innerHTML = `
+        <div class="left">
+          <div class="rTitle">${r.name}</div>
+          <div class="meta">
+            <span class="tag">${tagText}</span>
+            <span>${r.group}</span>
+          </div>
         </div>
-      </div>
-      <div class="controls">
-        <button class="btn minus" type="button" aria-label="minus">−</button>
-        <div class="count">0</div>
-        <button class="btn plus" type="button" aria-label="plus">+</button>
-      </div>
-    `;
-    wrap.appendChild(row);
+        <div class="controls">
+          <button class="btn minus" type="button" aria-label="minus">−</button>
+          <div class="count">0</div>
+          <button class="btn plus" type="button" aria-label="plus">+</button>
+        </div>
+      `;
+      wrap.appendChild(row);
 
-    const countEl = row.querySelector(".count");
-    const plus = row.querySelector(".plus");
-    const minus = row.querySelector(".minus");
+      const countEl = row.querySelector(".count");
+      const plus = row.querySelector(".plus");
+      const minus = row.querySelector(".minus");
 
-    addTap(plus, () => {
-      state[player][r.id] += 1;
-      countEl.textContent = String(state[player][r.id]);
-      render();
-    });
+      addTap(plus, () => {
+        state[player][r.id] += 1;
+        countEl.textContent = String(state[player][r.id]);
+        render();
+      });
 
-    addTap(minus, () => {
-      state[player][r.id] = Math.max(0, state[player][r.id] - 1);
-      countEl.textContent = String(state[player][r.id]);
-      render();
+      addTap(minus, () => {
+        state[player][r.id] = Math.max(0, state[player][r.id] - 1);
+        countEl.textContent = String(state[player][r.id]);
+        render();
+      });
     });
   });
 }
 
 function scoreOf(player){
   let s = 0;
-  rarities.forEach(r => { s += state[player][r.id] * r.mult; });
+  rarities.forEach(r => { s += state[player][r.id] * r.points; });
   return s;
 }
 
@@ -498,6 +547,7 @@ function render(){
 function resetAll(){
   [1,2].forEach(p => {
     rarities.forEach(r => { state[p][r.id] = 0; });
+
     const rows = document.getElementById("rows"+p).querySelectorAll(".row");
     rows.forEach(row => row.querySelector(".count").textContent = "0");
   });
