@@ -14,6 +14,7 @@
   --bg1:#070A12;
   --bg2:#0B1430;
   --stroke:rgba(255,255,255,.08);
+  --stroke2:rgba(255,255,255,.10);
   --text:#EAF0FF;
   --muted:rgba(234,240,255,.70);
   --shadow:0 16px 44px rgba(0,0,0,.55);
@@ -36,89 +37,87 @@ body{
     radial-gradient(900px 700px at 100% 0%, rgba(54,210,123,.22), transparent 55%),
     radial-gradient(900px 700px at 30% 110%, rgba(255,77,94,.20), transparent 55%),
     linear-gradient(160deg,var(--bg1),var(--bg2));
-  padding:14px 14px calc(18px + env(safe-area-inset-bottom));
+  padding:0 14px 18px 14px;
+}
+
+.safeTop{
+  height: env(safe-area-inset-top);
 }
 
 .header{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding:6px 2px 8px 2px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:12px 0 10px 0;
+  background:
+    linear-gradient(180deg, rgba(7,10,18,.92), rgba(7,10,18,.65) 55%, rgba(7,10,18,0));
+  backdrop-filter: blur(14px);
 }
 
-.titleRow{
+.headerInner{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(12,18,40,.55);
+  border-radius:20px;
+  padding:12px 12px;
+  box-shadow:0 14px 34px rgba(0,0,0,.40);
+}
+
+.topRow{
   display:flex;
-  align-items:flex-end;
+  align-items:center;
   justify-content:space-between;
   gap:10px;
 }
 
 h1{
   margin:0;
-  font-size:22px;
-  letter-spacing:.3px;
-  font-weight:900;
+  font-size:16px;
+  letter-spacing:.2px;
+  font-weight:950;
+  line-height:1.1;
 }
 
 .sub{
   display:flex;
   align-items:center;
   gap:8px;
-  font-size:12px;
+  font-size:11px;
   color:var(--muted);
   white-space:nowrap;
 }
 
 .dot{
-  width:8px;height:8px;border-radius:99px;background:var(--green);
+  width:7px;height:7px;border-radius:99px;background:var(--green);
   box-shadow:0 0 0 4px rgba(54,210,123,.12);
 }
 
-.topBar{
+.midRow{
+  margin-top:10px;
   display:flex;
-  gap:10px;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
 }
-
-.scoreChips{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.chip{
-  background:var(--chip);
-  border:1px solid var(--stroke);
-  border-radius:999px;
-  padding:8px 10px;
-  font-size:12px;
-  color:var(--muted);
-  display:flex;
-  align-items:center;
-  gap:8px;
-  backdrop-filter: blur(10px);
-}
-
-.chip b{color:var(--text); font-weight:900}
 
 .switch{
   display:flex;
   background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
+  border:1px solid rgba(255,255,255,.08);
   border-radius:999px;
   padding:4px;
   gap:4px;
-  box-shadow:0 10px 24px rgba(0,0,0,.35);
+  flex:1;
+  max-width: 260px;
 }
 
 .seg{
+  flex:1;
   border:0;
-  padding:8px 12px;
+  padding:9px 10px;
   border-radius:999px;
   background:transparent;
   color:rgba(234,240,255,.75);
-  font-weight:900;
+  font-weight:950;
   font-size:12px;
   cursor:pointer;
   touch-action:manipulation;
@@ -131,8 +130,36 @@ h1{
   color:var(--text);
 }
 
+.scoreChips{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.chip{
+  background:var(--chip);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  padding:9px 10px;
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.chip b{
+  color:var(--text);
+  font-weight:950;
+  min-width: 18px;
+  text-align:right;
+}
+
+.page{
+  padding:10px 0 0 0;
+}
+
 .card{
-  margin-top:10px;
   background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
   border:1px solid var(--stroke);
   border-radius:var(--radius);
@@ -152,8 +179,7 @@ h1{
 
 .playerName{
   font-size:14px;
-  font-weight:900;
-  letter-spacing:.2px;
+  font-weight:950;
   display:flex;
   align-items:center;
   gap:10px;
@@ -165,7 +191,6 @@ h1{
     radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
     linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
   border:1px solid rgba(255,255,255,.10);
-  box-shadow: inset 0 -10px 20px rgba(0,0,0,.18);
 }
 
 .badge{
@@ -179,11 +204,15 @@ h1{
 
 .score{
   font-size:34px;
-  font-weight:950;
-  letter-spacing:.3px;
+  font-weight:980;
 }
 
-.rows{padding:10px 12px 12px 12px; display:flex; flex-direction:column; gap:10px}
+.rows{
+  padding:10px 12px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
 .row{
   display:flex;
@@ -206,7 +235,7 @@ h1{
 
 .rTitle{
   font-size:13px;
-  font-weight:900;
+  font-weight:950;
   color:rgba(234,240,255,.92);
 }
 
@@ -235,8 +264,7 @@ h1{
   width:34px;
   text-align:center;
   font-size:16px;
-  font-weight:950;
-  color:var(--text);
+  font-weight:980;
 }
 
 .btn{
@@ -245,7 +273,7 @@ h1{
   border:0;
   border-radius:14px;
   font-size:18px;
-  font-weight:950;
+  font-weight:980;
   color:#0b0f1f;
   cursor:pointer;
   touch-action:manipulation;
@@ -260,59 +288,36 @@ h1{
 .plus{background:linear-gradient(180deg, rgba(54,210,123,1), rgba(54,210,123,.78))}
 .minus{background:linear-gradient(180deg, rgba(255,77,94,1), rgba(255,77,94,.78))}
 
-.footer{
-  position:sticky;
-  bottom:0;
+.actions{
   margin-top:12px;
-  padding:10px 0 calc(6px + env(safe-area-inset-bottom));
-}
-
-.footerInner{
   display:flex;
   gap:10px;
+  align-items:center;
 }
 
-.bigBtn{
-  flex:1;
+.resetBtn{
+  width:100%;
   padding:14px 16px;
   border-radius:18px;
   border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  background:linear-gradient(180deg, rgba(255,77,94,.18), rgba(255,255,255,.05));
   color:var(--text);
-  font-weight:950;
+  font-weight:980;
   font-size:14px;
-  letter-spacing:.3px;
-  box-shadow:var(--shadow);
+  letter-spacing:.2px;
+  box-shadow:0 14px 34px rgba(0,0,0,.40);
   cursor:pointer;
   touch-action:manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-.bigBtn:active{transform: translateY(1px)}
-.resetBtn{background:linear-gradient(180deg, rgba(255,77,94,.18), rgba(255,255,255,.05))}
+.resetBtn:active{transform: translateY(1px)}
 
-.toast{
-  position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom: calc(86px + env(safe-area-inset-bottom));
-  background:rgba(12,18,40,.82);
-  border:1px solid rgba(255,255,255,.12);
-  padding:10px 12px;
-  border-radius:14px;
-  color:rgba(234,240,255,.9);
-  font-size:12px;
-  backdrop-filter: blur(14px);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .18s ease;
-}
-.toast.show{opacity:1}
-
-.small{
+.tip{
+  margin:10px 2px 18px 2px;
   font-size:11px;
   color:var(--muted);
-  margin-top:6px;
+  line-height:1.35;
 }
 
 .hidden{display:none}
@@ -320,62 +325,67 @@ h1{
 </head>
 
 <body>
+<div class="safeTop"></div>
 
 <div class="header">
-  <div class="titleRow">
-    <h1>Lorcana Booster Battle</h1>
-    <div class="sub">
-      <span class="dot"></span>
-      <span id="statusText">JavaScript aktiv</span>
-    </div>
-  </div>
+  <div class="headerInner">
+    <div class="topRow">
+      <div>
+        <h1>Lorcana Booster Battle</h1>
+        <div class="sub">
+          <span class="dot"></span>
+          <span id="statusText">JavaScript aktiv</span>
+        </div>
+      </div>
 
-  <div class="topBar">
-    <div class="switch" role="tablist" aria-label="Spieler wechseln">
-      <button class="seg active" id="tab1" type="button">Spieler 1</button>
-      <button class="seg" id="tab2" type="button">Spieler 2</button>
+      <div class="scoreChips" aria-label="Scores">
+        <div class="chip">S1 <b id="chip1">0</b></div>
+        <div class="chip">S2 <b id="chip2">0</b></div>
+      </div>
     </div>
 
-    <div class="scoreChips">
-      <div class="chip">S1 <b id="chip1">0</b></div>
-      <div class="chip">S2 <b id="chip2">0</b></div>
+    <div class="midRow">
+      <div class="switch" role="tablist" aria-label="Spieler wechseln">
+        <button class="seg active" id="tab1" type="button">Spieler 1</button>
+        <button class="seg" id="tab2" type="button">Spieler 2</button>
+      </div>
+
+      <div class="sub" id="leadText">–</div>
     </div>
   </div>
 </div>
 
-<div class="card" id="card1" data-player="1">
-  <div class="cardHeader">
-    <div class="playerName">
-      <span class="icon"></span>
-      <span>Spieler 1</span>
-      <span class="badge" id="lead1">–</span>
+<div class="page">
+  <div class="card" id="card1" data-player="1">
+    <div class="cardHeader">
+      <div class="playerName">
+        <span class="icon"></span>
+        <span>Spieler 1</span>
+        <span class="badge" id="lead1">–</span>
+      </div>
+      <div class="score" id="score1">0</div>
     </div>
-    <div class="score" id="score1">0</div>
+    <div class="rows" id="rows1"></div>
   </div>
-  <div class="rows" id="rows1"></div>
-</div>
 
-<div class="card hidden" id="card2" data-player="2">
-  <div class="cardHeader">
-    <div class="playerName">
-      <span class="icon"></span>
-      <span>Spieler 2</span>
-      <span class="badge" id="lead2">–</span>
+  <div class="card hidden" id="card2" data-player="2">
+    <div class="cardHeader">
+      <div class="playerName">
+        <span class="icon"></span>
+        <span>Spieler 2</span>
+        <span class="badge" id="lead2">–</span>
+      </div>
+      <div class="score" id="score2">0</div>
     </div>
-    <div class="score" id="score2">0</div>
+    <div class="rows" id="rows2"></div>
   </div>
-  <div class="rows" id="rows2"></div>
-</div>
 
-<div class="footer">
-  <div class="footerInner">
-    <button class="bigBtn resetBtn" id="resetBtn" type="button">Reset</button>
-    <button class="bigBtn" id="copyBtn" type="button">Score kopieren</button>
+  <div class="actions">
+    <button class="resetBtn" id="resetBtn" type="button">Reset</button>
   </div>
-  <div class="small">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</div>
-</div>
 
-<div class="toast" id="toast">Kopiert</div>
+  <div class="tip">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</div>
+</div>
 
 <script>
 const rarities = [
@@ -447,24 +457,29 @@ function scoreOf(player){
   return s;
 }
 
-function setLeadBadges(s1, s2){
+function setLeads(s1, s2){
   const b1 = document.getElementById("lead1");
   const b2 = document.getElementById("lead2");
+  const leadText = document.getElementById("leadText");
 
   if (s1 === 0 && s2 === 0){
     b1.textContent = "–";
     b2.textContent = "–";
+    leadText.textContent = "–";
     return;
   }
   if (s1 > s2){
     b1.textContent = "führt";
     b2.textContent = "hinten";
+    leadText.textContent = "Spieler 1 führt";
   } else if (s2 > s1){
     b2.textContent = "führt";
     b1.textContent = "hinten";
+    leadText.textContent = "Spieler 2 führt";
   } else {
     b1.textContent = "gleich";
     b2.textContent = "gleich";
+    leadText.textContent = "Gleichstand";
   }
 }
 
@@ -477,7 +492,7 @@ function render(){
   document.getElementById("chip1").textContent = String(s1);
   document.getElementById("chip2").textContent = String(s2);
 
-  setLeadBadges(s1, s2);
+  setLeads(s1, s2);
 }
 
 function resetAll(){
@@ -487,40 +502,6 @@ function resetAll(){
     rows.forEach(row => row.querySelector(".count").textContent = "0");
   });
   render();
-}
-
-function showToast(text){
-  const t = document.getElementById("toast");
-  t.textContent = text;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 900);
-}
-
-function copyScore(){
-  const s1 = scoreOf(1);
-  const s2 = scoreOf(2);
-  const lines = [];
-  lines.push("Lorcana Booster Battle");
-  lines.push("Spieler 1: " + s1);
-  lines.push("Spieler 2: " + s2);
-  lines.push("");
-  lines.push("Details S1:");
-  rarities.forEach(r => { if (state[1][r.id] > 0) lines.push("  " + r.name + " x" + state[1][r.id]); });
-  lines.push("Details S2:");
-  rarities.forEach(r => { if (state[2][r.id] > 0) lines.push("  " + r.name + " x" + state[2][r.id]); });
-  const text = lines.join("\n");
-
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(() => showToast("Score kopiert"));
-  } else {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    ta.remove();
-    showToast("Score kopiert");
-  }
 }
 
 function showPlayer(p){
@@ -548,7 +529,6 @@ render();
 showPlayer(1);
 
 addTap(document.getElementById("resetBtn"), resetAll);
-addTap(document.getElementById("copyBtn"), copyScore);
 addTap(document.getElementById("tab1"), () => showPlayer(1));
 addTap(document.getElementById("tab2"), () => showPlayer(2));
 document.getElementById("statusText").textContent = "JavaScript aktiv";
