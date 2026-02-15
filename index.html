@@ -1,176 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
   <title>Lorcana Booster Battle</title>
-
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #eef6ff;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .players {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .playerBox {
-      width: 48%;
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.15);
-    }
-
-    .score {
-      font-size: 40px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .rarityRow {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 8px 0;
-      padding: 8px;
-      background: #f7fbff;
-      border-radius: 10px;
-    }
-
-    button {
-      font-size: 18px;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .plus { background: #4caf50; color: white; }
-    .minus { background: #f44336; color: white; }
-
-    .count {
-      font-size: 18px;
-      width: 30px;
-      display: inline-block;
-    }
-
-    .reset {
-      margin-top: 25px;
-      font-size: 20px;
-      padding: 12px 25px;
-      background: black;
-      color: white;
-      border-radius: 12px;
-    }
+    body{font-family:Arial,Helvetica,sans-serif;background:#eef6ff;margin:0;padding:16px;text-align:center}
+    h1{margin:10px 0 14px;font-size:26px}
+    .players{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+    .playerBox{flex:1;background:#fff;border-radius:14px;padding:14px 12px;box-shadow:0 0 10px rgba(0,0,0,.12)}
+    .score{font-size:44px;font-weight:700;margin:6px 0 10px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0;padding:10px;background:#f7fbff;border-radius:12px}
+    .label{font-size:14px;text-align:left;flex:1;min-width:120px}
+    .pill{display:flex;align-items:center;gap:8px}
+    .count{width:26px;display:inline-block;font-size:18px;font-weight:700}
+    button{font-size:18px;padding:8px 14px;border:0;border-radius:10px;cursor:pointer;touch-action:manipulation}
+    .plus{background:#4caf50;color:#fff}
+    .minus{background:#f44336;color:#fff}
+    .reset{margin-top:16px;font-size:18px;padding:12px 24px;background:#000;color:#fff;border-radius:14px}
+    .status{margin:10px 0 12px;font-size:12px;color:#333;opacity:.75}
   </style>
 </head>
-
 <body>
 
-<h1>Lorcana Booster Battle</h1>
+  <h1>Lorcana Booster Battle</h1>
+  <div class="status" id="status">Status: lädt…</div>
 
-<div class="players">
+  <div class="players">
+    <div class="playerBox" data-player="1">
+      <div style="font-size:20px;font-weight:700">Spieler 1</div>
+      <div class="score" id="score1">0</div>
 
-  <div class="playerBox">
-    <h2>Spieler 1</h2>
-    <div class="score" id="score1">0</div>
+      <div class="row" data-mult="1"><div class="label">Foil Common (x1)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="2"><div class="label">Normal Common (x2)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="3"><div class="label">Foil Rare (x3)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="4"><div class="label">Normal Rare (x4)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="5"><div class="label">Legendary (x5)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="8"><div class="label">Foil Super Rare (x8)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="12"><div class="label">Enchanted (x12)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="25"><div class="label">Chase Swirl (x25)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+    </div>
 
-    <div id="rows1"></div>
+    <div class="playerBox" data-player="2">
+      <div style="font-size:20px;font-weight:700">Spieler 2</div>
+      <div class="score" id="score2">0</div>
+
+      <div class="row" data-mult="1"><div class="label">Foil Common (x1)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="2"><div class="label">Normal Common (x2)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="3"><div class="label">Foil Rare (x3)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="4"><div class="label">Normal Rare (x4)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="5"><div class="label">Legendary (x5)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="8"><div class="label">Foil Super Rare (x8)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="12"><div class="label">Enchanted (x12)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+      <div class="row" data-mult="25"><div class="label">Chase Swirl (x25)</div><div class="pill"><button class="minus" type="button">-</button><span class="count">0</span><button class="plus" type="button">+</button></div></div>
+    </div>
   </div>
 
-  <div class="playerBox">
-    <h2>Spieler 2</h2>
-    <div class="score" id="score2">0</div>
-
-    <div id="rows2"></div>
-  </div>
-
-</div>
-
-<button class="reset" onclick="resetAll()">RESET</button>
+  <button class="reset" id="resetBtn" type="button">RESET</button>
 
 <script>
-  const rarities = [
-    { name: "Foil Common", points: 1 },
-    { name: "Normal Common", points: 2 },
-    { name: "Foil Rare", points: 3 },
-    { name: "Normal Rare", points: 4 },
-    { name: "Legendary", points: 5 },
-    { name: "Foil Super Rare", points: 8 },
-    { name: "Enchanted", points: 12 },
-    { name: "Chase Swirl", points: 25 }
-  ];
-
-  let counts1 = Array(rarities.length).fill(0);
-  let counts2 = Array(rarities.length).fill(0);
-
-  function buildRows(player) {
-    const container = document.getElementById("rows" + player);
-
-    rarities.forEach((r, i) => {
-      const row = document.createElement("div");
-      row.className = "rarityRow";
-
-      row.innerHTML = `
-        <span> (x)</span>
-        <button class="minus" onclick="change(, , -1)">-</button>
-        <span class="count" id="c_">0</span>
-        <button class="plus" onclick="change(, , 1)">+</button>
-      `;
-
-      container.appendChild(row);
+  function calc(playerBox){
+    let total = 0;
+    playerBox.querySelectorAll(".row").forEach(row=>{
+      const mult = Number(row.getAttribute("data-mult"));
+      const count = Number(row.querySelector(".count").textContent || "0");
+      total += mult * count;
     });
+    const p = playerBox.getAttribute("data-player");
+    document.getElementById("score"+p).textContent = String(total);
   }
 
-  function change(player, index, delta) {
-    let counts = player === 1 ? counts1 : counts2;
-
-    counts[index] += delta;
-    if (counts[index] < 0) counts[index] = 0;
-
-    document.getElementById(`c_`).innerText = counts[index];
-
-    updateScore(player);
-  }
-
-  function updateScore(player) {
-    let counts = player === 1 ? counts1 : counts2;
-    let score = 0;
-
-    counts.forEach((c, i) => {
-      score += c * rarities[i].points;
+  function bindPlayer(playerBox){
+    playerBox.querySelectorAll(".row").forEach(row=>{
+      const countEl = row.querySelector(".count");
+      row.querySelector(".plus").addEventListener("click", ()=>{
+        countEl.textContent = String(Number(countEl.textContent||"0") + 1);
+        calc(playerBox);
+      });
+      row.querySelector(".minus").addEventListener("click", ()=>{
+        const v = Math.max(0, Number(countEl.textContent||"0") - 1);
+        countEl.textContent = String(v);
+        calc(playerBox);
+      });
     });
-
-    document.getElementById("score" + player).innerText = score;
+    calc(playerBox);
   }
 
-  function resetAll() {
-    counts1.fill(0);
-    counts2.fill(0);
+  const p1 = document.querySelector('.playerBox[data-player="1"]');
+  const p2 = document.querySelector('.playerBox[data-player="2"]');
 
-    rarities.forEach((r, i) => {
-      document.getElementById(`c1_`).innerText = 0;
-      document.getElementById(`c2_`).innerText = 0;
-    });
+  bindPlayer(p1);
+  bindPlayer(p2);
 
-    updateScore(1);
-    updateScore(2);
-  }
+  document.getElementById("resetBtn").addEventListener("click", ()=>{
+    document.querySelectorAll(".count").forEach(el=>el.textContent="0");
+    calc(p1); calc(p2);
+  });
 
-  buildRows(1);
-  buildRows(2);
+  document.getElementById("status").textContent = "Status: JavaScript aktiv";
 </script>
 
 </body>
