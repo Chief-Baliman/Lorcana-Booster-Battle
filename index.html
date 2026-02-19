@@ -21,6 +21,13 @@
 
   --gold:#F7D37A;
   --chip:rgba(255,255,255,.12);
+
+  --glass:rgba(12,18,40,.60);
+  --stroke:rgba(255,255,255,.14);
+
+  --bronze:#CD7F32;
+  --silver:#C0C0C0;
+  --common:#9AA3AE;
 }
 
 *{box-sizing:border-box}
@@ -74,22 +81,21 @@ body::before{
   z-index:1;
   padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
 }
-
 .safeTop{height: env(safe-area-inset-top);}
 
+/* Header */
 .header{
   position:sticky;
   top:0;
   z-index:10;
   padding:12px 0 10px 0;
-  background:
-    linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
+  background: linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
   backdrop-filter: blur(14px);
 }
 
 .headerInner{
   border:1px solid rgba(255,255,255,.08);
-  background:rgba(12,18,40,.60);
+  background:var(--glass);
   border-radius:20px;
   padding:12px 12px;
   box-shadow:0 14px 34px rgba(0,0,0,.40);
@@ -97,7 +103,7 @@ body::before{
 
 .topRow{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
 }
@@ -108,24 +114,15 @@ body::before{
   gap:12px;
   min-width: 0;
 }
-
 .logo{
   width:34px;
   height:34px;
-  max-width:34px;
-  max-height:34px;
   object-fit:contain;
   border-radius:10px;
   display:block;
   flex:0 0 auto;
 }
-
-.brandText{
-  display:flex;
-  flex-direction:column;
-  min-width:0;
-}
-
+.brandText{ min-width:0; }
 .brandText .title{
   font-size:16px;
   font-weight:950;
@@ -135,7 +132,6 @@ body::before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-
 .byline{
   margin-top:4px;
   font-size:11px;
@@ -174,6 +170,7 @@ body::before{
   display:flex;
   align-items:center;
   gap:8px;
+  user-select:none;
 }
 .chip b{
   color:var(--gold);
@@ -181,8 +178,20 @@ body::before{
   min-width: 18px;
   text-align:right;
 }
+.crown{
+  width:14px;
+  height:14px;
+  display:none;
+}
+.chip.leading .crown{ display:inline-block; }
+.chip.leading{
+  border-color: rgba(247,211,122,.38);
+  background:
+    radial-gradient(140px 60px at 20% 0%, rgba(247,211,122,.18), transparent 60%),
+    rgba(255,255,255,.10);
+}
 
-/* Social icons (small + subtle) */
+/* Social icons + Info */
 .social{
   display:flex;
   gap:8px;
@@ -205,7 +214,6 @@ body::before{
 .iconBtn svg{ width:18px; height:18px; opacity:.92; }
 .iconBtn:active{ transform: translateY(1px); }
 
-/* Info button: visible enough, but not loud */
 .infoBtn{
   width:34px;
   height:34px;
@@ -223,6 +231,7 @@ body::before{
 }
 .infoBtn:active{ transform: translateY(1px); }
 
+/* Mid row */
 .midRow{
   margin-top:10px;
   display:flex;
@@ -241,7 +250,6 @@ body::before{
   flex:1;
   max-width: 260px;
 }
-
 .seg{
   flex:1;
   border:0;
@@ -267,6 +275,36 @@ body::before{
   white-space:nowrap;
 }
 
+/* INT/JP Toggle */
+.modeWrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.modeToggle{
+  display:flex;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:999px;
+  padding:4px;
+  gap:4px;
+}
+.modeBtn{
+  border:0;
+  padding:8px 10px;
+  border-radius:999px;
+  background:transparent;
+  color:rgba(246,251,255,.75);
+  font-weight:950;
+  font-size:12px;
+  cursor:pointer;
+}
+.modeBtn.active{
+  background:linear-gradient(180deg, rgba(140,214,255,.18), rgba(255,255,255,.06));
+  border:1px solid rgba(140,214,255,.18);
+  color:var(--text);
+}
+
 /* Card */
 .card{
   background:
@@ -276,6 +314,14 @@ body::before{
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   overflow:hidden;
+}
+
+.card.leader{
+  border-color: rgba(247,211,122,.40);
+  box-shadow: 0 18px 58px rgba(0,0,0,.55), 0 0 0 2px rgba(247,211,122,.18) inset;
+  background:
+    radial-gradient(900px 240px at 20% 0%, rgba(247,211,122,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
 }
 
 .cardHeader{
@@ -295,14 +341,26 @@ body::before{
   align-items:center;
   gap:10px;
 }
-
-.icon{
+.pIcon{
   width:22px;height:22px;border-radius:9px;
   background:
     radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
     linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
   border:1px solid rgba(255,255,255,.10);
 }
+
+.winBadge{
+  display:none;
+  font-size:11px;
+  padding:6px 8px;
+  border-radius:999px;
+  background:rgba(247,211,122,.16);
+  border:1px solid rgba(247,211,122,.28);
+  color:rgba(246,251,255,.92);
+  font-weight:980;
+  letter-spacing:.2px;
+}
+.card.leader .winBadge{ display:inline-flex; }
 
 .badge{
   font-size:11px;
@@ -318,115 +376,157 @@ body::before{
   font-weight:980;
 }
 
-.rows{
-  padding:10px 12px 12px 12px;
+.body{
+  padding:12px 12px 14px 12px;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
 }
 
-.section{
-  margin:16px 6px 6px 6px;
-  padding:0;
-  background:transparent;
-  border:0;
-  color:rgba(246,251,255,.80);
-  font-weight:950;
-  font-size:12px;
-  letter-spacing:.35px;
-  text-transform:uppercase;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.section::after{
-  content:"";
-  height:1px;
-  flex:1;
-  background:linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0));
-}
-
-.row{
+/* Pack summary line */
+.packLine{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  padding:13px;
+  padding:10px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+}
+.packLeft{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width:0;
+}
+.packTitle{
+  font-weight:980;
+  font-size:12px;
+  letter-spacing:.2px;
+  color:rgba(246,251,255,.88);
+}
+.packSub{
+  font-size:12px;
+  color:rgba(246,251,255,.68);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.packPills{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(246,251,255,.82);
+  font-size:12px;
+  font-weight:950;
+}
+.pill small{
+  font-weight:950;
+  color:rgba(246,251,255,.62);
+}
+
+/* Slot blocks */
+.slot{
+  padding:12px;
   border-radius:18px;
   background:
-    radial-gradient(700px 120px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
+    radial-gradient(700px 140px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
     linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
   border:1px solid rgba(255,255,255,.10);
 }
 
-.left{
+.slotHead{
   display:flex;
-  flex-direction:column;
   align-items:flex-start;
-  gap:4px;
-  min-width: 190px;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
 }
-
-.rTitle{
-  font-size:13px;
+.slotName{
+  font-weight:980;
+  letter-spacing:.2px;
+}
+.slotHint{
+  margin-top:4px;
+  font-size:12px;
+  color:rgba(246,251,255,.68);
+}
+.clearBtn{
+  border:0;
+  padding:8px 10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(246,251,255,.82);
+  cursor:pointer;
   font-weight:950;
-  color:rgba(234,240,255,.92);
+  font-size:12px;
+}
+.clearBtn:active{ transform: translateY(1px); }
+
+.options{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-.meta{
+.opt{
+  flex:1 1 200px;
+  min-width:200px;
   display:flex;
   align-items:center;
-  gap:8px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.tag{
-  padding:4px 8px;
-  border-radius:999px;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px;
+  border-radius:16px;
   background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
 }
+.opt:active{ transform: translateY(1px); }
 
-.controls{
+.optLeft{
   display:flex;
   align-items:center;
   gap:10px;
+  min-width:0;
+}
+.optLabel{
+  font-weight:980;
+  color:rgba(246,251,255,.92);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.optRight{
+  font-weight:980;
+  color:rgba(246,251,255,.75);
+}
+.opt.selected{
+  border-color: rgba(140,214,255,.34);
+  background:
+    radial-gradient(220px 80px at 20% 0%, rgba(140,214,255,.14), transparent 60%),
+    rgba(255,255,255,.06);
 }
 
-.count{
-  width:34px;
-  text-align:center;
-  font-size:16px;
-  font-weight:980;
-}
-
-.btn{
-  width:48px;
-  height:44px;
-  border:0;
-  border-radius:18px;
-  font-size:20px;
-  font-weight:980;
-  color:#08101b;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow: 0 14px 26px rgba(0,0,0,.30);
-}
-.btn:active{transform: translateY(1px) scale(.99)}
-.plus{
-  background:
-    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
-    linear-gradient(180deg, rgba(47,211,122,1), rgba(47,211,122,.78));
-}
-.minus{
-  background:
-    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.40), transparent 60%),
-    linear-gradient(180deg, rgba(255,77,109,1), rgba(255,77,109,.78));
+.rIcon{
+  width:22px;
+  height:22px;
+  display:block;
+  flex:0 0 auto;
 }
 
 .actions{ margin-top:12px; }
@@ -444,6 +544,7 @@ body::before{
   font-size:14px;
   letter-spacing:.2px;
   box-shadow:0 16px 40px rgba(0,0,0,.35);
+  cursor:pointer;
 }
 .resetBtn:active{transform: translateY(1px)}
 
@@ -537,12 +638,12 @@ body::before{
 }
 .modalLink:active{ transform: translateY(1px); }
 
-/* Responsive: keep header clean on small screens */
 @media (max-width: 520px){
   .chip{ padding:8px 9px; }
   .rightTop{ gap:8px; }
   .logo{ width:32px; height:32px; border-radius:10px; }
   .brandText .title{ font-size:15px; }
+  .opt{ min-width: 160px; }
 }
 </style>
 </head>
@@ -564,9 +665,26 @@ body::before{
       </div>
 
       <div class="rightTop">
+        <div class="modeWrap" aria-label="Mode">
+          <div class="modeToggle" role="tablist" aria-label="Booster type">
+            <button class="modeBtn active" id="modeINT" type="button" aria-label="International">INT</button>
+            <button class="modeBtn" id="modeJP" type="button" aria-label="Japanese">JP</button>
+          </div>
+        </div>
+
         <div class="scoreChips" aria-label="Scores">
-          <div class="chip">P1 <b id="chip1">0</b></div>
-          <div class="chip">P2 <b id="chip2">0</b></div>
+          <div class="chip" id="chipP1">
+            <svg class="crown" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 9l4 4 4-7 4 7 4-4v10H4V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            P1 <b id="chip1">0</b>
+          </div>
+          <div class="chip" id="chipP2">
+            <svg class="crown" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 9l4 4 4-7 4 7 4-4v10H4V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            P2 <b id="chip2">0</b>
+          </div>
         </div>
 
         <div class="social" aria-label="Social links">
@@ -605,25 +723,49 @@ body::before{
   <div class="card" id="card1" data-player="1">
     <div class="cardHeader">
       <div class="playerName">
-        <span class="icon"></span>
+        <span class="pIcon"></span>
         <span>Player 1</span>
+        <span class="winBadge" id="win1">WINNER</span>
         <span class="badge" id="lead1">–</span>
       </div>
       <div class="score" id="score1">0</div>
     </div>
-    <div class="rows" id="rows1"></div>
+
+    <div class="body">
+      <div class="packLine" id="pack1">
+        <div class="packLeft">
+          <div class="packTitle" id="packTitle1">Pack (INT)</div>
+          <div class="packSub" id="packSub1">Track only the last 3 slots</div>
+        </div>
+        <div class="packPills" id="packPills1"></div>
+      </div>
+
+      <div id="slots1"></div>
+    </div>
   </div>
 
   <div class="card hidden" id="card2" data-player="2">
     <div class="cardHeader">
       <div class="playerName">
-        <span class="icon"></span>
+        <span class="pIcon"></span>
         <span>Player 2</span>
+        <span class="winBadge" id="win2">WINNER</span>
         <span class="badge" id="lead2">–</span>
       </div>
       <div class="score" id="score2">0</div>
     </div>
-    <div class="rows" id="rows2"></div>
+
+    <div class="body">
+      <div class="packLine" id="pack2">
+        <div class="packLeft">
+          <div class="packTitle" id="packTitle2">Pack (INT)</div>
+          <div class="packSub" id="packSub2">Track only the last 3 slots</div>
+        </div>
+        <div class="packPills" id="packPills2"></div>
+      </div>
+
+      <div id="slots2"></div>
+    </div>
   </div>
 
   <div class="actions">
@@ -660,110 +802,288 @@ body::before{
 </div>
 
 <script>
-/*
-Point system:
-Common & Uncommon: 0
-Rare (Normal): 0
-Rare (Foil): 1
-Super Rare (Normal): 2
-Super Rare (Foil): 3
-Legendary (Normal): 4
-Legendary (Foil): 8
-Epic: 5
-Enchanted: 12
-Iconic: 25
-*/
-
-const sections = [
-  { title: "0 points", ids: ["common_uncommon", "rare_normal"] },
-  { title: "Rares", ids: ["rare_foil", "super_rare_normal", "super_rare_foil"] },
-  { title: "High tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
-];
-
-const rarities = [
-  { id:"common_uncommon",   name:"Common & Uncommon",    points:0,  group:"0 pts" },
-  { id:"rare_normal",       name:"Rare (Normal)",        points:0,  group:"0 pts" },
-
-  { id:"rare_foil",         name:"Rare (Foil)",          points:1,  group:"Rare" },
-  { id:"super_rare_normal", name:"Super Rare (Normal)",  points:2,  group:"Rare" },
-  { id:"super_rare_foil",   name:"Super Rare (Foil)",    points:3,  group:"Rare" },
-
-  { id:"legendary_normal",  name:"Legendary (Normal)",   points:4,  group:"High" },
-  { id:"epic",              name:"Epic",                 points:5,  group:"High" },
-  { id:"legendary_foil",    name:"Legendary (Foil)",     points:8,  group:"High" },
-  { id:"enchanted",         name:"Enchanted",            points:12, group:"High" },
-  { id:"iconic",            name:"Iconic",               points:25, group:"High" }
-];
-
-const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
-
-const state = {
-  1: Object.fromEntries(rarities.map(r => [r.id, 0])),
-  2: Object.fromEntries(rarities.map(r => [r.id, 0]))
+/* Points */
+const POINTS = {
+  common: 0,
+  uncommon: 0,
+  rare_normal: 0,
+  rare_foil: 1,
+  super_rare_normal: 2,
+  super_rare_foil: 3,
+  legendary_normal: 4,
+  legendary_foil: 8,
+  epic: 5,
+  enchanted: 12,
+  iconic: 25
 };
 
-function addTap(el, fn){
-  el.addEventListener("click", fn);
-  el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
+let mode = "INT"; // INT or JP
+
+/* Slot templates */
+function getSlotsForMode(){
+  if(mode === "JP"){
+    return [
+      {
+        key:"rareplus",
+        name:"Rare+ slot",
+        hint:"Rare or above",
+        options:["rare_normal","super_rare_normal","legendary_normal","epic"],
+        allowNone:true
+      },
+      {
+        key:"foil",
+        name:"Foil slot",
+        hint:"Any rarity possible (incl. Enchanted)",
+        options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"],
+        allowNone:true
+      }
+    ];
+  }
+
+  return [
+    {
+      key:"rarity1",
+      name:"Rarity slot 1",
+      hint:"Rare / Super Rare / Legendary",
+      options:["rare_normal","super_rare_normal","legendary_normal"],
+      allowNone:true
+    },
+    {
+      key:"rarity2",
+      name:"Rarity slot 2",
+      hint:"Rare / Super Rare / Legendary",
+      options:["rare_normal","super_rare_normal","legendary_normal"],
+      allowNone:true
+    },
+    {
+      key:"foil",
+      name:"Foil slot",
+      hint:"Any rarity possible (incl. Enchanted)",
+      options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"],
+      allowNone:true
+    }
+  ];
 }
 
-function buildRows(player){
-  const wrap = document.getElementById("rows"+player);
-  wrap.innerHTML = "";
+/* Labels + icon shapes */
+const LABEL = {
+  common: "Common",
+  uncommon: "Uncommon",
+  rare_normal: "Rare",
+  rare_foil: "Rare (Foil)",
+  super_rare_normal: "Super Rare",
+  super_rare_foil: "Super Rare (Foil)",
+  legendary_normal: "Legendary",
+  legendary_foil: "Legendary (Foil)",
+  epic: "Epic",
+  enchanted: "Enchanted",
+  iconic: "Iconic"
+};
 
-  sections.forEach(sec => {
-    const s = document.createElement("div");
-    s.className = "section";
-    s.textContent = sec.title;
-    wrap.appendChild(s);
+function iconSVG(kind){
+  const common = getComputedStyle(document.documentElement).getPropertyValue("--common").trim() || "#9AA3AE";
+  const bronze = getComputedStyle(document.documentElement).getPropertyValue("--bronze").trim() || "#CD7F32";
+  const silver = getComputedStyle(document.documentElement).getPropertyValue("--silver").trim() || "#C0C0C0";
+  const gold = getComputedStyle(document.documentElement).getPropertyValue("--gold").trim() || "#F7D37A";
 
-    sec.ids.forEach(id => {
-      const r = byId[id];
-      const row = document.createElement("div");
-      row.className = "row";
-      row.setAttribute("data-id", r.id);
+  const rainbow = `
+    <defs>
+      <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#8CD6FF"/>
+        <stop offset="0.35" stop-color="#FFD57A"/>
+        <stop offset="0.7" stop-color="#FF78B4"/>
+        <stop offset="1" stop-color="#82FFD2"/>
+      </linearGradient>
+    </defs>
+  `;
 
-      const tagText = r.points === 1 ? "1 point" : (r.points + " points");
+  function wrap(inner){
+    return `<svg class="rIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">${inner}</svg>`;
+  }
 
-      row.innerHTML = `
-        <div class="left">
-          <div class="rTitle">${r.name}</div>
-          <div class="meta">
-            <span class="tag">${tagText}</span>
-            <span>${r.group}</span>
-          </div>
-        </div>
-        <div class="controls">
-          <button class="btn minus" type="button" aria-label="minus">−</button>
-          <div class="count">0</div>
-          <button class="btn plus" type="button" aria-label="plus">+</button>
-        </div>
-      `;
-      wrap.appendChild(row);
+  if(kind === "common"){
+    return wrap(`<circle cx="12" cy="12" r="7" stroke="${common}" stroke-width="2"/>`);
+  }
+  if(kind === "uncommon"){
+    return wrap(`<rect x="6.5" y="6.5" width="11" height="11" rx="2.5" stroke="${common}" stroke-width="2"/>`);
+  }
+  if(kind === "rare_normal" || kind === "rare_foil"){
+    return wrap(`<path d="M12 6l7 12H5l7-12Z" stroke="${bronze}" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+  if(kind === "super_rare_normal" || kind === "super_rare_foil"){
+    return wrap(`<path d="M12 5l6 7-6 7-6-7 6-7Z" stroke="${silver}" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+  if(kind === "legendary_normal" || kind === "legendary_foil"){
+    return wrap(`<path d="M12 5l6 4v6l-6 4-6-4V9l6-4Z" stroke="${gold}" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+  if(kind === "epic"){
+    return wrap(`${rainbow}<path d="M12 5l6 6-6 8-6-8 6-6Z" stroke="url(#rb)" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+  if(kind === "enchanted"){
+    return wrap(`${rainbow}<path d="M12 4l7 6-7 10-7-10 7-6Z" stroke="url(#rb)" stroke-width="2" stroke-linejoin="round"/>`);
+  }
+  if(kind === "iconic"){
+    return wrap(`${rainbow}<circle cx="12" cy="12" r="7" stroke="url(#rb)" stroke-width="2"/><circle cx="12" cy="12" r="2.5" stroke="url(#rb)" stroke-width="2"/>`);
+  }
+  return wrap(`<circle cx="12" cy="12" r="7" stroke="rgba(246,251,255,.6)" stroke-width="2"/>`);
+}
 
-      const countEl = row.querySelector(".count");
-      const plus = row.querySelector(".plus");
-      const minus = row.querySelector(".minus");
+function ptsLabel(key){
+  const pts = POINTS[key] ?? 0;
+  return pts === 1 ? "1 pt" : `${pts} pts`;
+}
 
-      addTap(plus, () => {
-        state[player][r.id] += 1;
-        countEl.textContent = String(state[player][r.id]);
-        render();
-      });
+/* State: selections per slot (one choice each) */
+const state = {
+  1: {},
+  2: {}
+};
 
-      addTap(minus, () => {
-        state[player][r.id] = Math.max(0, state[player][r.id] - 1);
-        countEl.textContent = String(state[player][r.id]);
-        render();
-      });
-    });
+function initState(){
+  const slots = getSlotsForMode();
+  [1,2].forEach(p => {
+    state[p] = {};
+    slots.forEach(s => state[p][s.key] = null);
   });
 }
 
 function scoreOf(player){
-  let s = 0;
-  rarities.forEach(r => { s += state[player][r.id] * r.points; });
-  return s;
+  let total = 0;
+  const slots = getSlotsForMode();
+  slots.forEach(s => {
+    const pick = state[player][s.key];
+    if(pick) total += (POINTS[pick] ?? 0);
+  });
+  return total;
+}
+
+function buildPackLine(player){
+  const titleEl = document.getElementById(player === 1 ? "packTitle1" : "packTitle2");
+  const subEl = document.getElementById(player === 1 ? "packSub1" : "packSub2");
+  const pillsEl = document.getElementById(player === 1 ? "packPills1" : "packPills2");
+
+  pillsEl.innerHTML = "";
+
+  if(mode === "JP"){
+    titleEl.textContent = "Pack (JP)";
+    subEl.textContent = "6 cards · Track only the last 2 slots";
+    const pills = [
+      { t:"2x Common", s:"0" },
+      { t:"1x C/UC", s:"0" },
+      { t:"1x Uncommon", s:"0" },
+      { t:"1x Rare+", s:"track" },
+      { t:"1x Foil", s:"track" }
+    ];
+    pills.forEach(p => {
+      const el = document.createElement("div");
+      el.className = "pill";
+      el.innerHTML = `${p.t} <small>${p.s === "track" ? "track" : "0"}</small>`;
+      pillsEl.appendChild(el);
+    });
+  } else {
+    titleEl.textContent = "Pack (INT)";
+    subEl.textContent = "12 cards · Track only the last 3 slots";
+    const pills = [
+      { t:"6x Common", s:"0" },
+      { t:"3x Uncommon", s:"0" },
+      { t:"2x Rarity", s:"track" },
+      { t:"1x Foil", s:"track" }
+    ];
+    pills.forEach(p => {
+      const el = document.createElement("div");
+      el.className = "pill";
+      el.innerHTML = `${p.t} <small>${p.s === "track" ? "track" : "0"}</small>`;
+      pillsEl.appendChild(el);
+    });
+  }
+}
+
+function buildSlots(player){
+  buildPackLine(player);
+
+  const wrap = document.getElementById(player === 1 ? "slots1" : "slots2");
+  wrap.innerHTML = "";
+
+  const slots = getSlotsForMode();
+
+  slots.forEach(slot => {
+    const box = document.createElement("div");
+    box.className = "slot";
+    box.setAttribute("data-slot", slot.key);
+
+    const head = document.createElement("div");
+    head.className = "slotHead";
+    head.innerHTML = `
+      <div>
+        <div class="slotName">${slot.name}</div>
+        <div class="slotHint">${slot.hint}</div>
+      </div>
+      <button class="clearBtn" type="button">Clear</button>
+    `;
+    box.appendChild(head);
+
+    const options = document.createElement("div");
+    options.className = "options";
+
+    slot.options.forEach(optKey => {
+      const opt = document.createElement("div");
+      opt.className = "opt";
+      opt.setAttribute("role", "button");
+      opt.setAttribute("tabindex", "0");
+      opt.setAttribute("data-opt", optKey);
+
+      opt.innerHTML = `
+        <div class="optLeft">
+          ${iconSVG(optKey)}
+          <div class="optLabel">${LABEL[optKey]}</div>
+        </div>
+        <div class="optRight">${ptsLabel(optKey)}</div>
+      `;
+
+      function pick(){
+        state[player][slot.key] = optKey;
+        updateSlotUI(player, slot.key);
+        render();
+      }
+
+      opt.addEventListener("click", pick);
+      opt.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          pick();
+        }
+      });
+
+      options.appendChild(opt);
+    });
+
+    box.appendChild(options);
+
+    const clearBtn = head.querySelector(".clearBtn");
+    clearBtn.addEventListener("click", () => {
+      state[player][slot.key] = null;
+      updateSlotUI(player, slot.key);
+      render();
+    });
+
+    wrap.appendChild(box);
+  });
+
+  slots.forEach(s => updateSlotUI(player, s.key));
+}
+
+function updateSlotUI(player, slotKey){
+  const wrap = document.getElementById(player === 1 ? "slots1" : "slots2");
+  const box = wrap.querySelector(`[data-slot="${slotKey}"]`);
+  if(!box) return;
+
+  const selected = state[player][slotKey];
+  const opts = box.querySelectorAll(".opt");
+  opts.forEach(el => {
+    const key = el.getAttribute("data-opt");
+    if(key === selected) el.classList.add("selected");
+    else el.classList.remove("selected");
+  });
 }
 
 function setLeads(s1, s2){
@@ -771,20 +1091,36 @@ function setLeads(s1, s2){
   const b2 = document.getElementById("lead2");
   const leadText = document.getElementById("leadText");
 
+  const card1 = document.getElementById("card1");
+  const card2 = document.getElementById("card2");
+
+  const chipP1 = document.getElementById("chipP1");
+  const chipP2 = document.getElementById("chipP2");
+
+  card1.classList.remove("leader");
+  card2.classList.remove("leader");
+  chipP1.classList.remove("leading");
+  chipP2.classList.remove("leading");
+
   if (s1 === 0 && s2 === 0){
     b1.textContent = "–";
     b2.textContent = "–";
     leadText.textContent = "–";
     return;
   }
+
   if (s1 > s2){
     b1.textContent = "leading";
     b2.textContent = "behind";
     leadText.textContent = "Player 1 is leading";
+    card1.classList.add("leader");
+    chipP1.classList.add("leading");
   } else if (s2 > s1){
     b2.textContent = "leading";
     b1.textContent = "behind";
     leadText.textContent = "Player 2 is leading";
+    card2.classList.add("leader");
+    chipP2.classList.add("leading");
   } else {
     b1.textContent = "tied";
     b2.textContent = "tied";
@@ -805,11 +1141,9 @@ function render(){
 }
 
 function resetAll(){
-  [1,2].forEach(p => {
-    rarities.forEach(r => { state[p][r.id] = 0; });
-    const rows = document.getElementById("rows"+p).querySelectorAll(".row");
-    rows.forEach(row => row.querySelector(".count").textContent = "0");
-  });
+  initState();
+  buildSlots(1);
+  buildSlots(2);
   render();
 }
 
@@ -862,14 +1196,30 @@ function showPlayer(p){
   });
 })();
 
-buildRows(1);
-buildRows(2);
+/* Mode toggle */
+function setMode(newMode){
+  if(newMode === mode) return;
+  mode = newMode;
+
+  document.getElementById("modeINT").classList.toggle("active", mode === "INT");
+  document.getElementById("modeJP").classList.toggle("active", mode === "JP");
+
+  resetAll();
+}
+
+document.getElementById("modeINT").addEventListener("click", () => setMode("INT"));
+document.getElementById("modeJP").addEventListener("click", () => setMode("JP"));
+
+/* Init */
+initState();
+buildSlots(1);
+buildSlots(2);
 render();
 showPlayer(1);
 
-addTap(document.getElementById("resetBtn"), resetAll);
-addTap(document.getElementById("tab1"), () => showPlayer(1));
-addTap(document.getElementById("tab2"), () => showPlayer(2));
+document.getElementById("resetBtn").addEventListener("click", resetAll);
+document.getElementById("tab1").addEventListener("click", () => showPlayer(1));
+document.getElementById("tab2").addEventListener("click", () => showPlayer(2));
 </script>
 
 </body>
