@@ -171,6 +171,7 @@ body::before{
   align-items:center;
   gap:8px;
   user-select:none;
+  max-width: 120px;
 }
 .chip b{
   color:var(--gold);
@@ -189,6 +190,14 @@ body::before{
   background:
     radial-gradient(140px 60px at 20% 0%, rgba(247,211,122,.18), transparent 60%),
     rgba(255,255,255,.10);
+}
+
+#chipLabel1, #chipLabel2{
+  display:inline-block;
+  max-width: 56px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 /* Social icons + Info */
@@ -248,7 +257,7 @@ body::before{
   padding:4px;
   gap:4px;
   flex:1;
-  max-width: 260px;
+  max-width: 320px;
 }
 .seg{
   flex:1;
@@ -269,10 +278,22 @@ body::before{
   color:var(--text);
 }
 
+#tabName1, #tabName2{
+  display:inline-block;
+  max-width: 135px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  vertical-align:bottom;
+}
+
 .lead{
   font-size:12px;
   color:rgba(246,251,255,.78);
   white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width: 180px;
 }
 
 /* INT/JP Toggle */
@@ -340,6 +361,7 @@ body::before{
   display:flex;
   align-items:center;
   gap:10px;
+  min-width:0;
 }
 .pIcon{
   width:22px;height:22px;border-radius:9px;
@@ -347,6 +369,13 @@ body::before{
     radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
     linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
   border:1px solid rgba(255,255,255,.10);
+  flex:0 0 auto;
+}
+
+.playerName input{
+  min-width:80px;
+  max-width:170px;
+  width: 42vw;
 }
 
 .winBadge{
@@ -359,6 +388,7 @@ body::before{
   color:rgba(246,251,255,.92);
   font-weight:980;
   letter-spacing:.2px;
+  flex:0 0 auto;
 }
 .card.leader .winBadge{ display:inline-flex; }
 
@@ -369,11 +399,13 @@ body::before{
   background:rgba(108,168,255,.14);
   border:1px solid rgba(108,168,255,.22);
   color:rgba(234,240,255,.88);
+  flex:0 0 auto;
 }
 
 .score{
   font-size:34px;
   font-weight:980;
+  flex:0 0 auto;
 }
 
 .body{
@@ -642,11 +674,39 @@ body::before{
 .modalLink:active{ transform: translateY(1px); }
 
 @media (max-width: 520px){
-  .chip{ padding:8px 9px; }
-  .rightTop{ gap:8px; }
   .logo{ width:32px; height:32px; border-radius:10px; }
-  .brandText .title{ font-size:15px; }
+  .brandText .title{ font-size:14px; }
+  .chip{ padding:8px 9px; max-width: 110px; }
+  .rightTop{ gap:8px; }
+
+  /* Fix: header overlap on mobile */
+  .topRow{
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .brand{
+    flex:1 1 100%;
+  }
+  .rightTop{
+    flex:1 1 100%;
+    justify-content:space-between;
+  }
+  .modeWrap{
+    order:1;
+  }
+  .scoreChips{
+    order:2;
+    flex:1;
+    justify-content:center;
+  }
+  .social{
+    order:3;
+  }
+
+  .switch{ max-width: 100%; }
+  .lead{ max-width: 40vw; }
   .opt{ min-width: 160px; }
+  .playerName input{ width: 46vw; max-width: 160px; }
 }
 </style>
 </head>
@@ -728,7 +788,7 @@ body::before{
       <div class="playerName">
         <span class="pIcon"></span>
         <input id="nameInput1" value="Player 1" aria-label="Player 1 name"
-               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none;min-width:90px;max-width:180px">
+               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none">
         <span class="winBadge" id="win1">WINNER</span>
         <span class="badge" id="lead1">–</span>
       </div>
@@ -753,7 +813,7 @@ body::before{
       <div class="playerName">
         <span class="pIcon"></span>
         <input id="nameInput2" value="Player 2" aria-label="Player 2 name"
-               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none;min-width:90px;max-width:180px">
+               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none">
         <span class="winBadge" id="win2">WINNER</span>
         <span class="badge" id="lead2">–</span>
       </div>
@@ -834,6 +894,7 @@ function safeName(v, fallback){
 function shortChipLabel(name, fallback){
   const s = safeName(name, fallback);
   const cleaned = s.replace(/\s+/g, " ").trim();
+  if(cleaned.length <= 0) return fallback;
   return cleaned.length > 6 ? cleaned.slice(0, 6) : cleaned;
 }
 
@@ -948,15 +1009,20 @@ const LABEL = {
   iconic: "Iconic"
 };
 
+/* Fix: unique gradient ids so icons show for both players */
+let ICON_UID = 0;
+
 function iconSVG(kind){
   const common = getComputedStyle(document.documentElement).getPropertyValue("--common").trim() || "#9AA3AE";
   const bronze = getComputedStyle(document.documentElement).getPropertyValue("--bronze").trim() || "#CD7F32";
   const silver = getComputedStyle(document.documentElement).getPropertyValue("--silver").trim() || "#C0C0C0";
   const gold = getComputedStyle(document.documentElement).getPropertyValue("--gold").trim() || "#F7D37A";
 
+  const uid = `rb_${++ICON_UID}`;
+
   const rainbow = `
     <defs>
-      <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
+      <linearGradient id="${uid}" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#8CD6FF"/>
         <stop offset="0.35" stop-color="#FFD57A"/>
         <stop offset="0.7" stop-color="#FF78B4"/>
@@ -985,13 +1051,13 @@ function iconSVG(kind){
     return wrap(`<path d="M12 5l6 4v6l-6 4-6-4V9l6-4Z" stroke="${gold}" stroke-width="2" stroke-linejoin="round"/>`);
   }
   if(kind === "epic"){
-    return wrap(`${rainbow}<path d="M12 5l6 6-6 8-6-8 6-6Z" stroke="url(#rb)" stroke-width="2" stroke-linejoin="round"/>`);
+    return wrap(`${rainbow}<path d="M12 5l6 6-6 8-6-8 6-6Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>`);
   }
   if(kind === "enchanted"){
-    return wrap(`${rainbow}<path d="M12 4l7 6-7 10-7-10 7-6Z" stroke="url(#rb)" stroke-width="2" stroke-linejoin="round"/>`);
+    return wrap(`${rainbow}<path d="M12 4l7 6-7 10-7-10 7-6Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>`);
   }
   if(kind === "iconic"){
-    return wrap(`${rainbow}<circle cx="12" cy="12" r="7" stroke="url(#rb)" stroke-width="2"/><circle cx="12" cy="12" r="2.5" stroke="url(#rb)" stroke-width="2"/>`);
+    return wrap(`${rainbow}<circle cx="12" cy="12" r="7" stroke="url(#${uid})" stroke-width="2"/><circle cx="12" cy="12" r="2.5" stroke="url(#${uid})" stroke-width="2"/>`);
   }
   return wrap(`<circle cx="12" cy="12" r="7" stroke="rgba(246,251,255,.6)" stroke-width="2"/>`);
 }
@@ -1002,10 +1068,7 @@ function ptsLabel(key){
 }
 
 /* State */
-const state = {
-  1: {},
-  2: {}
-};
+const state = { 1: {}, 2: {} };
 
 function initState(){
   const slots = getSlotsForMode();
