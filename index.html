@@ -1,29 +1,20 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lorcana Battle">
+<meta name="apple-mobile-web-app-title" content="Booster Battle">
 <meta name="format-detection" content="telephone=no">
-<title>Lorcana Booster Battle</title>
+<title>Booster Battle</title>
 
 <style>
 :root{
-  --bgA:#0b1630;
-  --bgB:#0b2a3a;
-
   --text:#f6fbff;
   --muted:rgba(246,251,255,.72);
 
-  --card:rgba(16,22,44,.62);
-  --stroke:rgba(255,255,255,.12);
-
   --shadow:0 18px 48px rgba(0,0,0,.42);
-
-  --r:20px;
-  --r2:16px;
 
   --green:#2fd37a;
   --red:#ff4d6d;
@@ -32,12 +23,11 @@
   --silver:#cfd7e6;
   --bronze:#d79b6f;
   --gray:#b8c0cf;
-
-  --chip:rgba(255,255,255,.10);
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
+html{ background-color:#06111d; }
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
@@ -135,9 +125,7 @@ body::before{
   border: 1px solid rgba(255,255,255,.10);
 }
 
-.brandText{
-  min-width:0;
-}
+.brandText{ min-width:0; }
 
 .title{
   font-size:16px;
@@ -169,7 +157,6 @@ body::before{
   font-size:11px;
   color:rgba(246,251,255,.62);
 }
-
 .handle{
   color: var(--gold);
   text-decoration:none;
@@ -188,7 +175,6 @@ body::before{
   gap:8px;
   align-items:center;
 }
-
 .chip{
   background: rgba(255,255,255,.10);
   border: 1px solid rgba(255,255,255,.14);
@@ -200,7 +186,6 @@ body::before{
   align-items:center;
   gap:8px;
 }
-
 .chip b{
   color: var(--gold);
   font-weight: 950;
@@ -212,7 +197,6 @@ body::before{
   display:flex;
   gap:8px;
 }
-
 .socialBtn{
   width:36px;
   height:36px;
@@ -246,7 +230,6 @@ body::before{
   gap:4px;
   flex: 0 0 auto;
 }
-
 .seg{
   border:0;
   padding:9px 12px;
@@ -287,7 +270,7 @@ body::before{
     radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.12), transparent 60%),
     linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
   border:1px solid rgba(255,255,255,.14);
-  border-radius: var(--r);
+  border-radius: 20px;
   box-shadow: var(--shadow);
   overflow:hidden;
 }
@@ -309,7 +292,6 @@ body::before{
   align-items:center;
   gap:10px;
 }
-
 .badge{
   font-size:11px;
   padding:6px 8px;
@@ -318,7 +300,6 @@ body::before{
   border:1px solid rgba(108,168,255,.22);
   color:rgba(234,240,255,.88);
 }
-
 .score{
   font-size:34px;
   font-weight:980;
@@ -375,15 +356,10 @@ body::before{
   box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
 }
 
-.dotCard.c{ opacity:.55; }
-.dotCard.u{ opacity:.70; }
-.dotCard.r{ opacity:.88; }
-.dotCard.h{ opacity:1; }
-
-.dotCard.c{ background: linear-gradient(180deg, rgba(184,192,207,.28), rgba(255,255,255,.06)); }
-.dotCard.u{ background: linear-gradient(180deg, rgba(207,215,230,.26), rgba(255,255,255,.05)); }
-.dotCard.r{ background: linear-gradient(180deg, rgba(215,155,111,.26), rgba(255,255,255,.05)); }
-.dotCard.h{ background: linear-gradient(180deg, rgba(247,211,122,.28), rgba(255,255,255,.06)); border-color: rgba(255,213,122,.22); }
+.dotCard.c{ opacity:.55; background: linear-gradient(180deg, rgba(184,192,207,.28), rgba(255,255,255,.06)); }
+.dotCard.u{ opacity:.70; background: linear-gradient(180deg, rgba(207,215,230,.26), rgba(255,255,255,.05)); }
+.dotCard.r{ opacity:.90; background: linear-gradient(180deg, rgba(215,155,111,.26), rgba(255,255,255,.05)); }
+.dotCard.h{ opacity:1; background: linear-gradient(180deg, rgba(247,211,122,.28), rgba(255,255,255,.06)); border-color: rgba(255,213,122,.22); }
 
 .rows{
   padding: 12px 12px 14px 12px;
@@ -413,14 +389,11 @@ body::before{
   font-weight:950;
   font-size:13px;
   color: rgba(234,240,255,.92);
-  display:flex;
-  align-items:center;
-  gap:10px;
 }
-
 .slotHint{
   font-size:11px;
   color: rgba(246,251,255,.64);
+  margin-top:3px;
 }
 
 .clearBtn{
@@ -443,7 +416,6 @@ body::before{
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:10px;
 }
-
 @media (min-width: 720px){
   .choiceGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -474,7 +446,6 @@ body::before{
   gap:2px;
   min-width:0;
 }
-
 .choiceName{
   font-weight: 950;
   font-size: 12px;
@@ -483,7 +454,6 @@ body::before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-
 .choiceMeta{
   font-size: 11px;
   color: rgba(246,251,255,.66);
@@ -517,8 +487,13 @@ body::before{
 }
 .iconWrap svg{ width:18px; height:18px; }
 
+.fillCommon { fill: rgba(184,192,207,.85); }
+.fillBronze { fill: rgba(215,155,111,.90); }
+.fillSilver { fill: rgba(207,215,230,.92); }
+.fillGold { fill: rgba(247,211,122,.92); }
+.rainbowFill{ fill: url(#rb); }
+
 .strokeCommon { stroke: rgba(255,255,255,.85); }
-.strokeUncommon { stroke: rgba(255,255,255,.85); }
 .strokeRare { stroke: rgba(255,255,255,.88); }
 .strokeSuper { stroke: rgba(255,255,255,.90); }
 .strokeLegend { stroke: rgba(255,255,255,.90); }
@@ -526,18 +501,7 @@ body::before{
 .strokeEnch { stroke: rgba(255,255,255,.92); }
 .strokeIcon { stroke: rgba(255,255,255,.92); }
 
-.fillCommon { fill: rgba(184,192,207,.85); }
-.fillBronze { fill: rgba(215,155,111,.90); }
-.fillSilver { fill: rgba(207,215,230,.92); }
-.fillGold { fill: rgba(247,211,122,.92); }
-
-.rainbowFill{
-  fill: url(#rb);
-}
-
-.actions{
-  margin-top: 12px;
-}
+.actions{ margin-top: 12px; }
 
 .resetBtn{
   width:100%;
@@ -566,9 +530,6 @@ body::before{
 }
 
 .hidden{ display:none; }
-
-/* iOS: verhindert seltsame Scroll-Färbungen */
-html{ background-color:#06111d; }
 </style>
 </head>
 
@@ -580,12 +541,12 @@ html{ background-color:#06111d; }
     <div class="headerInner">
       <div class="topRow">
         <div class="brand">
-          <img src="logo.png" alt="Chief Baliman Logo" class="logo">
+          <img src="logo.png" alt="Chief Baliman" class="logo">
           <div class="brandText">
-            <div class="title">Lorcana Booster Battle</div>
+            <div class="title">Booster Battle</div>
             <div class="subLine">
               <span class="dot"></span>
-              <span id="statusText">JavaScript aktiv</span>
+              <span id="statusText">JavaScript active</span>
             </div>
             <div class="byline">
               by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
@@ -595,8 +556,8 @@ html{ background-color:#06111d; }
 
         <div class="rightTop">
           <div class="scoreChips" aria-label="Scores">
-            <div class="chip">S1 <b id="chip1">0</b></div>
-            <div class="chip">S2 <b id="chip2">0</b></div>
+            <div class="chip">P1 <b id="chip1">0</b></div>
+            <div class="chip">P2 <b id="chip2">0</b></div>
           </div>
 
           <div class="social" aria-label="Social">
@@ -619,9 +580,9 @@ html{ background-color:#06111d; }
       </div>
 
       <div class="midRow">
-        <div class="switch" role="tablist" aria-label="Spieler wechseln">
-          <button class="seg active" id="tab1" type="button">Spieler 1</button>
-          <button class="seg" id="tab2" type="button">Spieler 2</button>
+        <div class="switch" role="tablist" aria-label="Switch player">
+          <button class="seg active" id="tab1" type="button">Player 1</button>
+          <button class="seg" id="tab2" type="button">Player 2</button>
         </div>
         <div class="lead" id="leadText">–</div>
       </div>
@@ -634,22 +595,22 @@ html{ background-color:#06111d; }
     <div class="panel" id="panel1" data-player="1">
       <div class="panelHeader">
         <div class="playerName">
-          <span>Spieler 1</span>
+          <span>Player 1</span>
           <span class="badge" id="lead1">–</span>
         </div>
         <div class="score" id="score1">0</div>
       </div>
 
       <div class="packInfo">
-        <div class="packTitle">Booster Aufbau (12 Karten)</div>
+        <div class="packTitle">Booster structure (12 cards)</div>
         <div class="packLine">
           <span class="pill">6x Common (0)</span>
           <span class="pill">3x Uncommon (0)</span>
-          <span class="pill">2x Rare-Slot</span>
-          <span class="pill">1x Holo-Slot (jede Rarity möglich)</span>
+          <span class="pill">2x Rarity slots (R / SR / L)</span>
+          <span class="pill">1x Foil slot (any rarity possible)</span>
         </div>
         <div class="packLine">
-          <div class="track" aria-label="Pack Timeline">
+          <div class="track" aria-label="Pack timeline">
             <span class="dotCard c" title="Common"></span>
             <span class="dotCard c" title="Common"></span>
             <span class="dotCard c" title="Common"></span>
@@ -659,11 +620,11 @@ html{ background-color:#06111d; }
             <span class="dotCard u" title="Uncommon"></span>
             <span class="dotCard u" title="Uncommon"></span>
             <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard r" title="Rare Slot"></span>
-            <span class="dotCard r" title="Rare Slot"></span>
-            <span class="dotCard h" title="Holo Slot"></span>
+            <span class="dotCard r" title="Rarity slot"></span>
+            <span class="dotCard r" title="Rarity slot"></span>
+            <span class="dotCard h" title="Foil slot"></span>
           </div>
-          <span class="slotHint">Du trackst nur die letzten 3 Slots</span>
+          <span class="slotHint">Track only the last 3 slots</span>
         </div>
       </div>
 
@@ -673,22 +634,22 @@ html{ background-color:#06111d; }
     <div class="panel hidden" id="panel2" data-player="2" style="margin-top:14px;">
       <div class="panelHeader">
         <div class="playerName">
-          <span>Spieler 2</span>
+          <span>Player 2</span>
           <span class="badge" id="lead2">–</span>
         </div>
         <div class="score" id="score2">0</div>
       </div>
 
       <div class="packInfo">
-        <div class="packTitle">Booster Aufbau (12 Karten)</div>
+        <div class="packTitle">Booster structure (12 cards)</div>
         <div class="packLine">
           <span class="pill">6x Common (0)</span>
           <span class="pill">3x Uncommon (0)</span>
-          <span class="pill">2x Rare-Slot</span>
-          <span class="pill">1x Holo-Slot (jede Rarity möglich)</span>
+          <span class="pill">2x Rarity slots (R / SR / L)</span>
+          <span class="pill">1x Foil slot (any rarity possible)</span>
         </div>
         <div class="packLine">
-          <div class="track" aria-label="Pack Timeline">
+          <div class="track" aria-label="Pack timeline">
             <span class="dotCard c" title="Common"></span>
             <span class="dotCard c" title="Common"></span>
             <span class="dotCard c" title="Common"></span>
@@ -698,11 +659,11 @@ html{ background-color:#06111d; }
             <span class="dotCard u" title="Uncommon"></span>
             <span class="dotCard u" title="Uncommon"></span>
             <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard r" title="Rare Slot"></span>
-            <span class="dotCard r" title="Rare Slot"></span>
-            <span class="dotCard h" title="Holo Slot"></span>
+            <span class="dotCard r" title="Rarity slot"></span>
+            <span class="dotCard r" title="Rarity slot"></span>
+            <span class="dotCard h" title="Foil slot"></span>
           </div>
-          <span class="slotHint">Du trackst nur die letzten 3 Slots</span>
+          <span class="slotHint">Track only the last 3 slots</span>
         </div>
       </div>
 
@@ -714,12 +675,12 @@ html{ background-color:#06111d; }
     </div>
 
     <div class="tip">
-      Tipp: iPhone Safari → Teilen → Zum Home-Bildschirm, dann fühlt es sich wie eine App an.
+      Tip: iPhone Safari → Share → Add to Home Screen, to use it like an app.
     </div>
   </div>
 </div>
 
-<!-- Defs für Rainbow-Fill (für Epic/Enchanted/Iconic) -->
+<!-- Rainbow fill for Epic / Enchanted / Iconic -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
@@ -734,7 +695,7 @@ html{ background-color:#06111d; }
 
 <script>
 /*
-Punktesystem:
+Points:
 Common & Uncommon: 0
 Rare Normal: 0
 Rare Foil: 1
@@ -746,51 +707,46 @@ Epic: 5
 Enchanted: 12
 Iconic: 25
 
-Rare-Slots: typischerweise Rare/Super Rare/Legendary/Epic (keine Common/Uncommon)
-Holo-Slot: jede Rarity möglich
+Your rule update:
+- “Rarity slot” can be Rare / Super Rare / Legendary only (no foils, no Enchanted, no Epic)
+- “Foil slot” can be any rarity (including Epic / Enchanted / Iconic) and can also be foil/non-foil versions
+  (we keep foil toggles only where it affects points in your system)
 */
 
 const choiceSets = {
-  rareSlot: [
-    { id:"rare_normal", label:"Rare (Normal)", points:0, tier:"rare", icon:"rare" },
-    { id:"rare_foil", label:"Rare (Foil)", points:1, tier:"rare", icon:"rare" },
-
-    { id:"super_normal", label:"Super Rare (Normal)", points:2, tier:"super", icon:"super" },
-    { id:"super_foil", label:"Super Rare (Foil)", points:3, tier:"super", icon:"super" },
-
-    { id:"legend_normal", label:"Legendary (Normal)", points:4, tier:"legend", icon:"legend" },
-    { id:"legend_foil", label:"Legendary (Foil)", points:8, tier:"legend", icon:"legend" },
-
-    { id:"epic", label:"Epic", points:5, tier:"rainbow", icon:"epic" }
+  raritySlot: [
+    { id:"rare_normal",  label:"Rare (Normal)",        points:0,  tier:"rare",   icon:"rare" },
+    { id:"super_normal", label:"Super Rare (Normal)",  points:2,  tier:"super",  icon:"super" },
+    { id:"legend_normal",label:"Legendary (Normal)",   points:4,  tier:"legend", icon:"legend" }
   ],
-  holoSlot: [
-    { id:"common", label:"Common", points:0, tier:"common", icon:"common" },
-    { id:"uncommon", label:"Uncommon", points:0, tier:"common", icon:"uncommon" },
+  foilSlot: [
+    { id:"common",        label:"Common",               points:0,  tier:"common", icon:"common" },
+    { id:"uncommon",      label:"Uncommon",             points:0,  tier:"common", icon:"uncommon" },
 
-    { id:"rare_normal", label:"Rare (Normal)", points:0, tier:"rare", icon:"rare" },
-    { id:"rare_foil", label:"Rare (Foil)", points:1, tier:"rare", icon:"rare" },
+    { id:"rare_normal",   label:"Rare (Normal)",        points:0,  tier:"rare",   icon:"rare" },
+    { id:"rare_foil",     label:"Rare (Foil)",          points:1,  tier:"rare",   icon:"rare" },
 
-    { id:"super_normal", label:"Super Rare (Normal)", points:2, tier:"super", icon:"super" },
-    { id:"super_foil", label:"Super Rare (Foil)", points:3, tier:"super", icon:"super" },
+    { id:"super_normal",  label:"Super Rare (Normal)",  points:2,  tier:"super",  icon:"super" },
+    { id:"super_foil",    label:"Super Rare (Foil)",    points:3,  tier:"super",  icon:"super" },
 
-    { id:"legend_normal", label:"Legendary (Normal)", points:4, tier:"legend", icon:"legend" },
-    { id:"legend_foil", label:"Legendary (Foil)", points:8, tier:"legend", icon:"legend" },
+    { id:"legend_normal", label:"Legendary (Normal)",   points:4,  tier:"legend", icon:"legend" },
+    { id:"legend_foil",   label:"Legendary (Foil)",     points:8,  tier:"legend", icon:"legend" },
 
-    { id:"epic", label:"Epic", points:5, tier:"rainbow", icon:"epic" },
-    { id:"enchanted", label:"Enchanted", points:12, tier:"rainbow", icon:"enchanted" },
-    { id:"iconic", label:"Iconic", points:25, tier:"rainbow", icon:"iconic" }
+    { id:"epic",          label:"Epic",                 points:5,  tier:"rainbow",icon:"epic" },
+    { id:"enchanted",     label:"Enchanted",            points:12, tier:"rainbow",icon:"enchanted" },
+    { id:"iconic",        label:"Iconic",               points:25, tier:"rainbow",icon:"iconic" }
   ]
 };
 
 const slots = [
-  { key:"slotA", title:"Rare-Slot 1", hint:"1 von 2 Karten im Rare-Bereich", set:"rareSlot" },
-  { key:"slotB", title:"Rare-Slot 2", hint:"2 von 2 Karten im Rare-Bereich", set:"rareSlot" },
-  { key:"slotH", title:"Holo-Slot", hint:"jede Rarity möglich", set:"holoSlot" }
+  { key:"slotA", title:"Rarity slot 1", hint:"Rare / Super Rare / Legendary", set:"raritySlot" },
+  { key:"slotB", title:"Rarity slot 2", hint:"Rare / Super Rare / Legendary", set:"raritySlot" },
+  { key:"slotF", title:"Foil slot",     hint:"Any rarity possible",           set:"foilSlot" }
 ];
 
 const state = {
-  1: { slotA:null, slotB:null, slotH:null },
-  2: { slotA:null, slotB:null, slotH:null }
+  1: { slotA:null, slotB:null, slotF:null },
+  2: { slotA:null, slotB:null, slotF:null }
 };
 
 function addTap(el, fn){
@@ -806,14 +762,14 @@ function iconSvg(kind, tier){
   const rbFill = 'class="rainbowFill"';
 
   const strokeClass = {
-    common: "strokeCommon",
-    uncommon: "strokeUncommon",
-    rare: "strokeRare",
-    super: "strokeSuper",
-    legend: "strokeLegend",
-    epic: "strokeEpic",
-    enchanted: "strokeEnch",
-    iconic: "strokeIcon"
+    common:"strokeCommon",
+    uncommon:"strokeCommon",
+    rare:"strokeRare",
+    super:"strokeSuper",
+    legend:"strokeLegend",
+    epic:"strokeEpic",
+    enchanted:"strokeEnch",
+    iconic:"strokeIcon"
   }[kind] || "strokeRare";
 
   const fill = (() => {
@@ -832,7 +788,6 @@ function iconSvg(kind, tier){
   }
   if (kind === "uncommon"){
     return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M6.5 6.5h11v11h-11z" fill="rgba(255,255,255,.04)"/>
       <path d="M7.2 7.2h4.6v9.6H7.2z" ${fill}/>
       <path d="M12.2 7.2h4.6v9.6h-4.6z" ${fill}/>
       <path d="M6.8 6.8h10.4v10.4H6.8z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
@@ -880,9 +835,9 @@ function iconSvg(kind, tier){
   return "";
 }
 
-function prettyPoints(n){
-  if (n === 1) return "1 Punkt";
-  return n + " Punkte";
+function pointsLabel(n){
+  if (n === 1) return "1 point";
+  return n + " points";
 }
 
 function buildSlots(player){
@@ -900,7 +855,7 @@ function buildSlots(player){
           <div class="slotTitle">${slot.title}</div>
           <div class="slotHint">${slot.hint}</div>
         </div>
-        <button class="clearBtn" type="button" aria-label="Slot löschen">Löschen</button>
+        <button class="clearBtn" type="button" aria-label="Clear slot">Clear</button>
       </div>
       <div class="choiceGrid"></div>
     `;
@@ -914,12 +869,11 @@ function buildSlots(player){
       el.className = "choice";
       el.setAttribute("data-choice", ch.id);
 
-      const meta = prettyPoints(ch.points);
       el.innerHTML = `
         <div class="iconWrap">${iconSvg(ch.icon, ch.tier)}</div>
         <div class="choiceLeft">
           <div class="choiceName">${ch.label}</div>
-          <div class="choiceMeta">${meta}</div>
+          <div class="choiceMeta">${pointsLabel(ch.points)}</div>
         </div>
         <div class="pointsTag">${ch.points}</div>
       `;
@@ -963,7 +917,6 @@ function syncSelected(player, slotKey){
     else opt.classList.remove("selected");
   });
 }
-
 function syncAllSelected(player){
   slots.forEach(s => syncSelected(player, s.key));
 }
@@ -989,17 +942,17 @@ function setLeads(s1, s2){
     return;
   }
   if (s1 > s2){
-    b1.textContent = "führt";
-    b2.textContent = "hinten";
-    leadText.textContent = "Spieler 1 führt";
+    b1.textContent = "leads";
+    b2.textContent = "behind";
+    leadText.textContent = "Player 1 leads";
   } else if (s2 > s1){
-    b2.textContent = "führt";
-    b1.textContent = "hinten";
-    leadText.textContent = "Spieler 2 führt";
+    b2.textContent = "leads";
+    b1.textContent = "behind";
+    leadText.textContent = "Player 2 leads";
   } else {
-    b1.textContent = "gleich";
-    b2.textContent = "gleich";
-    leadText.textContent = "Gleichstand";
+    b1.textContent = "tied";
+    b2.textContent = "tied";
+    leadText.textContent = "Tie";
   }
 }
 
@@ -1017,7 +970,7 @@ function render(){
 
 function resetAll(){
   [1,2].forEach(p => {
-    state[p] = { slotA:null, slotB:null, slotH:null };
+    state[p] = { slotA:null, slotB:null, slotF:null };
     syncAllSelected(p);
   });
   render();
@@ -1054,8 +1007,21 @@ bind();
 render();
 showPlayer(1);
 
-document.getElementById("statusText").textContent = "JavaScript aktiv";
+document.getElementById("statusText").textContent = "JavaScript active";
 </script>
+
+<!-- Rainbow fill defs -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff5aa5"/>
+      <stop offset="22%" stop-color="#ffcd4a"/>
+      <stop offset="45%" stop-color="#34d399"/>
+      <stop offset="70%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 </body>
 </html>
