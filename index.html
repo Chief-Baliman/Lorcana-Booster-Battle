@@ -11,23 +11,16 @@
 
 <style>
 :root{
-  --bg:#06111d;
-  --text:#f6fbff;
+  --text:#F6FBFF;
   --muted:rgba(246,251,255,.72);
-
-  --stroke:rgba(255,255,255,.14);
-  --stroke2:rgba(255,255,255,.10);
-
   --shadow:0 18px 48px rgba(0,0,0,.42);
-
   --radius:20px;
-  --radius2:16px;
 
-  --green:#2fd37a;
-  --red:#ff4d6d;
+  --green:#2FD37A;
+  --red:#FF4D6D;
 
-  --gold:#f7d37a;
-  --gold2:#e7b84f;
+  --gold:#F7D37A;
+  --chip:rgba(255,255,255,.12);
 }
 
 *{box-sizing:border-box}
@@ -36,7 +29,8 @@ body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   color:var(--text);
-  background-color:var(--bg);
+
+  background-color:#06111D;
   background-image:
     radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.55), transparent 55%),
     radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.28), transparent 55%),
@@ -44,10 +38,11 @@ body{
     radial-gradient(700px 500px at 85% 95%, rgba(130,255,210,.12), transparent 60%);
   background-repeat:no-repeat;
   background-attachment:fixed;
-  padding:0 14px 14px 14px;
+
+  padding:0 14px env(safe-area-inset-bottom) 14px;
 }
 
-/* Sparkles */
+/* Sparkles (subtle) */
 body::before{
   content:"";
   position:fixed;
@@ -74,14 +69,18 @@ body::before{
   100% { transform: translate3d(0,0,0); opacity:.45; }
 }
 
-.safeTop{height: env(safe-area-inset-top);}
+.page{
+  position:relative;
+  z-index:1;
+  padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
+}
 
-.header, .page{ position:relative; z-index:1; }
+.safeTop{height: env(safe-area-inset-top);}
 
 .header{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:10;
   padding:12px 0 10px 0;
   background:
     linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
@@ -100,51 +99,51 @@ body::before{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  gap:10px;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
-  min-width: 220px;
+  min-width: 0;
 }
 
 .logo{
-  width:38px;
-  height:38px;
+  width:34px;
+  height:34px;
+  max-width:34px;
+  max-height:34px;
   object-fit:contain;
-  border-radius:12px;
+  border-radius:10px;
   display:block;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
+  flex:0 0 auto;
+}
+
+.brandText{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
 }
 
 .brandText .title{
   font-size:16px;
-  font-weight:980;
+  font-weight:950;
   letter-spacing:.2px;
-  line-height:1.05;
-}
-
-.subline{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  color:var(--muted);
+  line-height:1.1;
   white-space:nowrap;
-}
-
-.dot{
-  width:7px;height:7px;border-radius:999px;background:var(--green);
-  box-shadow:0 0 0 4px rgba(54,210,123,.12);
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .byline{
   margin-top:4px;
   font-size:11px;
-  color:rgba(246,251,255,.62);
+  color:rgba(246,251,255,.65);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
 }
 .handle{
   color:var(--gold);
@@ -156,8 +155,7 @@ body::before{
   display:flex;
   align-items:center;
   gap:10px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
+  flex:0 0 auto;
 }
 
 .scoreChips{
@@ -170,75 +168,60 @@ body::before{
   background:rgba(255,255,255,.10);
   border:1px solid rgba(255,255,255,.14);
   border-radius:999px;
-  padding:8px 10px;
+  padding:9px 10px;
   font-size:12px;
   color:rgba(246,251,255,.78);
   display:flex;
   align-items:center;
   gap:8px;
 }
-
 .chip b{
-  color:rgba(246,251,255,.92);
-  font-weight:980;
+  color:var(--gold);
+  font-weight:950;
   min-width: 18px;
   text-align:right;
 }
 
-.chip.win{
-  border-color: rgba(255,213,122,.45);
-  background: rgba(255,213,122,.12);
-}
-.chip.win b{ color: var(--gold); }
-
-.pillSwitch{
-  display:flex;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:999px;
-  padding:4px;
-  gap:4px;
-}
-
-.pill{
-  border:0;
-  padding:7px 10px;
-  border-radius:999px;
-  background:transparent;
-  color:rgba(234,240,255,.75);
-  font-weight:950;
-  font-size:12px;
-  cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.pill.active{
-  background:linear-gradient(180deg, rgba(255,213,122,.28), rgba(255,255,255,.06));
-  border:1px solid rgba(255,213,122,.25);
-  color:var(--text);
-}
-
+/* Social icons (small + subtle) */
 .social{
   display:flex;
   gap:8px;
   align-items:center;
 }
-
-.socialBtn{
-  width:36px;
-  height:36px;
+.iconBtn{
+  width:34px;
+  height:34px;
   display:flex;
   align-items:center;
   justify-content:center;
   border-radius:12px;
-  background:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
-  color:rgba(246,251,255,.92);
+  color:rgba(246,251,255,.88);
   text-decoration:none;
-  box-shadow: 0 10px 22px rgba(0,0,0,.28);
-  transition: transform .08s ease;
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.socialBtn:active{ transform: translateY(1px) scale(.99); }
-.socialBtn svg{ width:18px; height:18px; opacity:.92; }
+.iconBtn svg{ width:18px; height:18px; opacity:.92; }
+.iconBtn:active{ transform: translateY(1px); }
+
+/* Info button: visible enough, but not loud */
+.infoBtn{
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(246,251,255,.72);
+  cursor:pointer;
+  font-weight:950;
+  font-size:13px;
+  line-height:1;
+}
+.infoBtn:active{ transform: translateY(1px); }
 
 .midRow{
   margin-top:10px;
@@ -248,7 +231,7 @@ body::before{
   gap:10px;
 }
 
-.playerTabs{
+.switch{
   display:flex;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.08);
@@ -256,10 +239,10 @@ body::before{
   padding:4px;
   gap:4px;
   flex:1;
-  max-width: 320px;
+  max-width: 260px;
 }
 
-.tab{
+.seg{
   flex:1;
   border:0;
   padding:9px 10px;
@@ -269,24 +252,22 @@ body::before{
   font-weight:950;
   font-size:12px;
   cursor:pointer;
+  touch-action:manipulation;
   -webkit-tap-highlight-color: transparent;
 }
-.tab.active{
+.seg.active{
   background:linear-gradient(180deg, rgba(255,213,122,.28), rgba(255,255,255,.06));
   border:1px solid rgba(255,213,122,.25);
   color:var(--text);
 }
 
-.leadText{
+.lead{
   font-size:12px;
   color:rgba(246,251,255,.78);
   white-space:nowrap;
 }
 
-.page{
-  padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
-}
-
+/* Card */
 .card{
   background:
     radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.10), transparent 60%),
@@ -298,7 +279,7 @@ body::before{
 }
 
 .cardHeader{
-  padding:14px 14px 12px 14px;
+  padding:14px 14px 10px 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -315,6 +296,14 @@ body::before{
   gap:10px;
 }
 
+.icon{
+  width:22px;height:22px;border-radius:9px;
+  background:
+    radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
+    linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.10);
+}
+
 .badge{
   font-size:11px;
   padding:6px 8px;
@@ -327,187 +316,121 @@ body::before{
 .score{
   font-size:34px;
   font-weight:980;
-  transition: transform .12s ease, color .12s ease;
-}
-
-.card.winner{
-  border-color: rgba(255,213,122,.35);
-  box-shadow: 0 20px 60px rgba(0,0,0,.45), 0 0 36px rgba(255,213,122,.18);
-}
-.card.winner .score{
-  color: var(--gold);
-  transform: scale(1.12);
-}
-.badge.win{
-  background: rgba(255,213,122,.18);
-  border-color: rgba(255,213,122,.38);
-  color: var(--gold);
 }
 
 .rows{
-  padding:12px;
+  padding:10px 12px 12px 12px;
   display:flex;
   flex-direction:column;
-  gap:12px;
-}
-
-.packBar{
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  border-radius: 16px;
-  padding:12px;
-}
-
-.packTitle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
   gap:10px;
+}
+
+.section{
+  margin:16px 6px 6px 6px;
+  padding:0;
+  background:transparent;
+  border:0;
+  color:rgba(246,251,255,.80);
   font-weight:950;
-  font-size:13px;
-}
-.packMeta{
-  margin-top:8px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  color: var(--muted);
   font-size:12px;
-}
-.progress{
-  margin-top:10px;
+  letter-spacing:.35px;
+  text-transform:uppercase;
   display:flex;
-  gap:6px;
   align-items:center;
-  flex-wrap:wrap;
+  gap:10px;
 }
-.pdot{
-  width:18px;
-  height:8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.10);
-}
-.pdot.on{
-  background: rgba(255,213,122,.22);
-  border-color: rgba(255,213,122,.28);
+.section::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0));
 }
 
-.slot{
-  border:1px solid rgba(255,255,255,.10);
-  background:
-    radial-gradient(700px 140px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-  border-radius:18px;
-  padding:12px;
-}
-
-.slotHead{
+.row{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  margin-bottom:10px;
+  padding:13px;
+  border-radius:18px;
+  background:
+    radial-gradient(700px 120px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.10);
 }
 
-.slotTitle{
-  font-weight:980;
-  font-size:13px;
+.left{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width: 190px;
 }
-.slotHint{
+
+.rTitle{
+  font-size:13px;
+  font-weight:950;
+  color:rgba(234,240,255,.92);
+}
+
+.meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
   font-size:12px;
   color:var(--muted);
-  margin-top:2px;
 }
 
-.clearBtn{
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-  color: rgba(246,251,255,.86);
-  border-radius: 999px;
-  padding:8px 12px;
-  font-weight:950;
-  font-size:12px;
-  cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.clearBtn:active{ transform: translateY(1px); }
-
-.optGrid{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap:10px;
+.tag{
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
 }
 
-@media(min-width: 900px){
-  .optGrid{ grid-template-columns: 1fr 1fr 1fr; }
-}
-
-.opt{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:12px 12px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  cursor:pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform .08s ease, border-color .12s ease, background .12s ease;
-}
-.opt:active{ transform: translateY(1px) scale(.995); }
-
-.optLeft{
+.controls{
   display:flex;
   align-items:center;
   gap:10px;
-  min-width: 0;
 }
 
-.ico{
-  width:28px;
-  height:28px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.08);
+.count{
+  width:34px;
+  text-align:center;
+  font-size:16px;
+  font-weight:980;
+}
+
+.btn{
+  width:48px;
+  height:44px;
+  border:0;
+  border-radius:18px;
+  font-size:20px;
+  font-weight:980;
+  color:#08101b;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color: transparent;
   display:flex;
   align-items:center;
   justify-content:center;
-  flex:0 0 auto;
+  box-shadow: 0 14px 26px rgba(0,0,0,.30);
 }
-.ico svg{ width:16px; height:16px; opacity:.95; }
-
-.optName{
-  font-weight:980;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.btn:active{transform: translateY(1px) scale(.99)}
+.plus{
+  background:
+    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
+    linear-gradient(180deg, rgba(47,211,122,1), rgba(47,211,122,.78));
 }
-
-.optPts{
-  font-weight:980;
-  font-size:12px;
-  color: rgba(246,251,255,.86);
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.10);
-  padding:6px 10px;
-  border-radius:999px;
-}
-
-.opt.selected{
-  border-color: rgba(255,213,122,.32);
-  background: rgba(255,213,122,.10);
-}
-.opt.selected .optPts{
-  border-color: rgba(255,213,122,.28);
-  background: rgba(255,213,122,.14);
-  color: var(--gold);
+.minus{
+  background:
+    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.40), transparent 60%),
+    linear-gradient(180deg, rgba(255,77,109,1), rgba(255,77,109,.78));
 }
 
 .actions{ margin-top:12px; }
+
 .resetBtn{
   width:100%;
   padding:15px 16px;
@@ -521,9 +444,8 @@ body::before{
   font-size:14px;
   letter-spacing:.2px;
   box-shadow:0 16px 40px rgba(0,0,0,.35);
-  cursor:pointer;
 }
-.resetBtn:active{ transform: translateY(1px); }
+.resetBtn:active{transform: translateY(1px)}
 
 .tip{
   margin:10px 2px 0 2px;
@@ -532,7 +454,96 @@ body::before{
   line-height:1.35;
 }
 
-.hidden{ display:none; }
+.hidden{display:none}
+
+/* Modal */
+.modalOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:16px;
+  z-index:9999;
+}
+.modalOverlay.open{ display:flex; }
+
+.modal{
+  width:min(720px, 100%);
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(12,18,40,.92);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
+  overflow:hidden;
+}
+
+.modalHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+}
+.modalTitle{
+  font-weight:980;
+  letter-spacing:.2px;
+}
+
+.modalClose{
+  border:0;
+  width:36px;
+  height:36px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(246,251,255,.90);
+  cursor:pointer;
+  font-size:18px;
+  font-weight:950;
+}
+.modalClose:active{ transform: translateY(1px); }
+
+.modalBody{
+  padding:14px;
+  color:rgba(246,251,255,.85);
+  font-size:13px;
+  line-height:1.45;
+}
+.modalBody p{ margin:0 0 10px 0; }
+.modalBody .small{ color:rgba(246,251,255,.70); font-size:12px; }
+
+.modalLinks{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.modalLink{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(246,251,255,.92);
+  text-decoration:none;
+  font-weight:950;
+  font-size:12px;
+}
+.modalLink:active{ transform: translateY(1px); }
+
+/* Responsive: keep header clean on small screens */
+@media (max-width: 520px){
+  .chip{ padding:8px 9px; }
+  .rightTop{ gap:8px; }
+  .logo{ width:32px; height:32px; border-radius:10px; }
+  .brandText .title{ font-size:15px; }
+}
 </style>
 </head>
 
@@ -546,10 +557,6 @@ body::before{
         <img src="logo.png" alt="Chief Baliman" class="logo">
         <div class="brandText">
           <div class="title">Booster Battle</div>
-          <div class="subline">
-            <span class="dot"></span>
-            <span id="statusText">JavaScript active</span>
-          </div>
           <div class="byline">
             by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
           </div>
@@ -557,61 +564,62 @@ body::before{
       </div>
 
       <div class="rightTop">
-        <div class="pillSwitch" aria-label="Format">
-          <button class="pill active" id="fmtINT" type="button">INT</button>
-          <button class="pill" id="fmtJP" type="button">JP</button>
-        </div>
-
         <div class="scoreChips" aria-label="Scores">
-          <div class="chip" id="chipP1">P1 <b id="chip1">0</b></div>
-          <div class="chip" id="chipP2">P2 <b id="chip2">0</b></div>
+          <div class="chip">P1 <b id="chip1">0</b></div>
+          <div class="chip">P2 <b id="chip2">0</b></div>
         </div>
 
-        <div class="social">
-          <a class="socialBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M17.5 6.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        <div class="social" aria-label="Social links">
+          <a class="iconBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M17.7 6.3h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
             </svg>
           </a>
-          <a class="socialBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M14 4v10.2a3.8 3.8 0 1 1-3-3.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M14 4c1.2 2.5 3.2 4 6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+          <a class="iconBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M14 3v10.2a3.8 3.8 0 1 1-3-3.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M14 3c.9 2.8 3 4.6 6 4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </a>
+
+          <button class="infoBtn" id="infoBtn" type="button" aria-label="Info">i</button>
         </div>
       </div>
     </div>
 
     <div class="midRow">
-      <div class="playerTabs" role="tablist" aria-label="Player switch">
-        <button class="tab active" id="tab1" type="button">Player 1</button>
-        <button class="tab" id="tab2" type="button">Player 2</button>
+      <div class="switch" role="tablist" aria-label="Switch player">
+        <button class="seg active" id="tab1" type="button">Player 1</button>
+        <button class="seg" id="tab2" type="button">Player 2</button>
       </div>
-      <div class="leadText" id="leadText">–</div>
+
+      <div class="lead" id="leadText">–</div>
     </div>
   </div>
 </div>
 
 <div class="page">
-  <div class="card" id="card1">
+  <div class="card" id="card1" data-player="1">
     <div class="cardHeader">
       <div class="playerName">
+        <span class="icon"></span>
         <span>Player 1</span>
-        <span class="badge" id="badge1">–</span>
+        <span class="badge" id="lead1">–</span>
       </div>
       <div class="score" id="score1">0</div>
     </div>
     <div class="rows" id="rows1"></div>
   </div>
 
-  <div class="card hidden" id="card2">
+  <div class="card hidden" id="card2" data-player="2">
     <div class="cardHeader">
       <div class="playerName">
+        <span class="icon"></span>
         <span>Player 2</span>
-        <span class="badge" id="badge2">–</span>
+        <span class="badge" id="lead2">–</span>
       </div>
       <div class="score" id="score2">0</div>
     </div>
@@ -621,12 +629,39 @@ body::before{
   <div class="actions">
     <button class="resetBtn" id="resetBtn" type="button">Reset</button>
   </div>
+
   <div class="tip">Tip: Add to Home Screen to use it like an app.</div>
+</div>
+
+<!-- Info Modal -->
+<div class="modalOverlay" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+  <div class="modal">
+    <div class="modalHeader">
+      <div class="modalTitle" id="infoTitle">Info</div>
+      <button class="modalClose" id="infoClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="modalBody">
+      <p><b>Unofficial fan tool</b> (not endorsed).</p>
+
+      <p class="small">
+        This website uses trademarks and/or copyrights associated with Disney Lorcana TCG,
+        used under Ravensburger’s Community Code Policy (https://cdn.ravensburger.com/lorcana/community-code-en).
+        We are expressly prohibited from charging you to use or access this content.
+        This website is not published, endorsed, or specifically approved by Disney or Ravensburger.
+        For more information about Disney Lorcana TCG, visit https://www.disneylorcana.com/en-US/.
+      </p>
+
+      <div class="modalLinks">
+        <a class="modalLink" href="https://cdn.ravensburger.com/lorcana/community-code-en" target="_blank" rel="noopener">Community Code</a>
+        <a class="modalLink" href="https://www.disneylorcana.com/en-US/" target="_blank" rel="noopener">Official site</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 /*
-Points (your system):
+Point system:
 Common & Uncommon: 0
 Rare (Normal): 0
 Rare (Foil): 1
@@ -637,298 +672,122 @@ Legendary (Foil): 8
 Epic: 5
 Enchanted: 12
 Iconic: 25
-
-Pack structure:
-INT (12 cards): track last 3 slots
-  Slot A: Rare / Super Rare / Legendary
-  Slot B: Rare / Super Rare / Legendary
-  Foil Slot: any rarity possible (including Enchanted)
-
-JP (6 cards): track 2 slots
-  Rare+ Slot: Rare / Super Rare / Legendary
-  Foil Slot: any rarity possible (including Enchanted)
 */
 
-const formats = {
-  INT: {
-    key: "INT",
-    packTitle: "Booster structure (12 cards)",
-    packMeta: "Track only the last 3 slots",
-    dots: { total: 12, highlightFrom: 10 }, // last 3
-    slots: [
-      {
-        id: "r1",
-        title: "Rarity slot 1",
-        hint: "Rare / Super Rare / Legendary",
-        options: [
-          { id:"rare_n", name:"Rare", pts:0, icon:"rare", tint:"bronze" },
-          { id:"sr_n",   name:"Super Rare", pts:2, icon:"sr", tint:"silver" },
-          { id:"leg_n",  name:"Legendary", pts:4, icon:"leg", tint:"gold" }
-        ]
-      },
-      {
-        id: "r2",
-        title: "Rarity slot 2",
-        hint: "Rare / Super Rare / Legendary",
-        options: [
-          { id:"rare_n", name:"Rare", pts:0, icon:"rare", tint:"bronze" },
-          { id:"sr_n",   name:"Super Rare", pts:2, icon:"sr", tint:"silver" },
-          { id:"leg_n",  name:"Legendary", pts:4, icon:"leg", tint:"gold" }
-        ]
-      },
-      {
-        id: "foil",
-        title: "Foil slot",
-        hint: "Any rarity possible (incl. Enchanted)",
-        options: [
-          { id:"common", name:"Common", pts:0, icon:"common", tint:"gray" },
-          { id:"uncommon", name:"Uncommon", pts:0, icon:"uncommon", tint:"gray" },
-          { id:"rare_f", name:"Rare (Foil)", pts:1, icon:"rare", tint:"bronze" },
-          { id:"sr_f", name:"Super Rare (Foil)", pts:3, icon:"sr", tint:"silver" },
-          { id:"leg_f", name:"Legendary (Foil)", pts:8, icon:"leg", tint:"gold" },
-          { id:"epic", name:"Epic", pts:5, icon:"epic", tint:"rainbow" },
-          { id:"ench", name:"Enchanted", pts:12, icon:"ench", tint:"rainbow" },
-          { id:"iconic", name:"Iconic", pts:25, icon:"iconic", tint:"rainbow" }
-        ]
-      }
-    ]
-  },
+const sections = [
+  { title: "0 points", ids: ["common_uncommon", "rare_normal"] },
+  { title: "Rares", ids: ["rare_foil", "super_rare_normal", "super_rare_foil"] },
+  { title: "High tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
+];
 
-  JP: {
-    key: "JP",
-    packTitle: "Booster structure (6 cards)",
-    packMeta: "Track Rare+ and Foil only",
-    dots: { total: 6, highlightFrom: 5 }, // last 2
-    slots: [
-      {
-        id: "rareplus",
-        title: "Rare+ slot",
-        hint: "Rare / Super Rare / Legendary",
-        options: [
-          { id:"rare_n", name:"Rare", pts:0, icon:"rare", tint:"bronze" },
-          { id:"sr_n",   name:"Super Rare", pts:2, icon:"sr", tint:"silver" },
-          { id:"leg_n",  name:"Legendary", pts:4, icon:"leg", tint:"gold" }
-        ]
-      },
-      {
-        id: "foil",
-        title: "Foil slot",
-        hint: "Any rarity possible (incl. Enchanted)",
-        options: [
-          { id:"common", name:"Common", pts:0, icon:"common", tint:"gray" },
-          { id:"uncommon", name:"Uncommon", pts:0, icon:"uncommon", tint:"gray" },
-          { id:"rare_f", name:"Rare (Foil)", pts:1, icon:"rare", tint:"bronze" },
-          { id:"sr_f", name:"Super Rare (Foil)", pts:3, icon:"sr", tint:"silver" },
-          { id:"leg_f", name:"Legendary (Foil)", pts:8, icon:"leg", tint:"gold" },
-          { id:"epic", name:"Epic", pts:5, icon:"epic", tint:"rainbow" },
-          { id:"ench", name:"Enchanted", pts:12, icon:"ench", tint:"rainbow" },
-          { id:"iconic", name:"Iconic", pts:25, icon:"iconic", tint:"rainbow" }
-        ]
-      }
-    ]
-  }
-};
+const rarities = [
+  { id:"common_uncommon",   name:"Common & Uncommon",    points:0,  group:"0 pts" },
+  { id:"rare_normal",       name:"Rare (Normal)",        points:0,  group:"0 pts" },
 
-let currentFormat = "INT";
+  { id:"rare_foil",         name:"Rare (Foil)",          points:1,  group:"Rare" },
+  { id:"super_rare_normal", name:"Super Rare (Normal)",  points:2,  group:"Rare" },
+  { id:"super_rare_foil",   name:"Super Rare (Foil)",    points:3,  group:"Rare" },
+
+  { id:"legendary_normal",  name:"Legendary (Normal)",   points:4,  group:"High" },
+  { id:"epic",              name:"Epic",                 points:5,  group:"High" },
+  { id:"legendary_foil",    name:"Legendary (Foil)",     points:8,  group:"High" },
+  { id:"enchanted",         name:"Enchanted",            points:12, group:"High" },
+  { id:"iconic",            name:"Iconic",               points:25, group:"High" }
+];
+
+const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
 
 const state = {
-  INT: { 1:{}, 2:{} },
-  JP:  { 1:{}, 2:{} }
+  1: Object.fromEntries(rarities.map(r => [r.id, 0])),
+  2: Object.fromEntries(rarities.map(r => [r.id, 0]))
 };
 
-function iconSVG(kind, tint){
-  const c = {
-    gray:   "rgba(246,251,255,.75)",
-    bronze: "#c98b5a",
-    silver: "#cfd6de",
-    gold:   "#f7d37a",
-    rainbow: "url(#rg)"
-  };
-
-  const base = (fill) => `
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#8cd6ff"/>
-          <stop offset=".35" stop-color="#ffd57a"/>
-          <stop offset=".7" stop-color="#ff78b4"/>
-          <stop offset="1" stop-color="#82ffd2"/>
-        </linearGradient>
-      </defs>
-      ${fill}
-    </svg>
-  `;
-
-  const stroke = (color) => `stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"`;
-  const col = (tint === "rainbow") ? c.rainbow : c[tint];
-
-  if(kind === "common"){
-    return base(`<circle cx="12" cy="12" r="6" ${stroke(col)} />`);
-  }
-  if(kind === "uncommon"){
-    return base(`<path d="M6 7h12v10H6z" ${stroke(col)} />`);
-  }
-  if(kind === "rare"){
-    return base(`<path d="M12 5l7 14H5l7-14Z" ${stroke(col)} />`);
-  }
-  if(kind === "sr"){
-    return base(`<path d="M12 4l6 6-6 10-6-10 6-6Z" ${stroke(col)} />`);
-  }
-  if(kind === "leg"){
-    return base(`<path d="M12 4l7 5-3 11H8L5 9l7-5Z" ${stroke(col)} />`);
-  }
-  if(kind === "epic"){
-    return base(`<path d="M12 4l5 7-5 9-5-9 5-7Z" ${stroke(col)} /><path d="M9 11h6" ${stroke(col)} />`);
-  }
-  if(kind === "ench"){
-    return base(`<path d="M12 4l8 8-8 8-8-8 8-8Z" ${stroke(col)} /><path d="M12 8v8" ${stroke(col)} />`);
-  }
-  if(kind === "iconic"){
-    return base(`<path d="M12 4l8 6-8 10-8-10 8-6Z" ${stroke(col)} /><circle cx="12" cy="12" r="2" ${stroke(col)} />`);
-  }
-  return base(`<circle cx="12" cy="12" r="7" ${stroke(col)} />`);
+function addTap(el, fn){
+  el.addEventListener("click", fn);
+  el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
 }
 
-function initFormatState(fmt){
-  const f = formats[fmt];
-  [1,2].forEach(p=>{
-    f.slots.forEach(s=>{
-      if(state[fmt][p][s.id] === undefined) state[fmt][p][s.id] = null;
-    });
-  });
-}
-
-function buildPackBar(f){
-  const dots = [];
-  for(let i=1;i<=f.dots.total;i++){
-    const on = i >= f.dots.highlightFrom;
-    dots.push(`<span class="pdot ${on ? "on":""}"></span>`);
-  }
-  return `
-    <div class="packBar">
-      <div class="packTitle">
-        <span>${f.packTitle}</span>
-        <span style="color:rgba(246,251,255,.72);font-weight:900;">${f.key}</span>
-      </div>
-      <div class="packMeta">
-        <span>${f.packMeta}</span>
-        <span style="opacity:.85;">${f.dots.total} cards</span>
-      </div>
-      <div class="progress" aria-hidden="true">${dots.join("")}</div>
-    </div>
-  `;
-}
-
-function buildSlots(player){
-  const f = formats[currentFormat];
+function buildRows(player){
   const wrap = document.getElementById("rows"+player);
   wrap.innerHTML = "";
 
-  wrap.insertAdjacentHTML("beforeend", buildPackBar(f));
+  sections.forEach(sec => {
+    const s = document.createElement("div");
+    s.className = "section";
+    s.textContent = sec.title;
+    wrap.appendChild(s);
 
-  f.slots.forEach(slot=>{
-    const selected = state[currentFormat][player][slot.id];
+    sec.ids.forEach(id => {
+      const r = byId[id];
+      const row = document.createElement("div");
+      row.className = "row";
+      row.setAttribute("data-id", r.id);
 
-    const opts = slot.options.map(opt=>{
-      const isSel = selected && selected.optId === opt.id;
-      return `
-        <div class="opt ${isSel ? "selected":""}" data-slot="${slot.id}" data-opt="${opt.id}">
-          <div class="optLeft">
-            <span class="ico">${iconSVG(opt.icon, opt.tint)}</span>
-            <span class="optName">${opt.name}</span>
+      const tagText = r.points === 1 ? "1 point" : (r.points + " points");
+
+      row.innerHTML = `
+        <div class="left">
+          <div class="rTitle">${r.name}</div>
+          <div class="meta">
+            <span class="tag">${tagText}</span>
+            <span>${r.group}</span>
           </div>
-          <span class="optPts">${opt.pts} pts</span>
+        </div>
+        <div class="controls">
+          <button class="btn minus" type="button" aria-label="minus">−</button>
+          <div class="count">0</div>
+          <button class="btn plus" type="button" aria-label="plus">+</button>
         </div>
       `;
-    }).join("");
+      wrap.appendChild(row);
 
-    wrap.insertAdjacentHTML("beforeend", `
-      <div class="slot" data-slotwrap="${slot.id}">
-        <div class="slotHead">
-          <div>
-            <div class="slotTitle">${slot.title}</div>
-            <div class="slotHint">${slot.hint}</div>
-          </div>
-          <button class="clearBtn" type="button" data-clear="${slot.id}">Clear</button>
-        </div>
-        <div class="optGrid">${opts}</div>
-      </div>
-    `);
-  });
+      const countEl = row.querySelector(".count");
+      const plus = row.querySelector(".plus");
+      const minus = row.querySelector(".minus");
 
-  wrap.querySelectorAll(".opt").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      const slotId = el.getAttribute("data-slot");
-      const optId  = el.getAttribute("data-opt");
-      const f2 = formats[currentFormat];
-      const slot = f2.slots.find(s=>s.id===slotId);
-      const opt  = slot.options.find(o=>o.id===optId);
-      state[currentFormat][player][slotId] = { optId: opt.id, pts: opt.pts };
-      buildSlots(player);
-      render();
-    });
-  });
+      addTap(plus, () => {
+        state[player][r.id] += 1;
+        countEl.textContent = String(state[player][r.id]);
+        render();
+      });
 
-  wrap.querySelectorAll("[data-clear]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const slotId = btn.getAttribute("data-clear");
-      state[currentFormat][player][slotId] = null;
-      buildSlots(player);
-      render();
+      addTap(minus, () => {
+        state[player][r.id] = Math.max(0, state[player][r.id] - 1);
+        countEl.textContent = String(state[player][r.id]);
+        render();
+      });
     });
   });
 }
 
 function scoreOf(player){
-  const f = formats[currentFormat];
   let s = 0;
-  f.slots.forEach(slot=>{
-    const v = state[currentFormat][player][slot.id];
-    if(v && typeof v.pts === "number") s += v.pts;
-  });
+  rarities.forEach(r => { s += state[player][r.id] * r.points; });
   return s;
 }
 
-function setWinnerUI(s1, s2){
-  const c1 = document.getElementById("card1");
-  const c2 = document.getElementById("card2");
-  const b1 = document.getElementById("badge1");
-  const b2 = document.getElementById("badge2");
+function setLeads(s1, s2){
+  const b1 = document.getElementById("lead1");
+  const b2 = document.getElementById("lead2");
   const leadText = document.getElementById("leadText");
-  const chip1 = document.getElementById("chipP1");
-  const chip2 = document.getElementById("chipP2");
 
-  c1.classList.remove("winner");
-  c2.classList.remove("winner");
-  b1.classList.remove("win");
-  b2.classList.remove("win");
-  chip1.classList.remove("win");
-  chip2.classList.remove("win");
-
-  if(s1 === 0 && s2 === 0){
+  if (s1 === 0 && s2 === 0){
     b1.textContent = "–";
     b2.textContent = "–";
     leadText.textContent = "–";
     return;
   }
-
-  if(s1 > s2){
-    c1.classList.add("winner");
-    b1.classList.add("win");
-    chip1.classList.add("win");
-    b1.textContent = "WINNER";
-    b2.textContent = "–";
-    leadText.textContent = "Player 1 leads";
-  } else if(s2 > s1){
-    c2.classList.add("winner");
-    b2.classList.add("win");
-    chip2.classList.add("win");
-    b2.textContent = "WINNER";
-    b1.textContent = "–";
-    leadText.textContent = "Player 2 leads";
+  if (s1 > s2){
+    b1.textContent = "leading";
+    b2.textContent = "behind";
+    leadText.textContent = "Player 1 is leading";
+  } else if (s2 > s1){
+    b2.textContent = "leading";
+    b1.textContent = "behind";
+    leadText.textContent = "Player 2 is leading";
   } else {
-    b1.textContent = "TIE";
-    b2.textContent = "TIE";
+    b1.textContent = "tied";
+    b2.textContent = "tied";
     leadText.textContent = "Tie";
   }
 }
@@ -942,61 +801,75 @@ function render(){
   document.getElementById("chip1").textContent = String(s1);
   document.getElementById("chip2").textContent = String(s2);
 
-  setWinnerUI(s1, s2);
+  setLeads(s1, s2);
 }
 
 function resetAll(){
-  initFormatState(currentFormat);
-  const f = formats[currentFormat];
-  [1,2].forEach(p=>{
-    f.slots.forEach(s=> state[currentFormat][p][s.id] = null);
+  [1,2].forEach(p => {
+    rarities.forEach(r => { state[p][r.id] = 0; });
+    const rows = document.getElementById("rows"+p).querySelectorAll(".row");
+    rows.forEach(row => row.querySelector(".count").textContent = "0");
   });
-  buildSlots(1);
-  buildSlots(2);
   render();
 }
 
 function showPlayer(p){
-  const card1 = document.getElementById("card1");
-  const card2 = document.getElementById("card2");
+  const c1 = document.getElementById("card1");
+  const c2 = document.getElementById("card2");
   const t1 = document.getElementById("tab1");
   const t2 = document.getElementById("tab2");
-  if(p===1){
-    card1.classList.remove("hidden");
-    card2.classList.add("hidden");
+
+  if (p === 1){
+    c1.classList.remove("hidden");
+    c2.classList.add("hidden");
     t1.classList.add("active");
     t2.classList.remove("active");
-  }else{
-    card2.classList.remove("hidden");
-    card1.classList.add("hidden");
+  } else {
+    c2.classList.remove("hidden");
+    c1.classList.add("hidden");
     t2.classList.add("active");
     t1.classList.remove("active");
   }
 }
 
-function setFormat(fmt){
-  currentFormat = fmt;
-  document.getElementById("fmtINT").classList.toggle("active", fmt==="INT");
-  document.getElementById("fmtJP").classList.toggle("active", fmt==="JP");
-  initFormatState(fmt);
-  buildSlots(1);
-  buildSlots(2);
-  render();
-}
+/* Info modal */
+(function setupInfoModal(){
+  const btn = document.getElementById("infoBtn");
+  const modal = document.getElementById("infoModal");
+  const close = document.getElementById("infoClose");
+  if(!btn || !modal || !close) return;
 
-initFormatState("INT");
-initFormatState("JP");
+  function openModal(){
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    close.focus();
+  }
+  function closeModal(){
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    btn.focus();
+  }
 
-document.getElementById("resetBtn").addEventListener("click", resetAll);
-document.getElementById("tab1").addEventListener("click", ()=>showPlayer(1));
-document.getElementById("tab2").addEventListener("click", ()=>showPlayer(2));
-document.getElementById("fmtINT").addEventListener("click", ()=>setFormat("INT"));
-document.getElementById("fmtJP").addEventListener("click", ()=>setFormat("JP"));
+  btn.addEventListener("click", openModal);
+  close.addEventListener("click", closeModal);
 
-document.getElementById("statusText").textContent = "JavaScript active";
+  modal.addEventListener("click", (e) => {
+    if(e.target === modal) closeModal();
+  });
 
-setFormat("INT");
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+})();
+
+buildRows(1);
+buildRows(2);
+render();
 showPlayer(1);
+
+addTap(document.getElementById("resetBtn"), resetAll);
+addTap(document.getElementById("tab1"), () => showPlayer(1));
+addTap(document.getElementById("tab2"), () => showPlayer(2));
 </script>
 
 </body>
