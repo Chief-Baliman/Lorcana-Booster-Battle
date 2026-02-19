@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Booster Battle">
+<meta name="apple-mobile-web-app-title" content="Disney Lorcana Booster Battle">
 <meta name="format-detection" content="telephone=no">
-<title>Booster Battle</title>
+<title>Disney Lorcana Booster Battle</title>
 
 <style>
 :root{
@@ -485,7 +485,7 @@ body::before{
   flex:1 1 200px;
   min-width:200px;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
   padding:12px;
@@ -500,21 +500,24 @@ body::before{
 
 .optLeft{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   gap:10px;
   min-width:0;
 }
 .optLabel{
   font-weight:980;
   color:rgba(246,251,255,.92);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  line-height:1.15;
 }
 .optRight{
   font-weight:980;
   color:rgba(246,251,255,.75);
+  white-space:nowrap;
 }
+
 .opt.selected{
   border-color: rgba(140,214,255,.34);
   background:
@@ -657,7 +660,7 @@ body::before{
       <div class="brand">
         <img src="logo.png" alt="Chief Baliman" class="logo">
         <div class="brandText">
-          <div class="title">Booster Battle</div>
+          <div class="title">Disney Lorcana Booster Battle</div>
           <div class="byline">
             by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
           </div>
@@ -677,13 +680,13 @@ body::before{
             <svg class="crown" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4 9l4 4 4-7 4 7 4-4v10H4V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             </svg>
-            P1 <b id="chip1">0</b>
+            <span id="chipLabel1">P1</span> <b id="chip1">0</b>
           </div>
           <div class="chip" id="chipP2">
             <svg class="crown" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4 9l4 4 4-7 4 7 4-4v10H4V9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             </svg>
-            P2 <b id="chip2">0</b>
+            <span id="chipLabel2">P2</span> <b id="chip2">0</b>
           </div>
         </div>
 
@@ -710,8 +713,8 @@ body::before{
 
     <div class="midRow">
       <div class="switch" role="tablist" aria-label="Switch player">
-        <button class="seg active" id="tab1" type="button">Player 1</button>
-        <button class="seg" id="tab2" type="button">Player 2</button>
+        <button class="seg active" id="tab1" type="button"><span id="tabName1">Player 1</span></button>
+        <button class="seg" id="tab2" type="button"><span id="tabName2">Player 2</span></button>
       </div>
 
       <div class="lead" id="leadText">–</div>
@@ -724,7 +727,8 @@ body::before{
     <div class="cardHeader">
       <div class="playerName">
         <span class="pIcon"></span>
-        <span>Player 1</span>
+        <input id="nameInput1" value="Player 1" aria-label="Player 1 name"
+               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none;min-width:90px;max-width:180px">
         <span class="winBadge" id="win1">WINNER</span>
         <span class="badge" id="lead1">–</span>
       </div>
@@ -748,7 +752,8 @@ body::before{
     <div class="cardHeader">
       <div class="playerName">
         <span class="pIcon"></span>
-        <span>Player 2</span>
+        <input id="nameInput2" value="Player 2" aria-label="Player 2 name"
+               style="background:transparent;border:0;color:inherit;font:inherit;font-weight:950;outline:none;min-width:90px;max-width:180px">
         <span class="winBadge" id="win2">WINNER</span>
         <span class="badge" id="lead2">–</span>
       </div>
@@ -775,7 +780,6 @@ body::before{
   <div class="tip">Tip: Add to Home Screen to use it like an app.</div>
 </div>
 
-<!-- Info Modal -->
 <div class="modalOverlay" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
   <div class="modal">
     <div class="modalHeader">
@@ -802,7 +806,6 @@ body::before{
 </div>
 
 <script>
-/* Points */
 const POINTS = {
   common: 0,
   uncommon: 0,
@@ -817,7 +820,73 @@ const POINTS = {
   iconic: 25
 };
 
-let mode = "INT"; // INT or JP
+let mode = "INT";
+
+/* Player names (saved locally) */
+const NAME_KEY_1 = "bb_name_p1";
+const NAME_KEY_2 = "bb_name_p2";
+
+function safeName(v, fallback){
+  const s = String(v ?? "").trim();
+  return s.length ? s.slice(0, 18) : fallback;
+}
+
+function shortChipLabel(name, fallback){
+  const s = safeName(name, fallback);
+  const cleaned = s.replace(/\s+/g, " ").trim();
+  return cleaned.length > 6 ? cleaned.slice(0, 6) : cleaned;
+}
+
+function getName(player){
+  const key = player === 1 ? NAME_KEY_1 : NAME_KEY_2;
+  const fallback = player === 1 ? "Player 1" : "Player 2";
+  return safeName(localStorage.getItem(key), fallback);
+}
+
+function setName(player, value){
+  const key = player === 1 ? NAME_KEY_1 : NAME_KEY_2;
+  const fallback = player === 1 ? "Player 1" : "Player 2";
+  const finalName = safeName(value, fallback);
+  localStorage.setItem(key, finalName);
+  applyNamesToUI();
+  render();
+}
+
+function applyNamesToUI(){
+  const n1 = getName(1);
+  const n2 = getName(2);
+
+  const in1 = document.getElementById("nameInput1");
+  const in2 = document.getElementById("nameInput2");
+  if(in1 && document.activeElement !== in1) in1.value = n1;
+  if(in2 && document.activeElement !== in2) in2.value = n2;
+
+  const t1 = document.getElementById("tabName1");
+  const t2 = document.getElementById("tabName2");
+  if(t1) t1.textContent = n1;
+  if(t2) t2.textContent = n2;
+
+  const c1 = document.getElementById("chipLabel1");
+  const c2 = document.getElementById("chipLabel2");
+  if(c1) c1.textContent = shortChipLabel(n1, "P1");
+  if(c2) c2.textContent = shortChipLabel(n2, "P2");
+}
+
+function setupNameInputs(){
+  const in1 = document.getElementById("nameInput1");
+  const in2 = document.getElementById("nameInput2");
+  if(in1){
+    in1.value = getName(1);
+    in1.addEventListener("input", () => setName(1, in1.value));
+    in1.addEventListener("blur", () => setName(1, in1.value));
+  }
+  if(in2){
+    in2.value = getName(2);
+    in2.addEventListener("input", () => setName(2, in2.value));
+    in2.addEventListener("blur", () => setName(2, in2.value));
+  }
+  applyNamesToUI();
+}
 
 /* Slot templates */
 function getSlotsForMode(){
@@ -865,7 +934,6 @@ function getSlotsForMode(){
   ];
 }
 
-/* Labels + icon shapes */
 const LABEL = {
   common: "Common",
   uncommon: "Uncommon",
@@ -933,7 +1001,7 @@ function ptsLabel(key){
   return pts === 1 ? "1 pt" : `${pts} pts`;
 }
 
-/* State: selections per slot (one choice each) */
+/* State */
 const state = {
   1: {},
   2: {}
@@ -1112,13 +1180,13 @@ function setLeads(s1, s2){
   if (s1 > s2){
     b1.textContent = "leading";
     b2.textContent = "behind";
-    leadText.textContent = "Player 1 is leading";
+    leadText.textContent = `${getName(1)} is leading`;
     card1.classList.add("leader");
     chipP1.classList.add("leading");
   } else if (s2 > s1){
     b2.textContent = "leading";
     b1.textContent = "behind";
-    leadText.textContent = "Player 2 is leading";
+    leadText.textContent = `${getName(2)} is leading`;
     card2.classList.add("leader");
     chipP2.classList.add("leading");
   } else {
@@ -1144,6 +1212,7 @@ function resetAll(){
   initState();
   buildSlots(1);
   buildSlots(2);
+  applyNamesToUI();
   render();
 }
 
@@ -1216,6 +1285,7 @@ buildSlots(1);
 buildSlots(2);
 render();
 showPlayer(1);
+setupNameInputs();
 
 document.getElementById("resetBtn").addEventListener("click", resetAll);
 document.getElementById("tab1").addEventListener("click", () => showPlayer(1));
