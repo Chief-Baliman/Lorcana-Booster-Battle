@@ -13,7 +13,7 @@
 :root{
   --text:#f6fbff;
   --muted:rgba(246,251,255,.72);
-
+  --muted2:rgba(246,251,255,.58);
   --shadow:0 18px 48px rgba(0,0,0,.42);
 
   --green:#2fd37a;
@@ -307,37 +307,29 @@ body::before{
 }
 
 .packInfo{
-  padding:12px 14px;
+  padding:10px 14px;
   border-bottom:1px solid rgba(255,255,255,.06);
   display:flex;
   flex-direction:column;
   gap:10px;
 }
 
+.packTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
 .packTitle{
   font-weight:950;
   font-size:12px;
   letter-spacing:.25px;
   color: rgba(246,251,255,.86);
 }
-
-.packLine{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-  color: var(--muted);
-  font-size:12px;
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:6px 10px;
-  border-radius:999px;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.10);
+.packMini{
+  font-size:11px;
+  color: var(--muted2);
+  white-space:nowrap;
 }
 
 .track{
@@ -356,10 +348,21 @@ body::before{
   box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
 }
 
-.dotCard.c{ opacity:.55; background: linear-gradient(180deg, rgba(184,192,207,.28), rgba(255,255,255,.06)); }
-.dotCard.u{ opacity:.70; background: linear-gradient(180deg, rgba(207,215,230,.26), rgba(255,255,255,.05)); }
-.dotCard.r{ opacity:.90; background: linear-gradient(180deg, rgba(215,155,111,.26), rgba(255,255,255,.05)); }
+/* make the 0-point part clearly "background info" */
+.dotCard.c,
+.dotCard.u{
+  opacity:.35;
+  filter: grayscale(100%);
+}
+
+/* keep the meaningful slots visible */
+.dotCard.r{ opacity:.85; background: linear-gradient(180deg, rgba(215,155,111,.22), rgba(255,255,255,.05)); }
 .dotCard.h{ opacity:1; background: linear-gradient(180deg, rgba(247,211,122,.28), rgba(255,255,255,.06)); border-color: rgba(255,213,122,.22); }
+
+.slotHint{
+  font-size:11px;
+  color: rgba(246,251,255,.62);
+}
 
 .rows{
   padding: 12px 12px 14px 12px;
@@ -390,9 +393,9 @@ body::before{
   font-size:13px;
   color: rgba(234,240,255,.92);
 }
-.slotHint{
+.slotSub{
   font-size:11px;
-  color: rgba(246,251,255,.64);
+  color: rgba(246,251,255,.60);
   margin-top:3px;
 }
 
@@ -454,17 +457,18 @@ body::before{
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.choiceMeta{
-  font-size: 11px;
-  color: rgba(246,251,255,.66);
-}
 
+/* removed the redundant “x points” line */
+.choiceMeta{ display:none; }
+
+/* make the pill clearly “points”, not “count” */
 .pointsTag{
   margin-left:auto;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-width: 46px;
+  gap:6px;
+  min-width: 62px;
   padding: 7px 10px;
   border-radius: 999px;
   background: rgba(255,255,255,.06);
@@ -472,6 +476,12 @@ body::before{
   font-weight: 950;
   font-size: 12px;
   color: rgba(246,251,255,.86);
+}
+.pointsTag::before{
+  content:"pts";
+  font-size:10px;
+  letter-spacing:.2px;
+  color: rgba(246,251,255,.62);
 }
 
 .iconWrap{
@@ -602,30 +612,27 @@ body::before{
       </div>
 
       <div class="packInfo">
-        <div class="packTitle">Booster structure (12 cards)</div>
-        <div class="packLine">
-          <span class="pill">6x Common (0)</span>
-          <span class="pill">3x Uncommon (0)</span>
-          <span class="pill">2x Rarity slots (R / SR / L)</span>
-          <span class="pill">1x Foil slot (any rarity possible)</span>
+        <div class="packTop">
+          <div class="packTitle">Booster structure</div>
+          <div class="packMini">Track only the last 3 slots</div>
         </div>
-        <div class="packLine">
-          <div class="track" aria-label="Pack timeline">
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard r" title="Rarity slot"></span>
-            <span class="dotCard r" title="Rarity slot"></span>
-            <span class="dotCard h" title="Foil slot"></span>
-          </div>
-          <span class="slotHint">Track only the last 3 slots</span>
+
+        <div class="track" aria-label="Pack timeline">
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard r" title="Rarity slot"></span>
+          <span class="dotCard r" title="Rarity slot"></span>
+          <span class="dotCard h" title="Foil slot"></span>
         </div>
+
+        <div class="slotHint">6 Common + 3 Uncommon are 0 pts (info only)</div>
       </div>
 
       <div class="rows" id="rows1"></div>
@@ -641,30 +648,27 @@ body::before{
       </div>
 
       <div class="packInfo">
-        <div class="packTitle">Booster structure (12 cards)</div>
-        <div class="packLine">
-          <span class="pill">6x Common (0)</span>
-          <span class="pill">3x Uncommon (0)</span>
-          <span class="pill">2x Rarity slots (R / SR / L)</span>
-          <span class="pill">1x Foil slot (any rarity possible)</span>
+        <div class="packTop">
+          <div class="packTitle">Booster structure</div>
+          <div class="packMini">Track only the last 3 slots</div>
         </div>
-        <div class="packLine">
-          <div class="track" aria-label="Pack timeline">
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard c" title="Common"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard u" title="Uncommon"></span>
-            <span class="dotCard r" title="Rarity slot"></span>
-            <span class="dotCard r" title="Rarity slot"></span>
-            <span class="dotCard h" title="Foil slot"></span>
-          </div>
-          <span class="slotHint">Track only the last 3 slots</span>
+
+        <div class="track" aria-label="Pack timeline">
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard c" title="Common"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard u" title="Uncommon"></span>
+          <span class="dotCard r" title="Rarity slot"></span>
+          <span class="dotCard r" title="Rarity slot"></span>
+          <span class="dotCard h" title="Foil slot"></span>
         </div>
+
+        <div class="slotHint">6 Common + 3 Uncommon are 0 pts (info only)</div>
       </div>
 
       <div class="rows" id="rows2"></div>
@@ -680,7 +684,6 @@ body::before{
   </div>
 </div>
 
-<!-- Rainbow fill for Epic / Enchanted / Iconic -->
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
@@ -694,25 +697,6 @@ body::before{
 </svg>
 
 <script>
-/*
-Points:
-Common & Uncommon: 0
-Rare Normal: 0
-Rare Foil: 1
-Super Rare Normal: 2
-Super Rare Foil: 3
-Legendary Normal: 4
-Legendary Foil: 8
-Epic: 5
-Enchanted: 12
-Iconic: 25
-
-Your rule update:
-- “Rarity slot” can be Rare / Super Rare / Legendary only (no foils, no Enchanted, no Epic)
-- “Foil slot” can be any rarity (including Epic / Enchanted / Iconic) and can also be foil/non-foil versions
-  (we keep foil toggles only where it affects points in your system)
-*/
-
 const choiceSets = {
   raritySlot: [
     { id:"rare_normal",  label:"Rare (Normal)",        points:0,  tier:"rare",   icon:"rare" },
@@ -739,12 +723,12 @@ const choiceSets = {
 };
 
 const slots = [
-  { key:"slotA", title:"Rarity slot 1", hint:"Rare / Super Rare / Legendary", set:"raritySlot" },
-  { key:"slotB", title:"Rarity slot 2", hint:"Rare / Super Rare / Legendary", set:"raritySlot" },
-  { key:"slotF", title:"Foil slot",     hint:"Any rarity possible",           set:"foilSlot" }
+  { key:"slotA", title:"Rarity slot 1", sub:"Rare / Super Rare / Legendary", set:"raritySlot" },
+  { key:"slotB", title:"Rarity slot 2", sub:"Rare / Super Rare / Legendary", set:"raritySlot" },
+  { key:"slotF", title:"Foil slot",     sub:"Any rarity possible",           set:"foilSlot" }
 ];
 
-const state = {
+let state = {
   1: { slotA:null, slotB:null, slotF:null },
   2: { slotA:null, slotB:null, slotF:null }
 };
@@ -835,11 +819,6 @@ function iconSvg(kind, tier){
   return "";
 }
 
-function pointsLabel(n){
-  if (n === 1) return "1 point";
-  return n + " points";
-}
-
 function buildSlots(player){
   const wrap = document.getElementById("rows"+player);
   wrap.innerHTML = "";
@@ -853,7 +832,7 @@ function buildSlots(player){
       <div class="slotHead">
         <div>
           <div class="slotTitle">${slot.title}</div>
-          <div class="slotHint">${slot.hint}</div>
+          <div class="slotSub">${slot.sub}</div>
         </div>
         <button class="clearBtn" type="button" aria-label="Clear slot">Clear</button>
       </div>
@@ -873,18 +852,13 @@ function buildSlots(player){
         <div class="iconWrap">${iconSvg(ch.icon, ch.tier)}</div>
         <div class="choiceLeft">
           <div class="choiceName">${ch.label}</div>
-          <div class="choiceMeta">${pointsLabel(ch.points)}</div>
         </div>
         <div class="pointsTag">${ch.points}</div>
       `;
 
       addTap(el, () => {
         const current = state[player][slot.key];
-        if (current && current.id === ch.id){
-          state[player][slot.key] = null;
-        } else {
-          state[player][slot.key] = ch;
-        }
+        state[player][slot.key] = (current && current.id === ch.id) ? null : ch;
         syncSelected(player, slot.key);
         render();
       });
@@ -910,16 +884,12 @@ function syncSelected(player, slotKey){
   if (!slotEl) return;
 
   const selected = state[player][slotKey];
-  const options = slotEl.querySelectorAll(".choice");
-  options.forEach(opt => {
+  slotEl.querySelectorAll(".choice").forEach(opt => {
     const id = opt.getAttribute("data-choice");
-    if (selected && selected.id === id) opt.classList.add("selected");
-    else opt.classList.remove("selected");
+    opt.classList.toggle("selected", !!(selected && selected.id === id));
   });
 }
-function syncAllSelected(player){
-  slots.forEach(s => syncSelected(player, s.key));
-}
+function syncAllSelected(player){ slots.forEach(s => syncSelected(player, s.key)); }
 
 function scoreOf(player){
   let s = 0;
@@ -969,10 +939,12 @@ function render(){
 }
 
 function resetAll(){
-  [1,2].forEach(p => {
-    state[p] = { slotA:null, slotB:null, slotF:null };
-    syncAllSelected(p);
-  });
+  state = {
+    1: { slotA:null, slotB:null, slotF:null },
+    2: { slotA:null, slotB:null, slotF:null }
+  };
+  syncAllSelected(1);
+  syncAllSelected(2);
   render();
 }
 
@@ -1009,19 +981,6 @@ showPlayer(1);
 
 document.getElementById("statusText").textContent = "JavaScript active";
 </script>
-
-<!-- Rainbow fill defs -->
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ff5aa5"/>
-      <stop offset="22%" stop-color="#ffcd4a"/>
-      <stop offset="45%" stop-color="#34d399"/>
-      <stop offset="70%" stop-color="#60a5fa"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
-    </linearGradient>
-  </defs>
-</svg>
 
 </body>
 </html>
