@@ -3,984 +3,327 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Booster Battle">
-<meta name="format-detection" content="telephone=no">
 <title>Booster Battle</title>
 
 <style>
 :root{
   --text:#f6fbff;
-  --muted:rgba(246,251,255,.72);
-  --muted2:rgba(246,251,255,.58);
-  --shadow:0 18px 48px rgba(0,0,0,.42);
-
-  --green:#2fd37a;
-  --red:#ff4d6d;
-
+  --muted:rgba(246,251,255,.65);
   --gold:#f7d37a;
-  --silver:#cfd7e6;
-  --bronze:#d79b6f;
-  --gray:#b8c0cf;
+  --green:#2fd37a;
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
-html{ background-color:#06111d; }
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   color:var(--text);
-
-  background-color:#06111d;
-  background-image:
-    radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.55), transparent 55%),
-    radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.28), transparent 55%),
-    radial-gradient(900px 700px at 30% 110%, rgba(255,120,180,.18), transparent 60%),
-    radial-gradient(700px 500px at 85% 95%, rgba(130,255,210,.12), transparent 60%);
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-
-  padding:0 14px env(safe-area-inset-bottom) 14px;
+  background:#06111d;
+  padding:16px;
 }
 
-/* Sparkles */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
-  background-image:
-    radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
-    radial-gradient(2px 2px at 28% 42%, rgba(255,255,255,.22), transparent 60%),
-    radial-gradient(2px 2px at 43% 14%, rgba(255,213,122,.26), transparent 60%),
-    radial-gradient(2px 2px at 62% 32%, rgba(140,214,255,.22), transparent 60%),
-    radial-gradient(2px 2px at 78% 18%, rgba(255,255,255,.20), transparent 60%),
-    radial-gradient(2px 2px at 86% 52%, rgba(255,213,122,.18), transparent 60%),
-    radial-gradient(2px 2px at 18% 76%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(2px 2px at 55% 84%, rgba(140,214,255,.16), transparent 60%),
-    radial-gradient(2px 2px at 90% 86%, rgba(255,255,255,.14), transparent 60%);
-  opacity:.52;
-  animation:sparkleFloat 10s ease-in-out infinite;
-  transform: translate3d(0,0,0);
-}
-@keyframes sparkleFloat{
-  0%{ transform: translate3d(0,0,0); opacity:.42; }
-  50%{ transform: translate3d(0,-10px,0); opacity:.62; }
-  100%{ transform: translate3d(0,0,0); opacity:.42; }
-}
-
-.safeTop{height: env(safe-area-inset-top);}
-
-.container{
-  position:relative;
-  z-index:1;
-  max-width:980px;
-  margin:0 auto;
-}
+/* ===== Header ===== */
 
 .header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  padding:12px 0 10px 0;
-  background: linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
-  backdrop-filter: blur(14px);
-}
-
-.headerInner{
-  border:1px solid rgba(255,255,255,.09);
-  background: rgba(12,18,40,.60);
-  border-radius: 22px;
-  padding: 12px 12px;
-  box-shadow: 0 14px 34px rgba(0,0,0,.40);
-}
-
-.topRow{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:12px;
-}
-
-.brand{
-  display:flex;
   align-items:center;
-  gap:12px;
-  min-width: 0;
+  margin-bottom:18px;
 }
 
-.logo{
-  width:40px;
-  height:40px;
-  max-width:40px;
-  max-height:40px;
-  object-fit:contain;
-  border-radius:12px;
-  display:block;
-  flex: 0 0 auto;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.10);
-}
-
-.brandText{ min-width:0; }
-
-.title{
-  font-size:16px;
-  font-weight:950;
-  letter-spacing:.2px;
-  line-height:1.1;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.subLine{
-  margin-top:4px;
+.formatSwitch{
   display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  color:var(--muted);
-  white-space:nowrap;
-}
-
-.dot{
-  width:7px;height:7px;border-radius:99px;background:var(--green);
-  box-shadow:0 0 0 4px rgba(54,210,123,.12);
-}
-
-.byline{
-  margin-top:4px;
-  font-size:11px;
-  color:rgba(246,251,255,.62);
-}
-.handle{
-  color: var(--gold);
-  text-decoration:none;
-  font-weight:950;
-}
-
-.rightTop{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex: 0 0 auto;
-}
-
-.scoreChips{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.chip{
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 999px;
-  padding: 9px 10px;
-  font-size: 12px;
-  color: rgba(246,251,255,.80);
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.chip b{
-  color: var(--gold);
-  font-weight: 950;
-  min-width: 20px;
-  text-align:right;
-}
-
-.social{
-  display:flex;
-  gap:8px;
-}
-.socialBtn{
-  width:36px;
-  height:36px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius: 14px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 12px 22px rgba(0,0,0,.22);
-  text-decoration:none;
-  color: rgba(246,251,255,.88);
-}
-.socialBtn:active{ transform: translateY(1px); }
-.socialBtn svg{ width:18px; height:18px; opacity:.92; }
-
-.midRow{
-  margin-top:10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.switch{
-  display:flex;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:999px;
+  gap:6px;
+  background:rgba(255,255,255,.08);
   padding:4px;
-  gap:4px;
-  flex: 0 0 auto;
-}
-.seg{
-  border:0;
-  padding:9px 12px;
   border-radius:999px;
+}
+
+.formatBtn{
+  border:0;
   background:transparent;
-  color:rgba(234,240,255,.75);
-  font-weight:950;
-  font-size:12px;
+  padding:6px 14px;
+  border-radius:999px;
+  color:var(--muted);
+  font-weight:900;
   cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-  min-width: 110px;
-}
-.seg.active{
-  background: linear-gradient(180deg, rgba(255,213,122,.30), rgba(255,255,255,.06));
-  border: 1px solid rgba(255,213,122,.25);
-  color: var(--text);
 }
 
-.lead{
-  font-size:12px;
-  color: rgba(246,251,255,.76);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  flex: 1 1 auto;
-  text-align:right;
+.formatBtn.active{
+  background:linear-gradient(180deg, rgba(255,213,122,.35), rgba(255,255,255,.05));
+  color:white;
 }
 
-.page{
-  position:relative;
-  z-index:1;
-  padding: 10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
-}
+/* ===== Panels ===== */
 
 .panel{
-  background:
-    radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.12), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-  border:1px solid rgba(255,255,255,.14);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  overflow:hidden;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  transition:.25s ease;
+}
+
+.panel.winner{
+  border-color:rgba(255,213,122,.6);
+  box-shadow:0 0 30px rgba(255,213,122,.35);
+  transform:scale(1.02);
 }
 
 .panelHeader{
-  padding:14px 14px 10px 14px;
   display:flex;
-  align-items:flex-end;
   justify-content:space-between;
-  gap:10px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  background: linear-gradient(180deg, rgba(255,255,255,.05), transparent);
+  align-items:center;
+  margin-bottom:12px;
 }
 
-.playerName{
-  font-size:14px;
-  font-weight:950;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.badge{
-  font-size:11px;
-  padding:6px 8px;
-  border-radius:999px;
-  background:rgba(108,168,255,.14);
-  border:1px solid rgba(108,168,255,.22);
-  color:rgba(234,240,255,.88);
-}
 .score{
   font-size:34px;
-  font-weight:980;
-  letter-spacing:.2px;
+  font-weight:900;
+  transition:.2s;
 }
+
+.panel.winner .score{
+  font-size:42px;
+  color:var(--gold);
+}
+
+.badge{
+  font-size:12px;
+  font-weight:900;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.1);
+}
+
+.panel.winner .badge{
+  background:var(--gold);
+  color:#08101b;
+}
+
+/* ===== Pack Info ===== */
 
 .packInfo{
-  padding:10px 14px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.packTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.packTitle{
-  font-weight:950;
-  font-size:12px;
-  letter-spacing:.25px;
-  color: rgba(246,251,255,.86);
-}
-.packMini{
-  font-size:11px;
-  color: var(--muted2);
-  white-space:nowrap;
+  font-size:13px;
+  margin-bottom:16px;
+  color:var(--muted);
 }
 
 .track{
+  margin-top:8px;
   display:flex;
-  gap:6px;
-  align-items:center;
-  flex-wrap:wrap;
+  gap:5px;
 }
 
-.dotCard{
-  width:18px;
-  height:10px;
-  border-radius: 8px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+.dot{
+  width:16px;
+  height:8px;
+  border-radius:6px;
+  background:rgba(255,255,255,.12);
 }
 
-/* make the 0-point part clearly "background info" */
-.dotCard.c,
-.dotCard.u{
-  opacity:.35;
-  filter: grayscale(100%);
+.dot.active{
+  background:var(--gold);
 }
 
-/* keep the meaningful slots visible */
-.dotCard.r{ opacity:.85; background: linear-gradient(180deg, rgba(215,155,111,.22), rgba(255,255,255,.05)); }
-.dotCard.h{ opacity:1; background: linear-gradient(180deg, rgba(247,211,122,.28), rgba(255,255,255,.06)); border-color: rgba(255,213,122,.22); }
-
-.slotHint{
-  font-size:11px;
-  color: rgba(246,251,255,.62);
-}
-
-.rows{
-  padding: 12px 12px 14px 12px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.slot{
-  border-radius: 18px;
-  background:
-    radial-gradient(700px 120px at 18% 0%, rgba(140,214,255,.10), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-  border:1px solid rgba(255,255,255,.10);
-  overflow:hidden;
-}
-
-.slotHead{
-  padding:12px 12px 10px 12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.slotTitle{
-  font-weight:950;
-  font-size:13px;
-  color: rgba(234,240,255,.92);
-}
-.slotSub{
-  font-size:11px;
-  color: rgba(246,251,255,.60);
-  margin-top:3px;
-}
-
-.clearBtn{
-  border:0;
-  background: rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  color: rgba(246,251,255,.80);
-  padding:8px 10px;
-  border-radius: 12px;
-  font-weight: 900;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-.clearBtn:active{ transform: translateY(1px); }
-
-.choiceGrid{
-  padding: 0 10px 12px 10px;
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:10px;
-}
-@media (min-width: 720px){
-  .choiceGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
+/* ===== Buttons ===== */
 
 .choice{
-  border-radius: 16px;
-  padding: 10px 10px;
-  background: rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  display:flex;
-  align-items:center;
-  gap:10px;
+  margin:6px 0;
+  padding:8px 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
   cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-  min-height: 54px;
-}
-.choice:active{ transform: translateY(1px); }
-.choice.selected{
-  background: linear-gradient(180deg, rgba(255,213,122,.18), rgba(255,255,255,.05));
-  border-color: rgba(255,213,122,.22);
-  box-shadow: 0 14px 28px rgba(0,0,0,.25);
-}
-
-.choiceLeft{
   display:flex;
-  flex-direction:column;
-  gap:2px;
-  min-width:0;
-}
-.choiceName{
-  font-weight: 950;
-  font-size: 12px;
-  color: rgba(246,251,255,.92);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  justify-content:space-between;
+  font-weight:800;
 }
 
-/* removed the redundant “x points” line */
-.choiceMeta{ display:none; }
-
-/* make the pill clearly “points”, not “count” */
-.pointsTag{
-  margin-left:auto;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  min-width: 62px;
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.10);
-  font-weight: 950;
-  font-size: 12px;
-  color: rgba(246,251,255,.86);
-}
-.pointsTag::before{
-  content:"pts";
-  font-size:10px;
-  letter-spacing:.2px;
-  color: rgba(246,251,255,.62);
+.choice:hover{
+  background:rgba(255,255,255,.15);
 }
 
-.iconWrap{
-  width:30px;
-  height:30px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.10);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex: 0 0 auto;
-}
-.iconWrap svg{ width:18px; height:18px; }
-
-.fillCommon { fill: rgba(184,192,207,.85); }
-.fillBronze { fill: rgba(215,155,111,.90); }
-.fillSilver { fill: rgba(207,215,230,.92); }
-.fillGold { fill: rgba(247,211,122,.92); }
-.rainbowFill{ fill: url(#rb); }
-
-.strokeCommon { stroke: rgba(255,255,255,.85); }
-.strokeRare { stroke: rgba(255,255,255,.88); }
-.strokeSuper { stroke: rgba(255,255,255,.90); }
-.strokeLegend { stroke: rgba(255,255,255,.90); }
-.strokeEpic { stroke: rgba(255,255,255,.92); }
-.strokeEnch { stroke: rgba(255,255,255,.92); }
-.strokeIcon { stroke: rgba(255,255,255,.92); }
-
-.actions{ margin-top: 12px; }
-
-.resetBtn{
+.reset{
   width:100%;
-  padding: 15px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,.12);
-  background:
-    radial-gradient(900px 140px at 20% 0%, rgba(255,213,122,.14), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  color: var(--text);
-  font-weight: 980;
-  font-size: 14px;
-  letter-spacing: .2px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+  padding:12px;
+  font-weight:900;
+  border-radius:14px;
+  border:0;
+  background:linear-gradient(180deg, rgba(255,213,122,.4), rgba(255,255,255,.1));
   cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
 }
-.resetBtn:active{ transform: translateY(1px); }
-
-.tip{
-  margin: 10px 2px 0 2px;
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.35;
-}
-
-.hidden{ display:none; }
 </style>
 </head>
-
 <body>
-<div class="safeTop"></div>
 
 <div class="header">
-  <div class="container">
-    <div class="headerInner">
-      <div class="topRow">
-        <div class="brand">
-          <img src="logo.png" alt="Chief Baliman" class="logo">
-          <div class="brandText">
-            <div class="title">Booster Battle</div>
-            <div class="subLine">
-              <span class="dot"></span>
-              <span id="statusText">JavaScript active</span>
-            </div>
-            <div class="byline">
-              by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="rightTop">
-          <div class="scoreChips" aria-label="Scores">
-            <div class="chip">P1 <b id="chip1">0</b></div>
-            <div class="chip">P2 <b id="chip2">0</b></div>
-          </div>
-
-          <div class="social" aria-label="Social">
-            <a class="socialBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M7.5 2.7h9A4.8 4.8 0 0 1 21.3 7.5v9a4.8 4.8 0 0 1-4.8 4.8h-9A4.8 4.8 0 0 1 2.7 16.5v-9A4.8 4.8 0 0 1 7.5 2.7Z" stroke="rgba(246,251,255,.9)" stroke-width="1.6"/>
-                <path d="M12 16.2a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Z" stroke="rgba(246,251,255,.9)" stroke-width="1.6"/>
-                <path d="M17.4 6.8h.01" stroke="rgba(246,251,255,.9)" stroke-width="3" stroke-linecap="round"/>
-              </svg>
-            </a>
-
-            <a class="socialBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M14 3v10.1a3.9 3.9 0 1 1-3-3.8" stroke="rgba(246,251,255,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M14 3c.7 2.3 2.3 4 4.8 4.6" stroke="rgba(246,251,255,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="midRow">
-        <div class="switch" role="tablist" aria-label="Switch player">
-          <button class="seg active" id="tab1" type="button">Player 1</button>
-          <button class="seg" id="tab2" type="button">Player 2</button>
-        </div>
-        <div class="lead" id="leadText">–</div>
-      </div>
-    </div>
+  <h2>Booster Battle</h2>
+  <div class="formatSwitch">
+    <button class="formatBtn active" id="btnINT">INT</button>
+    <button class="formatBtn" id="btnJP">JP</button>
   </div>
 </div>
 
-<div class="page">
-  <div class="container">
-    <div class="panel" id="panel1" data-player="1">
-      <div class="panelHeader">
-        <div class="playerName">
-          <span>Player 1</span>
-          <span class="badge" id="lead1">–</span>
-        </div>
-        <div class="score" id="score1">0</div>
-      </div>
-
-      <div class="packInfo">
-        <div class="packTop">
-          <div class="packTitle">Booster structure</div>
-          <div class="packMini">Track only the last 3 slots</div>
-        </div>
-
-        <div class="track" aria-label="Pack timeline">
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard r" title="Rarity slot"></span>
-          <span class="dotCard r" title="Rarity slot"></span>
-          <span class="dotCard h" title="Foil slot"></span>
-        </div>
-
-        <div class="slotHint">6 Common + 3 Uncommon are 0 pts (info only)</div>
-      </div>
-
-      <div class="rows" id="rows1"></div>
+<div class="panel" id="panel1">
+  <div class="panelHeader">
+    <div>
+      <strong>Player 1</strong>
+      <span class="badge" id="badge1">–</span>
     </div>
-
-    <div class="panel hidden" id="panel2" data-player="2" style="margin-top:14px;">
-      <div class="panelHeader">
-        <div class="playerName">
-          <span>Player 2</span>
-          <span class="badge" id="lead2">–</span>
-        </div>
-        <div class="score" id="score2">0</div>
-      </div>
-
-      <div class="packInfo">
-        <div class="packTop">
-          <div class="packTitle">Booster structure</div>
-          <div class="packMini">Track only the last 3 slots</div>
-        </div>
-
-        <div class="track" aria-label="Pack timeline">
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard c" title="Common"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard u" title="Uncommon"></span>
-          <span class="dotCard r" title="Rarity slot"></span>
-          <span class="dotCard r" title="Rarity slot"></span>
-          <span class="dotCard h" title="Foil slot"></span>
-        </div>
-
-        <div class="slotHint">6 Common + 3 Uncommon are 0 pts (info only)</div>
-      </div>
-
-      <div class="rows" id="rows2"></div>
-    </div>
-
-    <div class="actions">
-      <button class="resetBtn" id="resetBtn" type="button">Reset</button>
-    </div>
-
-    <div class="tip">
-      Tip: iPhone Safari → Share → Add to Home Screen, to use it like an app.
-    </div>
+    <div class="score" id="score1">0</div>
   </div>
+
+  <div class="packInfo" id="packInfo1"></div>
+  <div id="slots1"></div>
 </div>
 
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ff5aa5"/>
-      <stop offset="22%" stop-color="#ffcd4a"/>
-      <stop offset="45%" stop-color="#34d399"/>
-      <stop offset="70%" stop-color="#60a5fa"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
-    </linearGradient>
-  </defs>
-</svg>
+<div class="panel" id="panel2">
+  <div class="panelHeader">
+    <div>
+      <strong>Player 2</strong>
+      <span class="badge" id="badge2">–</span>
+    </div>
+    <div class="score" id="score2">0</div>
+  </div>
+
+  <div class="packInfo" id="packInfo2"></div>
+  <div id="slots2"></div>
+</div>
+
+<button class="reset" id="reset">Reset</button>
 
 <script>
-const choiceSets = {
-  raritySlot: [
-    { id:"rare_normal",  label:"Rare (Normal)",        points:0,  tier:"rare",   icon:"rare" },
-    { id:"super_normal", label:"Super Rare (Normal)",  points:2,  tier:"super",  icon:"super" },
-    { id:"legend_normal",label:"Legendary (Normal)",   points:4,  tier:"legend", icon:"legend" }
-  ],
-  foilSlot: [
-    { id:"common",        label:"Common",               points:0,  tier:"common", icon:"common" },
-    { id:"uncommon",      label:"Uncommon",             points:0,  tier:"common", icon:"uncommon" },
+let format = "INT"
 
-    { id:"rare_normal",   label:"Rare (Normal)",        points:0,  tier:"rare",   icon:"rare" },
-    { id:"rare_foil",     label:"Rare (Foil)",          points:1,  tier:"rare",   icon:"rare" },
+const intlSlots = [
+  {label:"Rarity Slot 1", options:[
+    {name:"Rare", pts:0},
+    {name:"Super Rare", pts:2},
+    {name:"Legendary", pts:4}
+  ]},
+  {label:"Rarity Slot 2", options:[
+    {name:"Rare", pts:0},
+    {name:"Super Rare", pts:2},
+    {name:"Legendary", pts:4}
+  ]},
+  {label:"Foil Slot", options:[
+    {name:"Rare (Foil)", pts:1},
+    {name:"Super Rare (Foil)", pts:3},
+    {name:"Legendary (Foil)", pts:8},
+    {name:"Epic", pts:5},
+    {name:"Enchanted", pts:12},
+    {name:"Iconic", pts:25}
+  ]}
+]
 
-    { id:"super_normal",  label:"Super Rare (Normal)",  points:2,  tier:"super",  icon:"super" },
-    { id:"super_foil",    label:"Super Rare (Foil)",    points:3,  tier:"super",  icon:"super" },
-
-    { id:"legend_normal", label:"Legendary (Normal)",   points:4,  tier:"legend", icon:"legend" },
-    { id:"legend_foil",   label:"Legendary (Foil)",     points:8,  tier:"legend", icon:"legend" },
-
-    { id:"epic",          label:"Epic",                 points:5,  tier:"rainbow",icon:"epic" },
-    { id:"enchanted",     label:"Enchanted",            points:12, tier:"rainbow",icon:"enchanted" },
-    { id:"iconic",        label:"Iconic",               points:25, tier:"rainbow",icon:"iconic" }
-  ]
-};
-
-const slots = [
-  { key:"slotA", title:"Rarity slot 1", sub:"Rare / Super Rare / Legendary", set:"raritySlot" },
-  { key:"slotB", title:"Rarity slot 2", sub:"Rare / Super Rare / Legendary", set:"raritySlot" },
-  { key:"slotF", title:"Foil slot",     sub:"Any rarity possible",           set:"foilSlot" }
-];
+const jpSlots = [
+  {label:"Rare or Above", options:[
+    {name:"Rare", pts:0},
+    {name:"Super Rare", pts:2},
+    {name:"Legendary", pts:4}
+  ]},
+  {label:"Foil Slot", options:[
+    {name:"Rare (Foil)", pts:1},
+    {name:"Super Rare (Foil)", pts:3},
+    {name:"Legendary (Foil)", pts:8},
+    {name:"Epic", pts:5},
+    {name:"Enchanted", pts:12},
+    {name:"Iconic", pts:25}
+  ]}
+]
 
 let state = {
-  1: { slotA:null, slotB:null, slotF:null },
-  2: { slotA:null, slotB:null, slotF:null }
-};
-
-function addTap(el, fn){
-  el.addEventListener("click", fn);
-  el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
+  1: [],
+  2: []
 }
 
-function iconSvg(kind, tier){
-  const commonFill = 'class="fillCommon"';
-  const bronzeFill = 'class="fillBronze"';
-  const silverFill = 'class="fillSilver"';
-  const goldFill = 'class="fillGold"';
-  const rbFill = 'class="rainbowFill"';
-
-  const strokeClass = {
-    common:"strokeCommon",
-    uncommon:"strokeCommon",
-    rare:"strokeRare",
-    super:"strokeSuper",
-    legend:"strokeLegend",
-    epic:"strokeEpic",
-    enchanted:"strokeEnch",
-    iconic:"strokeIcon"
-  }[kind] || "strokeRare";
-
-  const fill = (() => {
-    if (tier === "common") return commonFill;
-    if (tier === "rare") return bronzeFill;
-    if (tier === "super") return silverFill;
-    if (tier === "legend") return goldFill;
-    return rbFill;
-  })();
-
-  if (kind === "common"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="7.5" ${fill}/>
-      <circle cx="12" cy="12" r="7.5" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  if (kind === "uncommon"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M7.2 7.2h4.6v9.6H7.2z" ${fill}/>
-      <path d="M12.2 7.2h4.6v9.6h-4.6z" ${fill}/>
-      <path d="M6.8 6.8h10.4v10.4H6.8z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  if (kind === "rare"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 5.5 19 18.5H5L12 5.5Z" ${fill}/>
-      <path d="M12 5.5 19 18.5H5L12 5.5Z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  if (kind === "super"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 4.8 19.2 12 12 19.2 4.8 12 12 4.8Z" ${fill}/>
-      <path d="M12 4.8 19.2 12 12 19.2 4.8 12 12 4.8Z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  if (kind === "legend"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 4.6 19.1 9.7 16.4 18.2H7.6L4.9 9.7 12 4.6Z" ${fill}/>
-      <path d="M12 4.6 19.1 9.7 16.4 18.2H7.6L4.9 9.7 12 4.6Z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  if (kind === "epic"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M6.2 13.2c3.2-4.8 8.4-4.8 11.6 0-1.8 3.6-4.3 5.6-5.8 5.6s-4-2-5.8-5.6Z" ${fill}/>
-      <path d="M6.2 13.2c3.2-4.8 8.4-4.8 11.6 0-1.8 3.6-4.3 5.6-5.8 5.6s-4-2-5.8-5.6Z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-      <path d="M7.2 11.2c3.2-2.8 6.4-2.8 9.6 0" class="${strokeClass}" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".55"/>
-    </svg>`;
-  }
-  if (kind === "enchanted"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <path d="M12 4.8 18.6 8.6v6.8L12 19.2 5.4 15.4V8.6L12 4.8Z" ${fill}/>
-      <path d="M12 4.8 18.6 8.6v6.8L12 19.2 5.4 15.4V8.6L12 4.8Z" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-      <path d="M12 8.6 14.4 12 12 15.4 9.6 12 12 8.6Z" fill="rgba(255,255,255,.22)"/>
-    </svg>`;
-  }
-  if (kind === "iconic"){
-    return `<svg viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="7.6" ${fill}/>
-      <circle cx="12" cy="12" r="4.3" fill="rgba(0,0,0,.18)"/>
-      <circle cx="12" cy="12" r="7.6" class="${strokeClass}" stroke-width="1.4" fill="none"/>
-    </svg>`;
-  }
-  return "";
+function build(){
+  const slots = format==="INT" ? intlSlots : jpSlots
+  state={1:new Array(slots.length).fill(null),2:new Array(slots.length).fill(null)}
+  buildPlayer(1,slots)
+  buildPlayer(2,slots)
+  updateScores()
 }
 
-function buildSlots(player){
-  const wrap = document.getElementById("rows"+player);
-  wrap.innerHTML = "";
+function buildPlayer(player,slots){
+  const slotWrap = document.getElementById("slots"+player)
+  const info = document.getElementById("packInfo"+player)
+  slotWrap.innerHTML=""
 
-  slots.forEach(slot => {
-    const box = document.createElement("div");
-    box.className = "slot";
-    box.setAttribute("data-slot", slot.key);
-
-    box.innerHTML = `
-      <div class="slotHead">
-        <div>
-          <div class="slotTitle">${slot.title}</div>
-          <div class="slotSub">${slot.sub}</div>
-        </div>
-        <button class="clearBtn" type="button" aria-label="Clear slot">Clear</button>
-      </div>
-      <div class="choiceGrid"></div>
-    `;
-
-    const grid = box.querySelector(".choiceGrid");
-    const clearBtn = box.querySelector(".clearBtn");
-
-    const choices = choiceSets[slot.set];
-    choices.forEach(ch => {
-      const el = document.createElement("div");
-      el.className = "choice";
-      el.setAttribute("data-choice", ch.id);
-
-      el.innerHTML = `
-        <div class="iconWrap">${iconSvg(ch.icon, ch.tier)}</div>
-        <div class="choiceLeft">
-          <div class="choiceName">${ch.label}</div>
-        </div>
-        <div class="pointsTag">${ch.points}</div>
-      `;
-
-      addTap(el, () => {
-        const current = state[player][slot.key];
-        state[player][slot.key] = (current && current.id === ch.id) ? null : ch;
-        syncSelected(player, slot.key);
-        render();
-      });
-
-      grid.appendChild(el);
-    });
-
-    addTap(clearBtn, () => {
-      state[player][slot.key] = null;
-      syncSelected(player, slot.key);
-      render();
-    });
-
-    wrap.appendChild(box);
-  });
-
-  syncAllSelected(player);
-}
-
-function syncSelected(player, slotKey){
-  const wrap = document.getElementById("rows"+player);
-  const slotEl = wrap.querySelector(`.slot[data-slot="${slotKey}"]`);
-  if (!slotEl) return;
-
-  const selected = state[player][slotKey];
-  slotEl.querySelectorAll(".choice").forEach(opt => {
-    const id = opt.getAttribute("data-choice");
-    opt.classList.toggle("selected", !!(selected && selected.id === id));
-  });
-}
-function syncAllSelected(player){ slots.forEach(s => syncSelected(player, s.key)); }
-
-function scoreOf(player){
-  let s = 0;
-  slots.forEach(slot => {
-    const v = state[player][slot.key];
-    if (v) s += v.points;
-  });
-  return s;
-}
-
-function setLeads(s1, s2){
-  const b1 = document.getElementById("lead1");
-  const b2 = document.getElementById("lead2");
-  const leadText = document.getElementById("leadText");
-
-  if (s1 === 0 && s2 === 0){
-    b1.textContent = "–";
-    b2.textContent = "–";
-    leadText.textContent = "–";
-    return;
+  if(format==="INT"){
+    info.innerHTML="12 cards • Track last 3 slots only"
+  }else{
+    info.innerHTML="6 cards • Track Rare+ and Foil only"
   }
-  if (s1 > s2){
-    b1.textContent = "leads";
-    b2.textContent = "behind";
-    leadText.textContent = "Player 1 leads";
-  } else if (s2 > s1){
-    b2.textContent = "leads";
-    b1.textContent = "behind";
-    leadText.textContent = "Player 2 leads";
-  } else {
-    b1.textContent = "tied";
-    b2.textContent = "tied";
-    leadText.textContent = "Tie";
+
+  slots.forEach((slot,index)=>{
+    const title=document.createElement("div")
+    title.innerHTML="<strong>"+slot.label+"</strong>"
+    slotWrap.appendChild(title)
+
+    slot.options.forEach(opt=>{
+      const el=document.createElement("div")
+      el.className="choice"
+      el.innerHTML=`${opt.name}<span>${opt.pts} pts</span>`
+      el.onclick=()=>{
+        state[player][index]=opt.pts
+        updateScores()
+      }
+      slotWrap.appendChild(el)
+    })
+  })
+}
+
+function updateScores(){
+  const s1=state[1].reduce((a,b)=>a+(b||0),0)
+  const s2=state[2].reduce((a,b)=>a+(b||0),0)
+
+  document.getElementById("score1").textContent=s1
+  document.getElementById("score2").textContent=s2
+
+  const p1=document.getElementById("panel1")
+  const p2=document.getElementById("panel2")
+
+  p1.classList.remove("winner")
+  p2.classList.remove("winner")
+
+  if(s1>0||s2>0){
+    if(s1>s2){
+      p1.classList.add("winner")
+      badge1.textContent="WINNER"
+      badge2.textContent=""
+    }else if(s2>s1){
+      p2.classList.add("winner")
+      badge2.textContent="WINNER"
+      badge1.textContent=""
+    }else{
+      badge1.textContent="TIE"
+      badge2.textContent="TIE"
+    }
+  }else{
+    badge1.textContent="–"
+    badge2.textContent="–"
   }
 }
 
-function render(){
-  const s1 = scoreOf(1);
-  const s2 = scoreOf(2);
-
-  document.getElementById("score1").textContent = String(s1);
-  document.getElementById("score2").textContent = String(s2);
-  document.getElementById("chip1").textContent = String(s1);
-  document.getElementById("chip2").textContent = String(s2);
-
-  setLeads(s1, s2);
+document.getElementById("btnINT").onclick=()=>{
+  format="INT"
+  btnINT.classList.add("active")
+  btnJP.classList.remove("active")
+  build()
 }
 
-function resetAll(){
-  state = {
-    1: { slotA:null, slotB:null, slotF:null },
-    2: { slotA:null, slotB:null, slotF:null }
-  };
-  syncAllSelected(1);
-  syncAllSelected(2);
-  render();
+document.getElementById("btnJP").onclick=()=>{
+  format="JP"
+  btnJP.classList.add("active")
+  btnINT.classList.remove("active")
+  build()
 }
 
-function showPlayer(p){
-  const a = document.getElementById("panel1");
-  const b = document.getElementById("panel2");
-  const t1 = document.getElementById("tab1");
-  const t2 = document.getElementById("tab2");
+document.getElementById("reset").onclick=build
 
-  if (p === 1){
-    a.classList.remove("hidden");
-    b.classList.add("hidden");
-    t1.classList.add("active");
-    t2.classList.remove("active");
-  } else {
-    b.classList.remove("hidden");
-    a.classList.add("hidden");
-    t2.classList.add("active");
-    t1.classList.remove("active");
-  }
-}
-
-function bind(){
-  addTap(document.getElementById("resetBtn"), resetAll);
-  addTap(document.getElementById("tab1"), () => showPlayer(1));
-  addTap(document.getElementById("tab2"), () => showPlayer(2));
-}
-
-buildSlots(1);
-buildSlots(2);
-bind();
-render();
-showPlayer(1);
-
-document.getElementById("statusText").textContent = "JavaScript active";
+build()
 </script>
-
 </body>
 </html>
