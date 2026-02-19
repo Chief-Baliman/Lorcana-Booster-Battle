@@ -5,98 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Lorcana Battle">
+  <meta name="apple-mobile-web-app-title" content="Booster Battle">
   <meta name="format-detection" content="telephone=no">
-  <title>Lorcana Booster Battle</title>
+  <title>Booster Battle (inoffiziell) – Disney Lorcana TCG</title>
 
   <style>
     :root{
+      --bg:#06111D;
       --text:#F6FBFF;
-      --muted:rgba(246,251,255,.75);
+      --muted:rgba(246,251,255,.70);
+
+      --glass:rgba(12,18,40,.56);
+      --glass2:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.12);
 
       --shadow:0 18px 48px rgba(0,0,0,.42);
-      --radius:20px;
 
       --green:#2FD37A;
       --red:#FF4D6D;
-
       --gold:#F7D37A;
-      --chip:rgba(255,255,255,.12);
 
-      --panel:rgba(12,18,40,.60);
-      --stroke:rgba(255,255,255,.12);
+      --radius:20px;
+      --radius2:16px;
+
+      --max:980px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
-
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text);
-
-      background-color:#06111D;
+      background-color:var(--bg);
       background-image:
-        radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.55), transparent 55%),
-        radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.28), transparent 55%),
-        radial-gradient(900px 700px at 30% 110%, rgba(255,120,180,.18), transparent 60%),
+        radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.48), transparent 55%),
+        radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.24), transparent 55%),
+        radial-gradient(900px 700px at 30% 110%, rgba(255,120,180,.16), transparent 60%),
         radial-gradient(700px 500px at 85% 95%, rgba(130,255,210,.12), transparent 60%);
       background-repeat:no-repeat;
       background-attachment:fixed;
 
-      padding:0 14px env(safe-area-inset-bottom) 14px;
+      padding:0 14px;
+      -webkit-font-smoothing:antialiased;
+      -webkit-text-size-adjust:100%;
+      overflow-x:hidden;
     }
 
-    /* Sparkles (dezent) */
     body::before{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
       z-index:0;
-
       background-image:
-        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
-        radial-gradient(2px 2px at 28% 42%, rgba(255,255,255,.22), transparent 60%),
-        radial-gradient(2px 2px at 43% 14%, rgba(255,213,122,.26), transparent 60%),
-        radial-gradient(2px 2px at 62% 32%, rgba(140,214,255,.22), transparent 60%),
-        radial-gradient(2px 2px at 78% 18%, rgba(255,255,255,.20), transparent 60%),
-        radial-gradient(2px 2px at 86% 52%, rgba(255,213,122,.18), transparent 60%),
-        radial-gradient(2px 2px at 18% 76%, rgba(255,255,255,.16), transparent 60%),
-        radial-gradient(2px 2px at 55% 84%, rgba(140,214,255,.16), transparent 60%),
-        radial-gradient(2px 2px at 90% 86%, rgba(255,255,255,.14), transparent 60%);
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(2px 2px at 28% 42%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(2px 2px at 43% 14%, rgba(255,213,122,.22), transparent 60%),
+        radial-gradient(2px 2px at 62% 32%, rgba(140,214,255,.18), transparent 60%),
+        radial-gradient(2px 2px at 78% 18%, rgba(255,255,255,.16), transparent 60%),
+        radial-gradient(2px 2px at 86% 52%, rgba(255,213,122,.14), transparent 60%),
+        radial-gradient(2px 2px at 18% 76%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(2px 2px at 55% 84%, rgba(140,214,255,.12), transparent 60%),
+        radial-gradient(2px 2px at 90% 86%, rgba(255,255,255,.10), transparent 60%);
       opacity:.55;
       animation:sparkleFloat 10s ease-in-out infinite;
       transform: translate3d(0,0,0);
     }
 
     @keyframes sparkleFloat{
-      0%   { transform: translate3d(0,0,0); opacity:.45; }
-      50%  { transform: translate3d(0,-10px,0); opacity:.65; }
-      100% { transform: translate3d(0,0,0); opacity:.45; }
+      0%   { transform: translate3d(0,0,0); opacity:.42; }
+      50%  { transform: translate3d(0,-10px,0); opacity:.62; }
+      100% { transform: translate3d(0,0,0); opacity:.42; }
     }
 
     .safeTop{height: env(safe-area-inset-top);}
-    .header, .page{ position:relative; z-index:1; }
 
-    /* Sticky Header (stabil) */
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:12px 0 calc(22px + env(safe-area-inset-bottom)) 0;
+    }
+
     .header{
       position:sticky;
       top:0;
-      z-index:999;
+      z-index:20;
       padding:12px 0 10px 0;
-
-      background:
-        linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
-      -webkit-backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .headerInner{
       border:1px solid rgba(255,255,255,.08);
-      background:var(--panel);
+      background:var(--glass);
       border-radius:20px;
-      padding:12px;
+      padding:12px 12px;
       box-shadow:0 14px 34px rgba(0,0,0,.40);
     }
 
@@ -111,31 +118,31 @@
       display:flex;
       align-items:center;
       gap:12px;
-      min-width: 260px;
+      min-width: 220px;
     }
 
     .logo{
-      width:42px;
-      height:42px;
-      max-width:42px;
-      max-height:42px;
+      width:38px;
+      height:38px;
+      max-width:38px;
+      max-height:38px;
       object-fit:contain;
       border-radius:12px;
       display:block;
       border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 10px 22px rgba(0,0,0,.28);
-      background: rgba(255,255,255,.06);
+      background:rgba(255,255,255,.05);
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
     }
 
     .brandText .title{
-      font-size:16px;
+      font-size:15px;
       font-weight:950;
       letter-spacing:.2px;
       line-height:1.1;
       margin:0;
     }
 
-    .sub{
+    .subline{
       display:flex;
       align-items:center;
       gap:8px;
@@ -148,13 +155,17 @@
     .dot{
       width:7px;height:7px;border-radius:99px;background:var(--green);
       box-shadow:0 0 0 4px rgba(54,210,123,.12);
-      flex:0 0 auto;
+      flex:0 0 7px;
     }
 
     .byline{
-      margin-top:4px;
+      margin-top:6px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
       font-size:11px;
-      color:rgba(246,251,255,.65);
+      color:rgba(246,251,255,.62);
     }
 
     .handle{
@@ -163,14 +174,14 @@
       font-weight:950;
     }
 
-    .handle:hover{ text-decoration:underline; }
     .handle:active{ opacity:.8; }
 
     .rightTop{
       display:flex;
       align-items:center;
       gap:10px;
-      flex:0 0 auto;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
     .scoreChips{
@@ -183,13 +194,13 @@
       background:rgba(255,255,255,.10);
       border:1px solid rgba(255,255,255,.14);
       border-radius:999px;
-      padding:9px 10px;
+      padding:8px 10px;
       font-size:12px;
-      color:rgba(246,251,255,.78);
+      color:rgba(246,251,255,.82);
       display:flex;
       align-items:center;
       gap:8px;
-      box-shadow:0 10px 22px rgba(0,0,0,.22);
+      user-select:none;
     }
 
     .chip b{
@@ -205,38 +216,24 @@
       align-items:center;
     }
 
-    .socialBtn{
-      width:36px;
+    .iconBtn{
+      width:38px;
       height:36px;
-      border-radius:14px;
       display:flex;
       align-items:center;
       justify-content:center;
-      text-decoration:none;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
       color:rgba(246,251,255,.92);
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow:0 12px 26px rgba(0,0,0,.24);
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      text-decoration:none;
+      box-shadow: 0 14px 26px rgba(0,0,0,.18);
       -webkit-tap-highlight-color: transparent;
+      user-select:none;
     }
 
-    .socialBtn:hover{
-      background: rgba(255,255,255,.11);
-      border-color: rgba(255,255,255,.20);
-      transform: translateY(-1px);
-    }
-
-    .socialBtn:active{
-      transform: translateY(0px) scale(.98);
-    }
-
-    .socialBtn:focus-visible{
-      outline:2px solid rgba(247,211,122,.55);
-      outline-offset:2px;
-    }
-
-    .socialBtn svg{ display:block; }
+    .iconBtn svg{ width:18px; height:18px; display:block; opacity:.95; }
+    .iconBtn:active{ transform: translateY(1px) scale(.99); }
 
     .midRow{
       margin-top:10px;
@@ -254,7 +251,7 @@
       padding:4px;
       gap:4px;
       flex:1;
-      max-width: 260px;
+      max-width: 280px;
     }
 
     .seg{
@@ -272,17 +269,20 @@
     }
 
     .seg.active{
-      background:linear-gradient(180deg, rgba(255,213,122,.28), rgba(255,255,255,.06));
-      border:1px solid rgba(255,213,122,.25);
+      background:linear-gradient(180deg, rgba(255,213,122,.26), rgba(255,255,255,.06));
+      border:1px solid rgba(255,213,122,.22);
       color:var(--text);
     }
 
-    /* Page */
-    .page{
-      padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
+    .leadText{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      user-select:none;
     }
 
     .card{
+      margin-top:12px;
       background:
         radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.10), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
@@ -310,12 +310,13 @@
       gap:10px;
     }
 
-    .icon{
+    .pillDot{
       width:22px;height:22px;border-radius:9px;
       background:
         radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
         linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.10);
+      flex:0 0 22px;
     }
 
     .badge{
@@ -325,11 +326,13 @@
       background:rgba(108,168,255,.14);
       border:1px solid rgba(108,168,255,.22);
       color:rgba(234,240,255,.88);
+      user-select:none;
     }
 
     .score{
       font-size:34px;
       font-weight:980;
+      user-select:none;
     }
 
     .rows{
@@ -352,6 +355,7 @@
       display:flex;
       align-items:center;
       gap:10px;
+      user-select:none;
     }
 
     .section::after{
@@ -365,7 +369,7 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:12px;
       padding:13px;
       border-radius:18px;
       background:
@@ -378,14 +382,38 @@
       display:flex;
       flex-direction:column;
       align-items:flex-start;
-      gap:4px;
-      min-width: 190px;
+      gap:6px;
+      min-width: 200px;
     }
 
     .rTitle{
+      display:flex;
+      align-items:center;
+      gap:10px;
       font-size:13px;
       font-weight:950;
       color:rgba(234,240,255,.92);
+    }
+
+    .rIcon{
+      width:22px;
+      height:22px;
+      border-radius:10px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      flex:0 0 22px;
+    }
+
+    .rIcon svg{
+      width:14px;
+      height:14px;
+      display:block;
+      opacity:.95;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.20));
     }
 
     .meta{
@@ -394,6 +422,7 @@
       gap:8px;
       font-size:12px;
       color:var(--muted);
+      flex-wrap:wrap;
     }
 
     .tag{
@@ -401,12 +430,14 @@
       border-radius:999px;
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.08);
+      user-select:none;
     }
 
     .controls{
       display:flex;
       align-items:center;
       gap:10px;
+      user-select:none;
     }
 
     .count{
@@ -431,16 +462,15 @@
       align-items:center;
       justify-content:center;
       box-shadow: 0 14px 26px rgba(0,0,0,.30);
+      user-select:none;
     }
 
     .btn:active{transform: translateY(1px) scale(.99)}
-
     .plus{
       background:
         radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
         linear-gradient(180deg, rgba(47,211,122,1), rgba(47,211,122,.78));
     }
-
     .minus{
       background:
         radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.40), transparent 60%),
@@ -467,31 +497,144 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
     }
-
     .resetBtn:active{transform: translateY(1px)}
 
+    .footer{
+      margin-top:10px;
+      padding:10px 2px 0 2px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     .tip{
-      margin:10px 2px 0 2px;
       font-size:11px;
       color:var(--muted);
       line-height:1.35;
+      margin:0;
     }
+
+    .legalMini{
+      font-size:11px;
+      color:rgba(246,251,255,.58);
+      line-height:1.35;
+      margin:0;
+    }
+
+    .linkBtn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:rgba(246,251,255,.90);
+      border-radius:14px;
+      padding:9px 10px;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 14px 26px rgba(0,0,0,.14);
+      user-select:none;
+    }
+    .linkBtn:active{ transform: translateY(1px) scale(.99); }
 
     .hidden{display:none}
 
-    /* Desktop Feinschliff */
-    @media (min-width: 980px){
-      .page{ max-width: 980px; margin: 0 auto; }
-      .headerInner{ max-width: 980px; margin: 0 auto; }
+    .modalBackdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      z-index:999;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      padding:14px;
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
 
-    /* Wenn es sehr eng wird, darf oben umbrechen */
-    @media (max-width: 420px){
-      .topRow{ align-items:flex-start; }
-      .rightTop{ gap:8px; }
-      .chip{ padding:8px 9px; }
-      .socialBtn{ width:34px; height:34px; border-radius:13px; }
+    .modalBackdrop.show{ display:flex; }
+
+    .modal{
+      width:min(var(--max), 100%);
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(10,14,28,.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+      max-height: 80vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .modalTop{
+      padding:14px 14px 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), transparent);
+    }
+
+    .modalTitle{
+      font-size:13px;
+      font-weight:950;
+      margin:0;
+      color:rgba(246,251,255,.92);
+    }
+
+    .closeBtn{
+      width:38px;
+      height:36px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.08);
+      color:rgba(246,251,255,.92);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:950;
+      font-size:16px;
+    }
+    .closeBtn:active{ transform: translateY(1px) scale(.99); }
+
+    .modalBody{
+      padding:12px 14px 16px 14px;
+      overflow:auto;
+      color:rgba(246,251,255,.82);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .modalBody a{
+      color:var(--gold);
+      text-decoration:none;
+      font-weight:950;
+      word-break:break-word;
+    }
+
+    .note{
+      margin-top:10px;
+      padding:10px 10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:rgba(246,251,255,.76);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    @media (max-width: 560px){
       .brand{ min-width: 0; }
+      .rightTop{ gap:8px; }
+      .chip{ padding:7px 9px; }
+      .switch{ max-width: 240px; }
+      .left{ min-width: 0; }
     }
   </style>
 </head>
@@ -499,62 +642,65 @@
 <body>
   <div class="safeTop"></div>
 
-  <div class="header">
-    <div class="headerInner">
-      <div class="topRow">
-        <div class="brand">
-          <img src="logo.png" alt="Chief Baliman Logo" class="logo">
-          <div class="brandText">
-            <div class="title">Lorcana Booster Battle</div>
+  <div class="wrap">
+    <div class="header">
+      <div class="headerInner">
+        <div class="topRow">
+          <div class="brand">
+            <img src="logo.png" alt="Chief Baliman Logo" class="logo">
+            <div class="brandText">
+              <div class="title">Booster Battle</div>
+              <div class="subline">
+                <span class="dot"></span>
+                <span id="statusText">JavaScript aktiv</span>
+              </div>
+              <div class="byline">
+                by
+                <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
+                <button class="linkBtn" id="infoBtn" type="button" aria-label="Info und Credits">Info</button>
+              </div>
+            </div>
+          </div>
 
-            <div class="sub">
-              <span class="dot"></span>
-              <span id="statusText">JavaScript aktiv</span>
+          <div class="rightTop">
+            <div class="scoreChips" aria-label="Scores">
+              <div class="chip">S1 <b id="chip1">0</b></div>
+              <div class="chip">S2 <b id="chip2">0</b></div>
             </div>
 
-            <div class="byline">
-              by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
+            <div class="social" aria-label="Social Links">
+              <a class="iconBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram öffnen">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7.5 2.8h9A4.7 4.7 0 0 1 21.2 7.5v9a4.7 4.7 0 0 1-4.7 4.7h-9A4.7 4.7 0 0 1 2.8 16.5v-9A4.7 4.7 0 0 1 7.5 2.8Z" stroke="rgba(246,251,255,.92)" stroke-width="1.7"/>
+                  <path d="M12 8.4a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2Z" stroke="rgba(246,251,255,.92)" stroke-width="1.7"/>
+                  <path d="M17.3 6.9h.01" stroke="rgba(246,251,255,.92)" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+              </a>
+
+              <a class="iconBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok öffnen">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M14 3v10.2a4.6 4.6 0 1 1-3.2-4.4" stroke="rgba(246,251,255,.92)" stroke-width="1.7" stroke-linecap="round"/>
+                  <path d="M14 6.2c1 2.3 2.8 3.7 5.2 3.9" stroke="rgba(246,251,255,.92)" stroke-width="1.7" stroke-linecap="round"/>
+                </svg>
+              </a>
             </div>
           </div>
         </div>
 
-        <div class="rightTop">
-          <div class="scoreChips" aria-label="Scores">
-            <div class="chip">S1 <b id="chip1">0</b></div>
-            <div class="chip">S2 <b id="chip2">0</b></div>
+        <div class="midRow">
+          <div class="switch" role="tablist" aria-label="Spieler wechseln">
+            <button class="seg active" id="tab1" type="button">Spieler 1</button>
+            <button class="seg" id="tab2" type="button">Spieler 2</button>
           </div>
-
-          <div class="social" aria-label="Social Links">
-            <a class="socialBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                <path fill="currentColor" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9A3.5 3.5 0 0 0 20 16.5v-9A3.5 3.5 0 0 0 16.5 4h-9Zm10.25 1.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
-              </svg>
-            </a>
-
-            <a class="socialBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                <path fill="currentColor" d="M16.6 3c.5 2.9 2.1 4.7 4.4 5v3.1c-1.7.1-3.2-.4-4.4-1.2v7.1c0 3.8-3.1 6.9-6.9 6.9S3 20.8 3 17s3.1-6.9 6.9-6.9c.4 0 .8 0 1.2.1v3.4c-.4-.1-.7-.2-1.2-.2-1.9 0-3.5 1.6-3.5 3.5S8 20.4 9.9 20.4s3.6-1.4 3.6-4V3h3.1Z"/>
-              </svg>
-            </a>
-          </div>
+          <div class="leadText" id="leadText">–</div>
         </div>
-      </div>
-
-      <div class="midRow">
-        <div class="switch" role="tablist" aria-label="Spieler wechseln">
-          <button class="seg active" id="tab1" type="button">Spieler 1</button>
-          <button class="seg" id="tab2" type="button">Spieler 2</button>
-        </div>
-        <div class="sub" id="leadText">–</div>
       </div>
     </div>
-  </div>
 
-  <div class="page">
     <div class="card" id="card1" data-player="1">
       <div class="cardHeader">
         <div class="playerName">
-          <span class="icon"></span>
+          <span class="pillDot"></span>
           <span>Spieler 1</span>
           <span class="badge" id="lead1">–</span>
         </div>
@@ -566,7 +712,7 @@
     <div class="card hidden" id="card2" data-player="2">
       <div class="cardHeader">
         <div class="playerName">
-          <span class="icon"></span>
+          <span class="pillDot"></span>
           <span>Spieler 2</span>
           <span class="badge" id="lead2">–</span>
         </div>
@@ -579,7 +725,41 @@
       <button class="resetBtn" id="resetBtn" type="button">Reset</button>
     </div>
 
-    <div class="tip">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</div>
+    <div class="footer">
+      <p class="tip">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</p>
+      <p class="legalMini">Inoffizielles Fan-Tool für <em>Disney Lorcana TCG</em>. Keine Verbindung zu Disney oder Ravensburger.</p>
+    </div>
+  </div>
+
+  <div class="modalBackdrop" id="modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalTop">
+        <p class="modalTitle" id="modalTitle">Credits und Hinweis</p>
+        <button class="closeBtn" id="closeModal" type="button" aria-label="Schließen">×</button>
+      </div>
+      <div class="modalBody">
+        <div class="note">
+          Dieses Tool ist kostenlos nutzbar und ist kein offizielles Produkt.
+        </div>
+
+        <p style="margin-top:12px;margin-bottom:10px;">
+          "This website uses trademarks and/or copyrights associated with Disney Lorcana TCG, used under Ravensburger’s Community Code Policy (https://cdn.ravensburger.com/lorcana/community-code-en). We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Disney or Ravensburger. For more information about Disney Lorcana TCG, visit https://www.disneylorcana.com/en-US/.”
+        </p>
+
+        <p style="margin:0;">
+          Policy:
+          <a href="https://cdn.ravensburger.com/lorcana/community-code-en" target="_blank" rel="noopener">Ravensburger Community Code</a>
+        </p>
+        <p style="margin:6px 0 0 0;">
+          Offizielle Seite:
+          <a href="https://www.disneylorcana.com/en-US/" target="_blank" rel="noopener">disneylorcana.com</a>
+        </p>
+
+        <div class="note" style="margin-top:12px;">
+          Hinweis: Diese Web-App enthält keine offiziellen Disney/Ravensburger-Logos oder -Grafiken. Die kleinen Symbole in der Liste sind eigene, generische Icons.
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -603,19 +783,60 @@
       { title: "High Tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
     ];
 
+    function iconSvg(kind){
+      const stroke = 'rgba(246,251,255,.92)';
+      const gold = 'rgba(247,211,122,.92)';
+      switch(kind){
+        case "common":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="7" stroke="${stroke}" stroke-width="1.8"/>
+          </svg>`;
+        case "rare":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4 20 20H4L12 4Z" stroke="${stroke}" stroke-width="1.8" />
+          </svg>`;
+        case "super":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3 21 12 12 21 3 12 12 3Z" stroke="${stroke}" stroke-width="1.8"/>
+          </svg>`;
+        case "legendary":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4 18.5 9v8L12 20 5.5 17V9L12 4Z" stroke="${gold}" stroke-width="1.8"/>
+          </svg>`;
+        case "epic":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4.2 14.7 9.3 20.4 10.1 16.3 14.0 17.3 19.6 12 17.0 6.7 19.6 7.7 14.0 3.6 10.1 9.3 9.3 12 4.2Z" stroke="${gold}" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>`;
+        case "enchanted":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5 19 9.5v5L12 19 5 14.5v-5L12 5Z" stroke="${stroke}" stroke-width="1.8"/>
+            <path d="M12 8.2 13.2 11 16 12.2 13.2 13.4 12 16.2 10.8 13.4 8 12.2 10.8 11 12 8.2Z" fill="${gold}" opacity="0.9"/>
+          </svg>`;
+        case "iconic":
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="7.2" stroke="${gold}" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="2.2" fill="${stroke}" opacity="0.95"/>
+          </svg>`;
+        default:
+          return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" rx="3" stroke="${stroke}" stroke-width="1.8"/>
+          </svg>`;
+      }
+    }
+
     const rarities = [
-      { id:"common_uncommon",  name:"Common & Uncommon",     points:0,  group:"0 Pkt" },
-      { id:"rare_normal",      name:"Rare (Normal)",         points:0,  group:"0 Pkt" },
+      { id:"common_uncommon",  name:"Common & Uncommon", points:0,  group:"0 Pkt", icon:"common" },
+      { id:"rare_normal",      name:"Rare (Normal)",     points:0,  group:"0 Pkt", icon:"rare" },
 
-      { id:"rare_foil",        name:"Rare (Foil)",           points:1,  group:"Rare" },
-      { id:"super_rare_normal",name:"Super Rare (Normal)",   points:2,  group:"Rare" },
-      { id:"super_rare_foil",  name:"Super Rare (Foil)",     points:3,  group:"Rare" },
+      { id:"rare_foil",         name:"Rare (Foil)",         points:1, group:"Rare", icon:"rare" },
+      { id:"super_rare_normal", name:"Super Rare (Normal)", points:2, group:"Rare", icon:"super" },
+      { id:"super_rare_foil",   name:"Super Rare (Foil)",   points:3, group:"Rare", icon:"super" },
 
-      { id:"legendary_normal", name:"Legendary (Normal)",    points:4,  group:"High" },
-      { id:"epic",             name:"Epic",                  points:5,  group:"High" },
-      { id:"legendary_foil",   name:"Legendary (Foil)",      points:8,  group:"High" },
-      { id:"enchanted",        name:"Enchanted",             points:12, group:"High" },
-      { id:"iconic",           name:"Iconic",                points:25, group:"High" }
+      { id:"legendary_normal",  name:"Legendary (Normal)",  points:4, group:"High", icon:"legendary" },
+      { id:"epic",              name:"Epic",                points:5, group:"High", icon:"epic" },
+      { id:"legendary_foil",    name:"Legendary (Foil)",    points:8, group:"High", icon:"legendary" },
+      { id:"enchanted",         name:"Enchanted",           points:12,group:"High", icon:"enchanted" },
+      { id:"iconic",            name:"Iconic",              points:25,group:"High", icon:"iconic" }
     ];
 
     const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
@@ -624,11 +845,6 @@
       1: Object.fromEntries(rarities.map(r => [r.id, 0])),
       2: Object.fromEntries(rarities.map(r => [r.id, 0]))
     };
-
-    function addTap(el, fn){
-      el.addEventListener("click", fn);
-      el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
-    }
 
     function buildRows(player){
       const wrap = document.getElementById("rows"+player);
@@ -650,7 +866,10 @@
 
           row.innerHTML = `
             <div class="left">
-              <div class="rTitle">${r.name}</div>
+              <div class="rTitle">
+                <span class="rIcon">${iconSvg(r.icon)}</span>
+                <span>${r.name}</span>
+              </div>
               <div class="meta">
                 <span class="tag">${tagText}</span>
                 <span>${r.group}</span>
@@ -668,13 +887,13 @@
           const plus = row.querySelector(".plus");
           const minus = row.querySelector(".minus");
 
-          addTap(plus, () => {
+          plus.addEventListener("click", () => {
             state[player][r.id] += 1;
             countEl.textContent = String(state[player][r.id]);
             render();
           });
 
-          addTap(minus, () => {
+          minus.addEventListener("click", () => {
             state[player][r.id] = Math.max(0, state[player][r.id] - 1);
             countEl.textContent = String(state[player][r.id]);
             render();
@@ -685,7 +904,9 @@
 
     function scoreOf(player){
       let s = 0;
-      rarities.forEach(r => { s += state[player][r.id] * r.points; });
+      for (const r of rarities){
+        s += state[player][r.id] * r.points;
+      }
       return s;
     }
 
@@ -728,12 +949,13 @@
     }
 
     function resetAll(){
-      [1,2].forEach(p => {
-        rarities.forEach(r => { state[p][r.id] = 0; });
-
-        const rows = document.getElementById("rows"+p).querySelectorAll(".row");
-        rows.forEach(row => row.querySelector(".count").textContent = "0");
-      });
+      for (const p of [1,2]){
+        for (const r of rarities){
+          state[p][r.id] = 0;
+        }
+        const rows = document.getElementById("rows"+p).querySelectorAll(".row .count");
+        rows.forEach(el => el.textContent = "0");
+      }
       render();
     }
 
@@ -756,14 +978,37 @@
       }
     }
 
+    const modal = document.getElementById("modal");
+    const infoBtn = document.getElementById("infoBtn");
+    const closeModal = document.getElementById("closeModal");
+
+    function openModal(){
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function hideModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    infoBtn.addEventListener("click", openModal);
+    closeModal.addEventListener("click", hideModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) hideModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("show")) hideModal();
+    });
+
     buildRows(1);
     buildRows(2);
     render();
     showPlayer(1);
 
-    addTap(document.getElementById("resetBtn"), resetAll);
-    addTap(document.getElementById("tab1"), () => showPlayer(1));
-    addTap(document.getElementById("tab2"), () => showPlayer(2));
+    document.getElementById("resetBtn").addEventListener("click", resetAll);
+    document.getElementById("tab1").addEventListener("click", () => showPlayer(1));
+    document.getElementById("tab2").addEventListener("click", () => showPlayer(2));
 
     document.getElementById("statusText").textContent = "JavaScript aktiv";
   </script>
