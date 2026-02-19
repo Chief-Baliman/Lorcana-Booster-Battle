@@ -1,745 +1,771 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lorcana Battle">
-<meta name="format-detection" content="telephone=no">
-<title>Lorcana Booster Battle</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lorcana Battle">
+  <meta name="format-detection" content="telephone=no">
+  <title>Lorcana Booster Battle</title>
 
-<style>
-:root{
-  --bg1:#07121F;
-  --bg2:#0B2A3A;
+  <style>
+    :root{
+      --text:#F6FBFF;
+      --muted:rgba(246,251,255,.75);
 
-  --stroke:rgba(255,255,255,.14);
-  --text:#F6FBFF;
-  --muted:rgba(246,251,255,.75);
+      --shadow:0 18px 48px rgba(0,0,0,.42);
+      --radius:20px;
 
-  --shadow:0 18px 48px rgba(0,0,0,.42);
+      --green:#2FD37A;
+      --red:#FF4D6D;
 
-  --radius:20px;
-  --radius2:16px;
+      --gold:#F7D37A;
+      --chip:rgba(255,255,255,.12);
 
-  --green:#2FD37A;
-  --red:#FF4D6D;
+      --panel:rgba(12,18,40,.60);
+      --stroke:rgba(255,255,255,.12);
+    }
 
-  --gold:#F7D37A;
-  --gold2:#E7B84F;
+    *{box-sizing:border-box}
+    html,body{height:100%}
 
-  --chip:rgba(255,255,255,.12);
-}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  color:var(--text);
+      background-color:#06111D;
+      background-image:
+        radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.55), transparent 55%),
+        radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.28), transparent 55%),
+        radial-gradient(900px 700px at 30% 110%, rgba(255,120,180,.18), transparent 60%),
+        radial-gradient(700px 500px at 85% 95%, rgba(130,255,210,.12), transparent 60%);
+      background-repeat:no-repeat;
+      background-attachment:fixed;
 
-  background-color:#06111D;
-  background-image:
-    radial-gradient(900px 700px at 15% -10%, rgba(140,214,255,.55), transparent 55%),
-    radial-gradient(900px 700px at 95% 10%, rgba(255,213,122,.28), transparent 55%),
-    radial-gradient(900px 700px at 30% 110%, rgba(255,120,180,.18), transparent 60%),
-    radial-gradient(700px 500px at 85% 95%, rgba(130,255,210,.12), transparent 60%);
-  background-repeat:no-repeat;
-  background-attachment:fixed;
+      padding:0 14px env(safe-area-inset-bottom) 14px;
+    }
 
-  padding:0 14px env(safe-area-inset-bottom) 14px;
-}
-  
+    /* Sparkles (dezent) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
 
-/* Entfernt die “bläuliche Kante” unten:
-   Kein Sticky-Footer, kein Verlauf am Seitenende, und genug Abstand zum Safe-Area */
-.page{
-  padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
-}
+      background-image:
+        radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(2px 2px at 28% 42%, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(2px 2px at 43% 14%, rgba(255,213,122,.26), transparent 60%),
+        radial-gradient(2px 2px at 62% 32%, rgba(140,214,255,.22), transparent 60%),
+        radial-gradient(2px 2px at 78% 18%, rgba(255,255,255,.20), transparent 60%),
+        radial-gradient(2px 2px at 86% 52%, rgba(255,213,122,.18), transparent 60%),
+        radial-gradient(2px 2px at 18% 76%, rgba(255,255,255,.16), transparent 60%),
+        radial-gradient(2px 2px at 55% 84%, rgba(140,214,255,.16), transparent 60%),
+        radial-gradient(2px 2px at 90% 86%, rgba(255,255,255,.14), transparent 60%);
+      opacity:.55;
+      animation:sparkleFloat 10s ease-in-out infinite;
+      transform: translate3d(0,0,0);
+    }
 
-.safeTop{height: env(safe-area-inset-top);}
+    @keyframes sparkleFloat{
+      0%   { transform: translate3d(0,0,0); opacity:.45; }
+      50%  { transform: translate3d(0,-10px,0); opacity:.65; }
+      100% { transform: translate3d(0,0,0); opacity:.45; }
+    }
 
-.header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  padding:12px 0 10px 0;
-  background:
-    linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
-  backdrop-filter: blur(14px);
-}
+    .safeTop{height: env(safe-area-inset-top);}
+    .header, .page{ position:relative; z-index:1; }
 
-.headerInner{
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(12,18,40,.60);
-  border-radius:20px;
-  padding:12px 12px;
-  box-shadow:0 14px 34px rgba(0,0,0,.40);
-}
+    /* Sticky Header (stabil) */
+    .header{
+      position:sticky;
+      top:0;
+      z-index:999;
+      padding:12px 0 10px 0;
 
-.topRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
+      background:
+        linear-gradient(180deg, rgba(7,10,18,.98), rgba(7,10,18,.78) 55%, rgba(7,10,18,0));
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+    }
 
-h1{
-  margin:0;
-  font-size:16px;
-  letter-spacing:.2px;
-  font-weight:950;
-  line-height:1.1;
-}
+    .headerInner{
+      border:1px solid rgba(255,255,255,.08);
+      background:var(--panel);
+      border-radius:20px;
+      padding:12px;
+      box-shadow:0 14px 34px rgba(0,0,0,.40);
+    }
 
-.sub{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  color:var(--muted);
-  white-space:nowrap;
-}
+    .topRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
 
-.dot{
-  width:7px;height:7px;border-radius:99px;background:var(--green);
-  box-shadow:0 0 0 4px rgba(54,210,123,.12);
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 260px;
+    }
 
-.midRow{
-  margin-top:10px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
+    .logo{
+      width:42px;
+      height:42px;
+      max-width:42px;
+      max-height:42px;
+      object-fit:contain;
+      border-radius:12px;
+      display:block;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 10px 22px rgba(0,0,0,.28);
+      background: rgba(255,255,255,.06);
+    }
 
-.switch{
-  display:flex;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:999px;
-  padding:4px;
-  gap:4px;
-  flex:1;
-  max-width: 260px;
-}
+    .brandText .title{
+      font-size:16px;
+      font-weight:950;
+      letter-spacing:.2px;
+      line-height:1.1;
+      margin:0;
+    }
 
-.seg{
-  flex:1;
-  border:0;
-  padding:9px 10px;
-  border-radius:999px;
-  background:transparent;
-  color:rgba(234,240,255,.75);
-  font-weight:950;
-  font-size:12px;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
+    .sub{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+      margin-top:4px;
+    }
 
-.seg.active{
-  background:linear-gradient(180deg, rgba(255,213,122,.28), rgba(255,255,255,.06));
-  border:1px solid rgba(255,213,122,.25);
-  color:var(--text);
-}
+    .dot{
+      width:7px;height:7px;border-radius:99px;background:var(--green);
+      box-shadow:0 0 0 4px rgba(54,210,123,.12);
+      flex:0 0 auto;
+    }
 
-.scoreChips{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
+    .byline{
+      margin-top:4px;
+      font-size:11px;
+      color:rgba(246,251,255,.65);
+    }
 
-.chip{
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:999px;
-  padding:9px 10px;
-  font-size:12px;
-  color:rgba(246,251,255,.78);
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+    .handle{
+      color:var(--gold);
+      text-decoration:none;
+      font-weight:950;
+    }
 
-.chip b{
-  color:var(--gold);
-  font-weight:950;
-  min-width: 18px;
-  text-align:right;
-}
+    .handle:hover{ text-decoration:underline; }
+    .handle:active{ opacity:.8; }
 
-.card{
-  background:
-    radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.10), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-  
-.cardHeader{
-  padding:14px 14px 10px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  background:linear-gradient(180deg, rgba(255,255,255,.04), transparent);
-}
+    .rightTop{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
 
-.playerName{
-  font-size:14px;
-  font-weight:950;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .scoreChips{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
 
-.icon{
-  width:22px;height:22px;border-radius:9px;
-  background:
-    radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
-    linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.10);
-}
+    .chip{
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      padding:9px 10px;
+      font-size:12px;
+      color:rgba(246,251,255,.78);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:0 10px 22px rgba(0,0,0,.22);
+    }
 
-.badge{
-  font-size:11px;
-  padding:6px 8px;
-  border-radius:999px;
-  background:rgba(108,168,255,.14);
-  border:1px solid rgba(108,168,255,.22);
-  color:rgba(234,240,255,.88);
-}
+    .chip b{
+      color:var(--gold);
+      font-weight:950;
+      min-width: 18px;
+      text-align:right;
+    }
 
-.score{
-  font-size:34px;
-  font-weight:980;
-}
+    .social{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
 
-.rows{
-  padding:10px 12px 12px 12px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+    .socialBtn{
+      width:36px;
+      height:36px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      color:rgba(246,251,255,.92);
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 12px 26px rgba(0,0,0,.24);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.section{
-  margin:16px 6px 6px 6px;
-  padding:0;
-  background:transparent;
-  border:0;
-  color:rgba(246,251,255,.80);
-  font-weight:950;
-  font-size:12px;
-  letter-spacing:.35px;
-  text-transform:uppercase;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .socialBtn:hover{
+      background: rgba(255,255,255,.11);
+      border-color: rgba(255,255,255,.20);
+      transform: translateY(-1px);
+    }
 
-.section::after{
-  content:"";
-  height:1px;
-  flex:1;
-  background:linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0));
-}
+    .socialBtn:active{
+      transform: translateY(0px) scale(.98);
+    }
 
-.row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:13px;
-  border-radius:18px;
-  background:
-    radial-gradient(700px 120px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-  border:1px solid rgba(255,255,255,.10);
-}
+    .socialBtn:focus-visible{
+      outline:2px solid rgba(247,211,122,.55);
+      outline-offset:2px;
+    }
 
-.left{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:4px;
-  min-width: 190px;
-}
+    .socialBtn svg{ display:block; }
 
-.rTitle{
-  font-size:13px;
-  font-weight:950;
-  color:rgba(234,240,255,.92);
-}
+    .midRow{
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
 
-.meta{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:12px;
-  color:var(--muted);
-}
+    .switch{
+      display:flex;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      padding:4px;
+      gap:4px;
+      flex:1;
+      max-width: 260px;
+    }
 
-.tag{
-  padding:4px 8px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-}
+    .seg{
+      flex:1;
+      border:0;
+      padding:9px 10px;
+      border-radius:999px;
+      background:transparent;
+      color:rgba(234,240,255,.75);
+      font-weight:950;
+      font-size:12px;
+      cursor:pointer;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-.controls{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .seg.active{
+      background:linear-gradient(180deg, rgba(255,213,122,.28), rgba(255,255,255,.06));
+      border:1px solid rgba(255,213,122,.25);
+      color:var(--text);
+    }
 
-.count{
-  width:34px;
-  text-align:center;
-  font-size:16px;
-  font-weight:980;
-}
+    /* Page */
+    .page{
+      padding:10px 0 calc(22px + env(safe-area-inset-bottom)) 0;
+    }
 
-.btn{
-  width:48px;
-  height:44px;
-  border:0;
-  border-radius:18px;
-  font-size:20px;
-  font-weight:980;
-  color:#08101b;
-  cursor:pointer;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color: transparent;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow: 0 14px 26px rgba(0,0,0,.30);
-}
+    .card{
+      background:
+        radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
 
-.btn:active{transform: translateY(1px) scale(.99)}
-  
-.plus{
-  background:
-    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
-    linear-gradient(180deg, rgba(47,211,122,1), rgba(47,211,122,.78));
-}
-.minus{
-  background:
-    radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.40), transparent 60%),
-    linear-gradient(180deg, rgba(255,77,109,1), rgba(255,77,109,.78));
-}
+    .cardHeader{
+      padding:14px 14px 10px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), transparent);
+    }
 
-.actions{
-  margin-top:12px;
-}
+    .playerName{
+      font-size:14px;
+      font-weight:950;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-.resetBtn{
-  width:100%;
-  padding:15px 16px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.12);
-  background:
-    radial-gradient(900px 140px at 20% 0%, rgba(255,213,122,.14), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  color:var(--text);
-  font-weight:980;
-  font-size:14px;
-  letter-spacing:.2px;
-  box-shadow:0 16px 40px rgba(0,0,0,.35);
-}
-  
-.resetBtn:active{transform: translateY(1px)}
+    .icon{
+      width:22px;height:22px;border-radius:9px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12)),
+        linear-gradient(180deg, rgba(108,168,255,.25), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.10);
+    }
 
-.tip{
-  margin:10px 2px 0 2px;
-  font-size:11px;
-  color:var(--muted);
-  line-height:1.35;
-}
+    .badge{
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      background:rgba(108,168,255,.14);
+      border:1px solid rgba(108,168,255,.22);
+      color:rgba(234,240,255,.88);
+    }
 
-  .brand{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
+    .score{
+      font-size:34px;
+      font-weight:980;
+    }
 
-.logo{
-  width:42px !important;
-  height:42px !important;
-  max-width:42px !important;
-  max-height:42px !important;
-  object-fit:contain;
-  border-radius:12px;
-  display:block;
-}
+    .rows{
+      padding:10px 12px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
 
-.brandText .title{
-  font-size:16px;
-  font-weight:950;
-  letter-spacing:.2px;
-}
+    .section{
+      margin:16px 6px 6px 6px;
+      padding:0;
+      background:transparent;
+      border:0;
+      color:rgba(246,251,255,.80);
+      font-weight:950;
+      font-size:12px;
+      letter-spacing:.35px;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-.brandText .sub{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  color:var(--muted);
-}
+    .section::after{
+      content:"";
+      height:1px;
+      flex:1;
+      background:linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0));
+    }
 
-.hidden{display:none}
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:13px;
+      border-radius:18px;
+      background:
+        radial-gradient(700px 120px at 20% 0%, rgba(255,213,122,.08), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+    }
 
-  /* Sparkles (dezent, ohne Canvas) */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
+    .left{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:4px;
+      min-width: 190px;
+    }
 
-  background-image:
-    radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.35), transparent 60%),
-    radial-gradient(2px 2px at 28% 42%, rgba(255,255,255,.22), transparent 60%),
-    radial-gradient(2px 2px at 43% 14%, rgba(255,213,122,.26), transparent 60%),
-    radial-gradient(2px 2px at 62% 32%, rgba(140,214,255,.22), transparent 60%),
-    radial-gradient(2px 2px at 78% 18%, rgba(255,255,255,.20), transparent 60%),
-    radial-gradient(2px 2px at 86% 52%, rgba(255,213,122,.18), transparent 60%),
-    radial-gradient(2px 2px at 18% 76%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(2px 2px at 55% 84%, rgba(140,214,255,.16), transparent 60%),
-    radial-gradient(2px 2px at 90% 86%, rgba(255,255,255,.14), transparent 60%);
+    .rTitle{
+      font-size:13px;
+      font-weight:950;
+      color:rgba(234,240,255,.92);
+    }
 
-  opacity:.55;
-  animation:sparkleFloat 10s ease-in-out infinite;
-  transform: translate3d(0,0,0);
-}
+    .meta{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--muted);
+    }
 
-@keyframes sparkleFloat{
-  0%   { transform: translate3d(0,0,0); opacity:.45; }
-  50%  { transform: translate3d(0,-10px,0); opacity:.65; }
-  100% { transform: translate3d(0,0,0); opacity:.45; }
-}
+    .tag{
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
 
-/* sicherstellen, dass Content über Sparkles liegt */
-.header, .page{ position:relative; z-index:1; }
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-  .rightTop{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .count{
+      width:34px;
+      text-align:center;
+      font-size:16px;
+      font-weight:980;
+    }
 
-.byline{
-  margin-top:4px;
-  font-size:11px;
-  color:rgba(246,251,255,.65);
-}
+    .btn{
+      width:48px;
+      height:44px;
+      border:0;
+      border-radius:18px;
+      font-size:20px;
+      font-weight:980;
+      color:#08101b;
+      cursor:pointer;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color: transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 14px 26px rgba(0,0,0,.30);
+    }
 
-.handle{
-  color:var(--gold);
-  text-decoration:none;
-  font-weight:950;
-}
+    .btn:active{transform: translateY(1px) scale(.99)}
 
-.social{
-  display:flex;
-  gap:8px;
-}
+    .plus{
+      background:
+        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.45), transparent 60%),
+        linear-gradient(180deg, rgba(47,211,122,1), rgba(47,211,122,.78));
+    }
 
-.socialBtn{
-  width:34px;
-  height:34px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  color:rgba(246,251,255,.85);
-  text-decoration:none;
-  font-weight:950;
-  font-size:12px;
-}
-  
-</style>
+    .minus{
+      background:
+        radial-gradient(18px 18px at 30% 25%, rgba(255,255,255,.40), transparent 60%),
+        linear-gradient(180deg, rgba(255,77,109,1), rgba(255,77,109,.78));
+    }
+
+    .actions{
+      margin-top:12px;
+    }
+
+    .resetBtn{
+      width:100%;
+      padding:15px 16px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(900px 140px at 20% 0%, rgba(255,213,122,.14), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      color:var(--text);
+      font-weight:980;
+      font-size:14px;
+      letter-spacing:.2px;
+      box-shadow:0 16px 40px rgba(0,0,0,.35);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .resetBtn:active{transform: translateY(1px)}
+
+    .tip{
+      margin:10px 2px 0 2px;
+      font-size:11px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .hidden{display:none}
+
+    /* Desktop Feinschliff */
+    @media (min-width: 980px){
+      .page{ max-width: 980px; margin: 0 auto; }
+      .headerInner{ max-width: 980px; margin: 0 auto; }
+    }
+
+    /* Wenn es sehr eng wird, darf oben umbrechen */
+    @media (max-width: 420px){
+      .topRow{ align-items:flex-start; }
+      .rightTop{ gap:8px; }
+      .chip{ padding:8px 9px; }
+      .socialBtn{ width:34px; height:34px; border-radius:13px; }
+      .brand{ min-width: 0; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="safeTop"></div>
+  <div class="safeTop"></div>
 
-<div class="header">
-  <div class="headerInner">
-    <div class="topRow">
-     <div class="brand">
-  <img src="logo.png" alt="Chief Baliman Logo" class="logo">
-  <div class="brandText">
-  <div class="title">Lorcana Booster Battle</div>
+  <div class="header">
+    <div class="headerInner">
+      <div class="topRow">
+        <div class="brand">
+          <img src="logo.png" alt="Chief Baliman Logo" class="logo">
+          <div class="brandText">
+            <div class="title">Lorcana Booster Battle</div>
 
-  <div class="sub">
-    <span class="dot"></span>
-    <span id="statusText">JavaScript aktiv</span>
-  </div>
+            <div class="sub">
+              <span class="dot"></span>
+              <span id="statusText">JavaScript aktiv</span>
+            </div>
 
-  <div class="byline">
-    by <a class="handle"
-          href="https://www.instagram.com/chief_baliman/"
-          target="_blank"
-          rel="noopener">chief_baliman</a>
-  </div>
-</div>
-</div>
-
-      <div class="rightTop">
-  <div class="scoreChips" aria-label="Scores">
-    <div class="chip">S1 <b id="chip1">0</b></div>
-    <div class="chip">S2 <b id="chip2">0</b></div>
-  </div>
-
-  <div class="social">
-    <a class="socialBtn"
-       href="https://www.instagram.com/chief_baliman/"
-       target="_blank"
-       rel="noopener">IG</a>
-
-    <a class="socialBtn"
-       href="https://www.tiktok.com/@chief_baliman"
-       target="_blank"
-       rel="noopener">TT</a>
-  </div>
-</div>
-
-    <div class="midRow">
-      <div class="switch" role="tablist" aria-label="Spieler wechseln">
-        <button class="seg active" id="tab1" type="button">Spieler 1</button>
-        <button class="seg" id="tab2" type="button">Spieler 2</button>
-      </div>
-
-      <div class="sub" id="leadText">–</div>
-    </div>
-  </div>
-</div>
-
-<div class="page">
-  <div class="card" id="card1" data-player="1">
-    <div class="cardHeader">
-      <div class="playerName">
-        <span class="icon"></span>
-        <span>Spieler 1</span>
-        <span class="badge" id="lead1">–</span>
-      </div>
-      <div class="score" id="score1">0</div>
-    </div>
-    <div class="rows" id="rows1"></div>
-  </div>
-
-  <div class="card hidden" id="card2" data-player="2">
-    <div class="cardHeader">
-      <div class="playerName">
-        <span class="icon"></span>
-        <span>Spieler 2</span>
-        <span class="badge" id="lead2">–</span>
-      </div>
-      <div class="score" id="score2">0</div>
-    </div>
-    <div class="rows" id="rows2"></div>
-  </div>
-
-  <div class="actions">
-    <button class="resetBtn" id="resetBtn" type="button">Reset</button>
-  </div>
-
-  <div class="tip">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</div>
-</div>
-
-<script>
-/*
-Punktesystem (dein neues):
-Common & Uncommon: 0
-Rare Normal: 0
-Rare Foil: 1
-Super Rare Normal: 2
-Super Rare Foil: 3
-Legendary Normal: 4
-Legendary Foil: 8
-Epic: 5
-Enchanted: 12
-Iconic: 25
-*/
-
-const sections = [
-  { title: "0 Punkte", ids: ["common_uncommon", "rare_normal"] },
-  { title: "Rares", ids: ["rare_foil", "super_rare_normal", "super_rare_foil"] },
-  { title: "High Tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
-];
-
-const rarities = [
-  { id:"common_uncommon", name:"Common & Uncommon", points:0, group:"0 Pkt" },
-  { id:"rare_normal",     name:"Rare (Normal)",     points:0, group:"0 Pkt" },
-
-  { id:"rare_foil",        name:"Rare (Foil)",        points:1, group:"Rare" },
-  { id:"super_rare_normal",name:"Super Rare (Normal)",points:2, group:"Rare" },
-  { id:"super_rare_foil",  name:"Super Rare (Foil)",  points:3, group:"Rare" },
-
-  { id:"legendary_normal", name:"Legendary (Normal)", points:4, group:"High" },
-  { id:"epic",             name:"Epic",               points:5, group:"High" },
-  { id:"legendary_foil",   name:"Legendary (Foil)",   points:8, group:"High" },
-  { id:"enchanted",        name:"Enchanted",          points:12,group:"High" },
-  { id:"iconic",           name:"Iconic",             points:25,group:"High" }
-];
-
-const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
-
-const state = {
-  1: Object.fromEntries(rarities.map(r => [r.id, 0])),
-  2: Object.fromEntries(rarities.map(r => [r.id, 0]))
-};
-
-function addTap(el, fn){
-  el.addEventListener("click", fn);
-  el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
-}
-
-function buildRows(player){
-  const wrap = document.getElementById("rows"+player);
-  wrap.innerHTML = "";
-
-  sections.forEach(sec => {
-    const s = document.createElement("div");
-    s.className = "section";
-    s.textContent = sec.title;
-    wrap.appendChild(s);
-
-    sec.ids.forEach(id => {
-      const r = byId[id];
-      const row = document.createElement("div");
-      row.className = "row";
-      row.setAttribute("data-id", r.id);
-
-      const tagText = r.points === 1 ? "1 Punkt" : (r.points + " Punkte");
-
-      row.innerHTML = `
-        <div class="left">
-          <div class="rTitle">${r.name}</div>
-          <div class="meta">
-            <span class="tag">${tagText}</span>
-            <span>${r.group}</span>
+            <div class="byline">
+              by <a class="handle" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener">chief_baliman</a>
+            </div>
           </div>
         </div>
-        <div class="controls">
-          <button class="btn minus" type="button" aria-label="minus">−</button>
-          <div class="count">0</div>
-          <button class="btn plus" type="button" aria-label="plus">+</button>
+
+        <div class="rightTop">
+          <div class="scoreChips" aria-label="Scores">
+            <div class="chip">S1 <b id="chip1">0</b></div>
+            <div class="chip">S2 <b id="chip2">0</b></div>
+          </div>
+
+          <div class="social" aria-label="Social Links">
+            <a class="socialBtn" href="https://www.instagram.com/chief_baliman/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="currentColor" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9A3.5 3.5 0 0 0 20 16.5v-9A3.5 3.5 0 0 0 16.5 4h-9Zm10.25 1.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+              </svg>
+            </a>
+
+            <a class="socialBtn" href="https://www.tiktok.com/@chief_baliman" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="currentColor" d="M16.6 3c.5 2.9 2.1 4.7 4.4 5v3.1c-1.7.1-3.2-.4-4.4-1.2v7.1c0 3.8-3.1 6.9-6.9 6.9S3 20.8 3 17s3.1-6.9 6.9-6.9c.4 0 .8 0 1.2.1v3.4c-.4-.1-.7-.2-1.2-.2-1.9 0-3.5 1.6-3.5 3.5S8 20.4 9.9 20.4s3.6-1.4 3.6-4V3h3.1Z"/>
+              </svg>
+            </a>
+          </div>
         </div>
-      `;
-      wrap.appendChild(row);
+      </div>
 
-      const countEl = row.querySelector(".count");
-      const plus = row.querySelector(".plus");
-      const minus = row.querySelector(".minus");
+      <div class="midRow">
+        <div class="switch" role="tablist" aria-label="Spieler wechseln">
+          <button class="seg active" id="tab1" type="button">Spieler 1</button>
+          <button class="seg" id="tab2" type="button">Spieler 2</button>
+        </div>
+        <div class="sub" id="leadText">–</div>
+      </div>
+    </div>
+  </div>
 
-      addTap(plus, () => {
-        state[player][r.id] += 1;
-        countEl.textContent = String(state[player][r.id]);
-        render();
+  <div class="page">
+    <div class="card" id="card1" data-player="1">
+      <div class="cardHeader">
+        <div class="playerName">
+          <span class="icon"></span>
+          <span>Spieler 1</span>
+          <span class="badge" id="lead1">–</span>
+        </div>
+        <div class="score" id="score1">0</div>
+      </div>
+      <div class="rows" id="rows1"></div>
+    </div>
+
+    <div class="card hidden" id="card2" data-player="2">
+      <div class="cardHeader">
+        <div class="playerName">
+          <span class="icon"></span>
+          <span>Spieler 2</span>
+          <span class="badge" id="lead2">–</span>
+        </div>
+        <div class="score" id="score2">0</div>
+      </div>
+      <div class="rows" id="rows2"></div>
+    </div>
+
+    <div class="actions">
+      <button class="resetBtn" id="resetBtn" type="button">Reset</button>
+    </div>
+
+    <div class="tip">Tipp: Zum Home-Bildschirm hinzufügen, dann fühlt es sich wie eine App an.</div>
+  </div>
+
+  <script>
+    /*
+      Punktesystem:
+      Common & Uncommon: 0
+      Rare Normal: 0
+      Rare Foil: 1
+      Super Rare Normal: 2
+      Super Rare Foil: 3
+      Legendary Normal: 4
+      Legendary Foil: 8
+      Epic: 5
+      Enchanted: 12
+      Iconic: 25
+    */
+
+    const sections = [
+      { title: "0 Punkte", ids: ["common_uncommon", "rare_normal"] },
+      { title: "Rares", ids: ["rare_foil", "super_rare_normal", "super_rare_foil"] },
+      { title: "High Tier", ids: ["legendary_normal", "legendary_foil", "epic", "enchanted", "iconic"] }
+    ];
+
+    const rarities = [
+      { id:"common_uncommon",  name:"Common & Uncommon",     points:0,  group:"0 Pkt" },
+      { id:"rare_normal",      name:"Rare (Normal)",         points:0,  group:"0 Pkt" },
+
+      { id:"rare_foil",        name:"Rare (Foil)",           points:1,  group:"Rare" },
+      { id:"super_rare_normal",name:"Super Rare (Normal)",   points:2,  group:"Rare" },
+      { id:"super_rare_foil",  name:"Super Rare (Foil)",     points:3,  group:"Rare" },
+
+      { id:"legendary_normal", name:"Legendary (Normal)",    points:4,  group:"High" },
+      { id:"epic",             name:"Epic",                  points:5,  group:"High" },
+      { id:"legendary_foil",   name:"Legendary (Foil)",      points:8,  group:"High" },
+      { id:"enchanted",        name:"Enchanted",             points:12, group:"High" },
+      { id:"iconic",           name:"Iconic",                points:25, group:"High" }
+    ];
+
+    const byId = Object.fromEntries(rarities.map(r => [r.id, r]));
+
+    const state = {
+      1: Object.fromEntries(rarities.map(r => [r.id, 0])),
+      2: Object.fromEntries(rarities.map(r => [r.id, 0]))
+    };
+
+    function addTap(el, fn){
+      el.addEventListener("click", fn);
+      el.addEventListener("touchend", (e) => { e.preventDefault(); fn(); }, { passive:false });
+    }
+
+    function buildRows(player){
+      const wrap = document.getElementById("rows"+player);
+      wrap.innerHTML = "";
+
+      sections.forEach(sec => {
+        const s = document.createElement("div");
+        s.className = "section";
+        s.textContent = sec.title;
+        wrap.appendChild(s);
+
+        sec.ids.forEach(id => {
+          const r = byId[id];
+          const row = document.createElement("div");
+          row.className = "row";
+          row.setAttribute("data-id", r.id);
+
+          const tagText = r.points === 1 ? "1 Punkt" : (r.points + " Punkte");
+
+          row.innerHTML = `
+            <div class="left">
+              <div class="rTitle">${r.name}</div>
+              <div class="meta">
+                <span class="tag">${tagText}</span>
+                <span>${r.group}</span>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="btn minus" type="button" aria-label="minus">−</button>
+              <div class="count">0</div>
+              <button class="btn plus" type="button" aria-label="plus">+</button>
+            </div>
+          `;
+          wrap.appendChild(row);
+
+          const countEl = row.querySelector(".count");
+          const plus = row.querySelector(".plus");
+          const minus = row.querySelector(".minus");
+
+          addTap(plus, () => {
+            state[player][r.id] += 1;
+            countEl.textContent = String(state[player][r.id]);
+            render();
+          });
+
+          addTap(minus, () => {
+            state[player][r.id] = Math.max(0, state[player][r.id] - 1);
+            countEl.textContent = String(state[player][r.id]);
+            render();
+          });
+        });
       });
+    }
 
-      addTap(minus, () => {
-        state[player][r.id] = Math.max(0, state[player][r.id] - 1);
-        countEl.textContent = String(state[player][r.id]);
-        render();
+    function scoreOf(player){
+      let s = 0;
+      rarities.forEach(r => { s += state[player][r.id] * r.points; });
+      return s;
+    }
+
+    function setLeads(s1, s2){
+      const b1 = document.getElementById("lead1");
+      const b2 = document.getElementById("lead2");
+      const leadText = document.getElementById("leadText");
+
+      if (s1 === 0 && s2 === 0){
+        b1.textContent = "–";
+        b2.textContent = "–";
+        leadText.textContent = "–";
+        return;
+      }
+      if (s1 > s2){
+        b1.textContent = "führt";
+        b2.textContent = "hinten";
+        leadText.textContent = "Spieler 1 führt";
+      } else if (s2 > s1){
+        b2.textContent = "führt";
+        b1.textContent = "hinten";
+        leadText.textContent = "Spieler 2 führt";
+      } else {
+        b1.textContent = "gleich";
+        b2.textContent = "gleich";
+        leadText.textContent = "Gleichstand";
+      }
+    }
+
+    function render(){
+      const s1 = scoreOf(1);
+      const s2 = scoreOf(2);
+
+      document.getElementById("score1").textContent = String(s1);
+      document.getElementById("score2").textContent = String(s2);
+      document.getElementById("chip1").textContent = String(s1);
+      document.getElementById("chip2").textContent = String(s2);
+
+      setLeads(s1, s2);
+    }
+
+    function resetAll(){
+      [1,2].forEach(p => {
+        rarities.forEach(r => { state[p][r.id] = 0; });
+
+        const rows = document.getElementById("rows"+p).querySelectorAll(".row");
+        rows.forEach(row => row.querySelector(".count").textContent = "0");
       });
-    });
-  });
-}
+      render();
+    }
 
-function scoreOf(player){
-  let s = 0;
-  rarities.forEach(r => { s += state[player][r.id] * r.points; });
-  return s;
-}
+    function showPlayer(p){
+      const c1 = document.getElementById("card1");
+      const c2 = document.getElementById("card2");
+      const t1 = document.getElementById("tab1");
+      const t2 = document.getElementById("tab2");
 
-function setLeads(s1, s2){
-  const b1 = document.getElementById("lead1");
-  const b2 = document.getElementById("lead2");
-  const leadText = document.getElementById("leadText");
+      if (p === 1){
+        c1.classList.remove("hidden");
+        c2.classList.add("hidden");
+        t1.classList.add("active");
+        t2.classList.remove("active");
+      } else {
+        c2.classList.remove("hidden");
+        c1.classList.add("hidden");
+        t2.classList.add("active");
+        t1.classList.remove("active");
+      }
+    }
 
-  if (s1 === 0 && s2 === 0){
-    b1.textContent = "–";
-    b2.textContent = "–";
-    leadText.textContent = "–";
-    return;
-  }
-  if (s1 > s2){
-    b1.textContent = "führt";
-    b2.textContent = "hinten";
-    leadText.textContent = "Spieler 1 führt";
-  } else if (s2 > s1){
-    b2.textContent = "führt";
-    b1.textContent = "hinten";
-    leadText.textContent = "Spieler 2 führt";
-  } else {
-    b1.textContent = "gleich";
-    b2.textContent = "gleich";
-    leadText.textContent = "Gleichstand";
-  }
-}
+    buildRows(1);
+    buildRows(2);
+    render();
+    showPlayer(1);
 
-function render(){
-  const s1 = scoreOf(1);
-  const s2 = scoreOf(2);
+    addTap(document.getElementById("resetBtn"), resetAll);
+    addTap(document.getElementById("tab1"), () => showPlayer(1));
+    addTap(document.getElementById("tab2"), () => showPlayer(2));
 
-  document.getElementById("score1").textContent = String(s1);
-  document.getElementById("score2").textContent = String(s2);
-  document.getElementById("chip1").textContent = String(s1);
-  document.getElementById("chip2").textContent = String(s2);
-
-  setLeads(s1, s2);
-}
-
-function resetAll(){
-  [1,2].forEach(p => {
-    rarities.forEach(r => { state[p][r.id] = 0; });
-
-    const rows = document.getElementById("rows"+p).querySelectorAll(".row");
-    rows.forEach(row => row.querySelector(".count").textContent = "0");
-  });
-  render();
-}
-
-function showPlayer(p){
-  const c1 = document.getElementById("card1");
-  const c2 = document.getElementById("card2");
-  const t1 = document.getElementById("tab1");
-  const t2 = document.getElementById("tab2");
-
-  if (p === 1){
-    c1.classList.remove("hidden");
-    c2.classList.add("hidden");
-    t1.classList.add("active");
-    t2.classList.remove("active");
-  } else {
-    c2.classList.remove("hidden");
-    c1.classList.add("hidden");
-    t2.classList.add("active");
-    t1.classList.remove("active");
-  }
-}
-
-buildRows(1);
-buildRows(2);
-render();
-showPlayer(1);
-
-addTap(document.getElementById("resetBtn"), resetAll);
-addTap(document.getElementById("tab1"), () => showPlayer(1));
-addTap(document.getElementById("tab2"), () => showPlayer(2));
-document.getElementById("statusText").textContent = "JavaScript aktiv";
-</script>
-
+    document.getElementById("statusText").textContent = "JavaScript aktiv";
+  </script>
 </body>
 </html>
