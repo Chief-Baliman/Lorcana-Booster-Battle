@@ -49,7 +49,6 @@ body{
   padding:0 14px env(safe-area-inset-bottom) 14px;
 }
 
-/* Sparkles (subtle) */
 body::before{
   content:"";
   position:fixed;
@@ -83,7 +82,6 @@ body::before{
 }
 .safeTop{height: env(safe-area-inset-top);}
 
-/* Header */
 .header{
   position:sticky;
   top:0;
@@ -200,7 +198,6 @@ body::before{
   text-overflow:ellipsis;
 }
 
-/* Social icons + Info */
 .social{
   display:flex;
   gap:8px;
@@ -240,7 +237,6 @@ body::before{
 }
 .infoBtn:active{ transform: translateY(1px); }
 
-/* Mid row */
 .midRow{
   margin-top:10px;
   display:flex;
@@ -296,7 +292,6 @@ body::before{
   max-width: 180px;
 }
 
-/* INT/JP Toggle */
 .modeWrap{
   display:flex;
   align-items:center;
@@ -326,7 +321,6 @@ body::before{
   color:var(--text);
 }
 
-/* Card */
 .card{
   background:
     radial-gradient(900px 220px at 20% 0%, rgba(255,213,122,.10), transparent 60%),
@@ -415,7 +409,6 @@ body::before{
   gap:12px;
 }
 
-/* Pack summary line */
 .packLine{
   display:flex;
   align-items:center;
@@ -468,7 +461,6 @@ body::before{
   color:rgba(246,251,255,.62);
 }
 
-/* Slot blocks */
 .slot{
   padding:12px;
   border-radius:18px;
@@ -592,7 +584,6 @@ body::before{
 
 .hidden{display:none}
 
-/* Modal */
 .modalOverlay{
   position:fixed;
   inset:0;
@@ -877,7 +868,6 @@ const POINTS = {
 
 let mode = "INT";
 
-/* Player names (saved locally) */
 const NAME_KEY_1 = "bb_name_p1";
 const NAME_KEY_2 = "bb_name_p2";
 
@@ -944,49 +934,18 @@ function setupNameInputs(){
   applyNamesToUI();
 }
 
-/* Slot templates */
 function getSlotsForMode(){
   if(mode === "JP"){
     return [
-      {
-        key:"rareplus",
-        name:"Rare+ slot",
-        hint:"Rare or above",
-        options:["rare_normal","super_rare_normal","legendary_normal","epic"],
-        allowNone:true
-      },
-      {
-        key:"foil",
-        name:"Foil slot",
-        hint:"Any rarity possible (incl. Enchanted)",
-        options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"],
-        allowNone:true
-      }
+      { key:"rareplus", name:"Rare+ slot", hint:"Rare or above", options:["rare_normal","super_rare_normal","legendary_normal","epic"], allowNone:true },
+      { key:"foil", name:"Foil slot", hint:"Any rarity possible (incl. Enchanted)", options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"], allowNone:true }
     ];
   }
 
   return [
-    {
-      key:"rarity1",
-      name:"Rarity slot 1",
-      hint:"Rare / Super Rare / Legendary",
-      options:["rare_normal","super_rare_normal","legendary_normal"],
-      allowNone:true
-    },
-    {
-      key:"rarity2",
-      name:"Rarity slot 2",
-      hint:"Rare / Super Rare / Legendary",
-      options:["rare_normal","super_rare_normal","legendary_normal"],
-      allowNone:true
-    },
-    {
-      key:"foil",
-      name:"Foil slot",
-      hint:"Any rarity possible (incl. Enchanted)",
-      options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"],
-      allowNone:true
-    }
+    { key:"rarity1", name:"Rarity slot 1", hint:"Rare / Super Rare / Legendary", options:["rare_normal","super_rare_normal","legendary_normal"], allowNone:true },
+    { key:"rarity2", name:"Rarity slot 2", hint:"Rare / Super Rare / Legendary", options:["rare_normal","super_rare_normal","legendary_normal"], allowNone:true },
+    { key:"foil", name:"Foil slot", hint:"Any rarity possible (incl. Enchanted)", options:["common","uncommon","rare_foil","super_rare_foil","legendary_foil","epic","enchanted","iconic"], allowNone:true }
   ];
 }
 
@@ -1004,7 +963,6 @@ const LABEL = {
   iconic: "Iconic"
 };
 
-/* Fix: unique gradient ids so icons show for both players */
 let ICON_UID = 0;
 
 function iconSVG(kind){
@@ -1049,14 +1007,17 @@ function iconSVG(kind){
     return wrap(`${rainbow}<path d="M12 5l6 6-6 8-6-8 6-6Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>`);
   }
 
-  /* UPDATED: Enchanted icon as a sparkle, not a rotated diamond */
   if(kind === "enchanted"){
-    return wrap(`${rainbow}<path d="M12 3.8l2.1 5.4 5.6 2.1-5.6 2.1-2.1 5.4-2.1-5.4-5.6-2.1 5.6-2.1 2.1-5.4Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>`);
+    return wrap(`${rainbow}
+      <path d="M12 4 L18 7.5 V16.5 L12 20 L6 16.5 V7.5 Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M12 9 L15 12 L12 15 L9 12 Z" stroke="url(#${uid})" stroke-width="2" stroke-linejoin="round"/>
+    `);
   }
 
   if(kind === "iconic"){
     return wrap(`${rainbow}<circle cx="12" cy="12" r="7" stroke="url(#${uid})" stroke-width="2"/><circle cx="12" cy="12" r="2.5" stroke="url(#${uid})" stroke-width="2"/>`);
   }
+
   return wrap(`<circle cx="12" cy="12" r="7" stroke="rgba(246,251,255,.6)" stroke-width="2"/>`);
 }
 
@@ -1065,7 +1026,6 @@ function ptsLabel(key){
   return pts === 1 ? "1 pt" : `${pts} pts`;
 }
 
-/* State */
 const state = { 1: {}, 2: {} };
 
 function initState(){
@@ -1296,7 +1256,6 @@ function showPlayer(p){
   }
 }
 
-/* Info modal */
 (function setupInfoModal(){
   const btn = document.getElementById("infoBtn");
   const modal = document.getElementById("infoModal");
@@ -1326,7 +1285,6 @@ function showPlayer(p){
   });
 })();
 
-/* Mode toggle */
 function setMode(newMode){
   if(newMode === mode) return;
   mode = newMode;
@@ -1340,7 +1298,6 @@ function setMode(newMode){
 document.getElementById("modeINT").addEventListener("click", () => setMode("INT"));
 document.getElementById("modeJP").addEventListener("click", () => setMode("JP"));
 
-/* Init */
 initState();
 buildSlots(1);
 buildSlots(2);
